@@ -16,3 +16,7 @@ Hinweise:
 - Die Inhalte sind Beispieldaten aus dem bisherigen Projektkontext.
 - Supabase, Admin-Login, Uploads und dynamische Bearbeitung sind in diesem Design-Prototyp noch nicht angeschlossen.
 - Das Layout lädt Google Fonts online; bei fehlender Internetverbindung wird auf Standardschrift zurückgegriffen.
+
+KORREKTUR: Der Name ist bereits im Hintergrundbild enthalten. Deshalb wurde die zusätzliche HTML-Namenszeile entfernt, damit er nicht doppelt erscheint.
+
+UPDATE: Die Schubladen sind jetzt als einzelne 3D-Elemente umgesetzt. Beim Hover bzw. bei Auswahl fahren sie deutlich nach vorne heraus; oben werden die Ordner im ausgezogenen Schubfach sichtbar. Auf Touch-Geräten öffnet die Auswahl per Tippen.
