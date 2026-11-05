@@ -22,3 +22,6 @@ Der Seitenhintergrund nutzt jetzt einen dunklen, transparent abgetönten Ausschn
 
 KLARER HINTERGRUND:
 Der dunkle Schleier wurde entfernt. Die abgedunkelte Banner-Wellen-Grafik ist jetzt deutlich weniger überlagert; nur eine sehr leichte Abdunklung bleibt für die Lesbarkeit. Der Aktenschrank und seine Animationen wurden nicht verändert.
+
+
+KONTAKTTEXT KORRIGIERT: Der Satz lautet jetzt 'Du hast eine Frage, eine Idee oder möchtest dich austauschen?' Der restliche Stand wurde unverändert übernommen.
