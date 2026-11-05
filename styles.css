@@ -54,17 +54,19 @@ footer{padding:80px 8vw 25px;border-top:1px solid #153538;background:radial-grad
 @media(max-width:700px){.site-header{height:58px;padding:0 4vw}.site-brand{font-size:8px}.site-header nav{gap:12px}.site-header nav a{font-size:9px}.site-status{display:none}.hero{height:250px!important}.intro-band{padding:48px 5vw;grid-template-columns:1fr;gap:25px}.intro-copy h1{font-size:43px}.profile-frame{justify-self:start;width:190px}}
 
 
-/* Ambient cyan background: extends the hero's lighting language through the full page.
-   Cabinet geometry, drawer markup, animations and content panels remain untouched. */
+/* Background continuation from the original hero artwork.
+   Only the page atmosphere is changed here. Cabinet geometry and drawer motion are untouched. */
 html, body {
-  background-color: #030b0d;
+  background-color: #020a0c;
 }
 body {
+  background-color: #020a0c;
   background-image:
-    radial-gradient(ellipse 48% 34% at 8% 28%, rgba(0, 190, 198, .15), transparent 72%),
-    radial-gradient(ellipse 42% 36% at 92% 54%, rgba(0, 157, 168, .13), transparent 74%),
-    radial-gradient(ellipse 54% 30% at 48% 92%, rgba(0, 208, 214, .075), transparent 75%),
-    linear-gradient(180deg, #030b0d 0%, #061316 42%, #030b0d 100%);
+    linear-gradient(180deg, rgba(2, 10, 12, .78), rgba(2, 10, 12, .88) 38%, rgba(2, 10, 12, .92)),
+    url("assets/background-waves.jpg");
+  background-position: center top, center center;
+  background-size: cover, cover;
+  background-repeat: no-repeat;
   background-attachment: fixed;
   position: relative;
   isolation: isolate;
@@ -75,35 +77,30 @@ body::before {
   inset: 0;
   z-index: -1;
   pointer-events: none;
-  opacity: .68;
+  opacity: .78;
   background:
-    radial-gradient(ellipse at 12% 46%, rgba(0, 231, 235, .10), transparent 26%),
-    radial-gradient(ellipse at 82% 18%, rgba(0, 191, 201, .09), transparent 30%),
-    linear-gradient(165deg, transparent 0 42%, rgba(0, 222, 229, .035) 43%, transparent 44% 100%),
-    repeating-linear-gradient(125deg, transparent 0 130px, rgba(0, 218, 225, .018) 131px, transparent 133px);
-  mask-image: linear-gradient(to bottom, transparent 0%, #000 18%, #000 100%);
+    radial-gradient(ellipse at 12% 42%, rgba(0, 224, 231, .17), transparent 34%),
+    radial-gradient(ellipse at 84% 24%, rgba(0, 197, 207, .14), transparent 36%),
+    radial-gradient(ellipse at 50% 100%, rgba(0, 231, 235, .10), transparent 42%);
+  mix-blend-mode: screen;
 }
 body::after {
   content: "";
   position: fixed;
   z-index: -1;
   pointer-events: none;
-  left: -12vw;
-  right: -12vw;
-  bottom: -18vh;
-  height: 48vh;
-  opacity: .34;
+  left: -8vw;
+  right: -8vw;
+  bottom: -20vh;
+  height: 58vh;
+  opacity: .52;
   background:
-    radial-gradient(ellipse at 50% 0%, transparent 42%, rgba(0, 223, 230, .20) 43%, transparent 44%),
-    radial-gradient(ellipse at 50% 0%, transparent 51%, rgba(0, 194, 204, .13) 52%, transparent 53%);
-  filter: blur(13px);
+    radial-gradient(ellipse at 48% 0%, transparent 45%, rgba(0, 226, 232, .30) 46%, transparent 47%),
+    radial-gradient(ellipse at 48% 0%, transparent 54%, rgba(0, 179, 190, .22) 55%, transparent 56%),
+    radial-gradient(ellipse at 48% 0%, transparent 63%, rgba(0, 220, 228, .12) 64%, transparent 65%);
+  filter: blur(10px);
 }
 .intro-band, .workspace, .projects-strip, footer {
   background-color: transparent;
 }
-.section-heading {
-  justify-content: flex-start;
-}
-@media (max-width: 700px) {
-  .section-heading { justify-content: flex-start; }
-}
+

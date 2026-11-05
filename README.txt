@@ -14,3 +14,7 @@ Ergänzt wurden ausschließlich:
 - Profilfoto
 
 Keine Anpassung am Aktenschrank vorgenommen.
+
+
+HINTERGRUND-FEINSCHLIFF:
+Der Seitenhintergrund nutzt jetzt einen dunklen, transparent abgetönten Ausschnitt der originalen Hero-Wellen-/Netzwerkgrafik. So läuft die gleiche türkisfarbene Lichtwelt in die übrige Website weiter. Der Aktenschrank und app.js wurden nicht verändert.
