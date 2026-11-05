@@ -46,3 +46,9 @@ ROOT CAUSE FIX – TEXT DIRECTLY ON THE FRONT MATERIAL:
 - This makes the title and description physically part of the visible front face, so it cannot float separately or sit behind the front panel.
 - The pull handle is positioned below the text.
 - Camera is closer to frontal so the lettering remains legible.
+
+DESIGN-ÜBERARBEITUNG – MODERNER PREMIUM-LOOK:
+- Schubladenfronten neu aufgebaut: satinierte Graphit-Metallfront, eingelassene dunkle Label-Zone, klarer Lichtsaum und breiter Metallgriff.
+- Beschriftung ist eine echte Frontfläche auf der senkrechten +Z-Seite, direkt an die bewegliche Schublade gekoppelt.
+- Raum neu gestaltet: ruhige dunkle Wandpaneele, dezente Bodenfugen, einzelner Lichtakzent und ein seitlicher Arbeitsplatz. Kein dominantes Drahtgitter oder überladene Leuchtstreben.
+- Licht und Materialien auf einen modernen, hochwertigen Anthrazit-/Petrol-/Cyan-Look abgestimmt.
