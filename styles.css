@@ -88,3 +88,30 @@ body::after {
 .intro-band, .workspace, .projects-strip, footer {
   background-color: transparent;
 }
+
+
+/* Hover = compact dossier preview. Click = open full file panel. */
+.drawer-hover-preview {
+  position:absolute; z-index:30; right:16px; top:50%; width:min(250px,43%);
+  min-height:142px; transform:translateY(-50%) translateX(12px) scale(.96);
+  opacity:0; visibility:hidden; pointer-events:none;
+  background:linear-gradient(145deg,rgba(13,39,43,.98),rgba(3,15,18,.98));
+  border:1px solid rgba(0,228,232,.72);
+  box-shadow:0 18px 45px rgba(0,0,0,.58),0 0 25px rgba(0,220,228,.18),inset 0 0 22px rgba(0,220,228,.05);
+  transition:opacity .22s ease,transform .28s ease,visibility .22s;
+}
+.drawer-hover-preview.is-visible {opacity:1;visibility:visible;transform:translateY(-50%) translateX(0) scale(1)}
+.mini-file-top {height:30px;display:flex;justify-content:space-between;align-items:center;padding:0 11px;border-bottom:1px solid rgba(0,228,232,.25);color:#8fb3b5;font-size:7px;letter-spacing:.13em}
+.mini-file-top span {color:#00e4e8;font-weight:800}
+.mini-file-top i {display:inline-block;width:5px;height:5px;border-radius:50%;margin-right:5px;background:#00e4e8;box-shadow:0 0 8px #00e4e8}
+.mini-file-body {padding:15px 16px 13px}
+.mini-file-kicker {color:#7fa5a7;font-size:7px;letter-spacing:.16em;font-weight:700}
+.mini-file-body h4 {color:#f1ffff;font-size:17px;letter-spacing:-.035em;margin:8px 0 5px}
+.mini-file-body p {color:#a9c1c3;font-size:9px;line-height:1.55;margin:0}
+.mini-file-hint {display:flex;justify-content:space-between;align-items:center;margin-top:14px;padding-top:9px;border-top:1px solid rgba(0,228,232,.18);color:#00dce4;font-size:7px;font-weight:800;letter-spacing:.12em}
+.mini-file-hint b {font-size:14px}
+.content-panel {display:none}
+.desk-layout.file-open .content-panel {display:block;animation:filePanelIn .38s cubic-bezier(.2,.8,.2,1) both}
+@keyframes filePanelIn {from{opacity:0;transform:translateY(14px) scale(.985)}to{opacity:1;transform:translateY(0) scale(1)}}
+@media(max-width:1050px){.drawer-hover-preview{right:10px;width:min(250px,48%)}}
+@media(max-width:650px){.drawer-hover-preview{top:auto;bottom:12px;right:10px;width:min(230px,68%);transform:translateY(8px) scale(.96)}.drawer-hover-preview.is-visible{transform:translateY(0) scale(1)}}

@@ -25,3 +25,6 @@ Der dunkle Schleier wurde entfernt. Die abgedunkelte Banner-Wellen-Grafik ist je
 
 
 KONTAKTTEXT KORRIGIERT: Der Satz lautet jetzt 'Du hast eine Frage, eine Idee oder möchtest dich austauschen?' Der restliche Stand wurde unverändert übernommen.
+
+
+SCHUBLADENBEDIENUNG: Hover zeigt nur eine kleine Aktenvorschau. Klick öffnet die große Datei-Vorschau rechts. Auf Touch-Geräten: erstes Tippen zeigt die kleine Vorschau, zweites Tippen öffnet die große Ansicht. Schrankoptik und Schubladenbewegung bleiben bestehen.
