@@ -31,7 +31,7 @@ const scene=new THREE.Scene();
 scene.background=null;
 const camera=new THREE.PerspectiveCamera(34,1,.1,100);
 camera.position.set(6.5,5.2,10.5);
-const controlsTarget=new THREE.Vector3(0,2.25,0);
+const controlsTarget=new THREE.Vector3(0,2.55,0);
 const hemi=new THREE.HemisphereLight(0x9cfaff,0x071114,2.0);scene.add(hemi);
 const keyLight=new THREE.DirectionalLight(0xe4ffff,3.2);keyLight.position.set(-4,8,7);scene.add(keyLight);
 const cyanLight=new THREE.PointLight(0x00eaff,32,12);cyanLight.position.set(-3,3,4);scene.add(cyanLight);
@@ -80,18 +80,29 @@ keys.forEach((key,i)=>{
  }
  // front fascia and separate front plate
  const front=box(group,W-.2,drawerH-.08,.16,metal,0,0,0);
- box(group,W-.52,.34,.045,darkMetal,0,.03,.095);
+ box(group,W-.52,.39,.055,darkMetal,0,.03,.105);
  // cyan accent bar at bottom of face
  box(group,.88,.035,.035,cyanMat,0,-.26,.11);
- // face text plate via canvas texture
- const labelCanvas=document.createElement("canvas");labelCanvas.width=512;labelCanvas.height=128;
- const ctx=labelCanvas.getContext("2d");ctx.clearRect(0,0,512,128);
- ctx.fillStyle="#bfe8e9";ctx.font="bold 42px Arial";ctx.textAlign="center";ctx.textBaseline="middle";
+ // High-contrast front label: drawer title plus a short description of its contents.
+ const labelCanvas=document.createElement("canvas");labelCanvas.width=1024;labelCanvas.height=256;
+ const ctx=labelCanvas.getContext("2d");
+ ctx.clearRect(0,0,1024,256);
+ ctx.fillStyle="rgba(3,17,20,.94)";ctx.fillRect(0,0,1024,256);
+ ctx.strokeStyle="#00dce4";ctx.lineWidth=5;ctx.strokeRect(3,3,1018,250);
+ ctx.fillStyle="#00e4e8";ctx.font="bold 54px Arial";ctx.textAlign="left";ctx.textBaseline="middle";
+ ctx.fillText(String(i+1).padStart(2,"0"),42,84);
+ ctx.fillStyle="#f1ffff";ctx.font="bold 58px Arial";
  const labels=["ÜBER MICH","FÄHIGKEITEN","WEITERBILDUNG","MEIN USP","PROJEKTE","KONTAKT"];
- ctx.fillText(labels[i],256,66);
+ const descriptions=["Weg · Erfahrungen · Ziele","Tools · Kenntnisse · Methoden","DCI · Qualifikationen · Zertifikate","Stärken · Arbeitsweise · Mehrwert","Eigene Arbeiten · Ergebnisse","Nachricht · Austausch · Links"];
+ ctx.fillText(labels[i],142,84);
+ ctx.fillStyle="#9fc6c9";ctx.font="34px Arial";
+ ctx.fillText(descriptions[i],144,177);
  const tex=new THREE.CanvasTexture(labelCanvas);tex.colorSpace=THREE.SRGBColorSpace;
- const label=new THREE.Mesh(new THREE.PlaneGeometry(1.18,.3),new THREE.MeshBasicMaterial({map:tex,transparent:true,depthWrite:false}));
- label.position.set(.08,.03,.122);group.add(label);
+ const label=new THREE.Mesh(
+   new THREE.PlaneGeometry(1.58,.395),
+   new THREE.MeshBasicMaterial({map:tex,transparent:false,side:THREE.DoubleSide,toneMapped:false})
+ );
+ label.position.set(0,.015,.132);group.add(label);
  // number marker and pull handle
  const handle=box(group,.75,.055,.12,edgeMetal,0,-.17,.14);
  box(group,.58,.022,.018,cyanMat,0,-.17,.205);
@@ -107,8 +118,17 @@ keys.forEach((key,i)=>{
  group.userData={key,index:i,open:0,target:0,baseZ:D/2-.05};
  drawers.push(group);
 });
-const ground=box(scene,16,.12,12,floorMat,0,-.08,0);ground.receiveShadow=true;
-const grid=new THREE.GridHelper(16,32,0x08747b,0x10383c);grid.position.y=-.015;scene.add(grid);
+const ground=box(scene,18,.12,14,floorMat,0,-.08,0);ground.receiveShadow=true;
+// Subtle reflective floor tiles: restrained seams instead of a bright wireframe grid.
+const seamMat=new THREE.MeshStandardMaterial({color:0x0b5960,emissive:0x00363b,emissiveIntensity:.45,metalness:.55,roughness:.42});
+for(let x=-8;x<=8;x+=2){
+  const seam=box(scene,.012,.006,14,seamMat,x,-.012,0);
+  seam.material=seamMat;
+}
+for(let z=-6;z<=6;z+=2){
+  const seam=box(scene,18,.006,.012,seamMat,0,-.012,z);
+  seam.material=seamMat;
+}
 // decorative back wall panel behind cabinet
 const backPanel=box(scene,7,6,.12,darkMetal,0,2.7,-2.3);
 for(let i=0;i<8;i++){
@@ -157,7 +177,7 @@ canvas.addEventListener("pointerup",e=>{
 canvas.addEventListener("pointerleave",()=>{if(!down){hovered=-1;drawers.forEach((d,i)=>{if(i!==selected)d.userData.target=0;});}});
 function resize(){
  const w=stage.clientWidth,h=stage.clientHeight;renderer.setSize(w,h,false);camera.aspect=w/h;camera.updateProjectionMatrix();
- const narrow=w<500;camera.position.set(narrow?7.5:6.5,5.0,narrow?13.2:10.8);camera.lookAt(controlsTarget);
+ const narrow=w<500;camera.position.set(narrow?-7.5:-6.5,5.0,narrow?13.2:10.8);camera.lookAt(controlsTarget);
 }
 window.addEventListener("resize",resize);resize();
 const clock=new THREE.Clock();

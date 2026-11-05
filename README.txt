@@ -16,3 +16,9 @@ Technik:
 Hinweis:
 - Three.js wird beim Aufruf von jsDelivr geladen; Internetverbindung ist erforderlich.
 - Dies ist die Frontend-3D-Version. Supabase/Admin-Anbindung ist noch nicht integriert.
+
+KORREKTUR NACH ERSTEM 3D-TEST:
+- Kamerarichtung korrigiert: Vorderseite und linke Schrankseite sind jetzt sichtbar.
+- Boden auf dunkle, dezente Fliesen mit zurückhaltenden cyanfarbenen Fugen umgestellt.
+- Jede Schubladenfront hat nun eine kontrastreiche Beschriftung mit Titel und kurzer Inhaltsbeschreibung.
+- Rechtes Textfeld verbreitert und Schriftgrößen, Zeilenabstände sowie Innenabstände für bessere Lesbarkeit erhöht.
