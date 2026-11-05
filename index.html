@@ -1,133 +1,117 @@
 <!doctype html>
 <html lang="de">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#090e13">
-  <meta name="description" content="Marc Gudermann – Digital Business, KI und Marketing-Automatisierung.">
-  <title>Marc Gudermann | Digital Portfolio</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css">
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="config.js"></script>
-  <script defer src="app.js"></script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#030b0d">
+<title>Marc Gudermann | Digital Portfolio</title>
+<link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <div class="grain"></div>
-  <header class="topbar">
-    <a class="monogram" href="#portfolio" aria-label="Zur Startseite">MG<span>/</span></a>
-    <div class="topbar-center"><span class="topbar-line"></span><span>PERSONAL DIGITAL ARCHIVE</span><span class="topbar-line"></span></div>
-    <a class="admin-shortcut" href="#admin">ADMIN <span>↗</span></a>
-  </header>
+<header class="site-header">
+  <a class="site-brand" href="#top"><span class="site-monogram">MG</span><span>MARC GUDERMANN</span></a>
+  <nav><a href="#workspace">Portfolio</a><a href="#projects">Projekte</a><a href="#contact">Kontakt</a></nav>
+  <span class="site-status"><i></i> DIGITAL PORTFOLIO</span>
+</header>
+<main>
+<section class="hero" id="top">
+  <img class="hero-background" src="assets/hero-workspace.png" alt="Digitaler Arbeitsplatz mit türkisfarbener Beleuchtung">
+  <div class="hero-index">PORTFOLIO <span>01 / 06</span></div>
+</section>
+<section class="intro-band">
+  <div class="intro-copy">
+    <div class="eyebrow"><span></span> PERSÖNLICHES PORTFOLIO · 2026</div>
+    <h1>Marc <em>Gudermann</em></h1>
+    <p class="role-line">Digital Business · KI Digital Marketing · IT-Anwendungsberatung</p>
+    <p class="intro-text">Ich verbinde digitales Marketing mit dem praktischen Einsatz künstlicher Intelligenz. Ich probiere aus, entwickle Lösungen und mache komplexe digitale Themen verständlich und anwendbar.</p>
+    <div class="intro-foot"><span></span> AKTUELL IN WEITERBILDUNG · DIGITAL BUSINESS</div>
+  </div>
+  <div class="profile-frame">
+    <span class="frame-corner corner-tl"></span><span class="frame-corner corner-br"></span>
+    <img src="profile-photo.png" alt="Profilfoto von Marc Gudermann" class="profile-photo">
+    <div class="photo-label"><span>MG / 001</span><span>PROFILE</span></div>
+  </div>
+</section>
 
-  <main id="app">
-    <section id="portfolio-page" class="view active">
-      <section class="portfolio-hero" id="top"><img src="assets/hero-workspace.png" alt="Digitaler Arbeitsplatz mit türkisfarbener Beleuchtung"><div class="hero-index">PORTFOLIO <span>01 / 06</span></div></section>
-      <div class="intro-band">
-        <div class="intro-copy">
-          <div class="overline"><i></i> PERSÖNLICHES PORTFOLIO · 2026</div>
-          <h1>Marc <em>Gudermann</em></h1>
-          <p class="role-line">Digital Business <b>·</b> KI Digital Marketing <b>·</b> IT-Anwendungsberatung</p>
-          <p class="intro-text">Ich verbinde digitales Marketing mit dem praktischen Einsatz künstlicher Intelligenz. Ich probiere aus, entwickle Lösungen und mache komplexe digitale Themen verständlich und anwendbar.</p>
-          <div class="intro-foot"><span class="live-dot"></span> AKTUELL IN WEITERBILDUNG · DIGITAL BUSINESS</div>
+<section class="workspace" id="workspace">
+  <div class="section-heading">
+    <div><div class="eyebrow"><span></span> PERSÖNLICHER EINBLICK</div><h2>Mein digitaler <em>Arbeitsplatz</em></h2></div>
+    <p>Wähle eine Schublade. Sie fährt sichtbar aus dem Schrank<br>und gibt den Blick auf ihren Inhalt frei.</p>
+  </div>
+  <div class="desk-layout">
+    <div class="cabinet-zone">
+      <div class="cabinet-label"><span class="tiny-led"></span> 3D INFORMATION ARCHIVE <small>MG / 2026</small></div>
+      <div class="cabinet-stage" id="cabinet-stage">
+        <div class="room-back">
+          <div class="wall-light light-a"></div><div class="wall-light light-b"></div>
+          <div class="shelf shelf-one"><i></i><i></i><i></i><i></i></div>
+          <div class="plant"><span></span><span></span><span></span><span></span><span></span><b></b></div>
+          <div class="side-desk"><div class="monitor"><div class="monitor-chart"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div></div><div class="desk-lamp"></div></div>
+          <div class="floor-reflection"></div>
         </div>
-        <div class="profile-frame">
-          <div class="frame-corner corner-tl"></div><div class="frame-corner corner-br"></div>
-          <img src="profile-photo.png" alt="Profilfoto von Marc Gudermann" class="profile-photo">
-          <div class="photo-label"><span>MG / 001</span><span>PROFILE</span></div>
-        </div>
-      </div>
-
-      <section class="archive-section">
-        <div class="archive-heading">
-          <div><div class="overline">DAS INTERAKTIVE ARCHIV</div><h2>Was möchtest du <em>entdecken?</em></h2></div>
-          <p>Wähle links eine Schublade. Sie öffnet sich nach rechts und gibt den jeweiligen Bereich frei.</p>
-        </div>
-
-        <div class="archive-layout">
-          <div class="cabinet-column">
-            <div class="cabinet-top-label"><span>MG / ARCHIVE SYSTEM</span><span class="cabinet-led"></span></div>
-            <div class="cabinet-shell premium-cabinet">
-              <div class="cabinet-canopy"></div>
-              <div class="cabinet-side"></div>
-              <div class="cabinet-back"></div>
-              <div class="cabinet-front premium-drawer-stack" id="drawer-list">
-                <button class="cabinet-door selected" data-drawer="ueber-mich" aria-label="Über mich öffnen">
-                  <span class="door-number">01</span><span class="door-title">ÜBER MICH</span><span class="door-subtitle">Mein Hintergrund · Ziele · Motivation</span><span class="door-grip"></span><span class="door-mark">↗</span>
-                </button>
-                <button class="cabinet-door" data-drawer="faehigkeiten" aria-label="Meine Fähigkeiten öffnen">
-                  <span class="door-number">02</span><span class="door-title">FÄHIGKEITEN</span><span class="door-subtitle">Tools · Kenntnisse · Methoden</span><span class="door-grip"></span><span class="door-mark">↗</span>
-                </button>
-                <button class="cabinet-door" data-drawer="weiterbildung" aria-label="Weiterbildung öffnen">
-                  <span class="door-number">03</span><span class="door-title">WEITERBILDUNG</span><span class="door-subtitle">Kurse · Qualifikationen · Entwicklung</span><span class="door-grip"></span><span class="door-mark">↗</span>
-                </button>
-                <button class="cabinet-door" data-drawer="usp" aria-label="Mein USP öffnen">
-                  <span class="door-number">04</span><span class="door-title">MEIN USP</span><span class="door-subtitle">Stärken · Arbeitsweise · Mehrwert</span><span class="door-grip"></span><span class="door-mark">↗</span>
-                </button>
-                <button class="cabinet-door" data-drawer="projekte" aria-label="Meine Projekte öffnen">
-                  <span class="door-number">05</span><span class="door-title">PROJEKTE</span><span class="door-subtitle">Eigene Arbeiten · Ergebnisse</span><span class="door-grip"></span><span class="door-mark">↗</span>
-                </button>
-                <button class="cabinet-door" data-drawer="kontakt" aria-label="Kontakt öffnen">
-                  <span class="door-number">06</span><span class="door-title">KONTAKT</span><span class="door-subtitle">Nachricht · Austausch · Links</span><span class="door-grip"></span><span class="door-mark">↗</span>
-                </button>
-              </div>
-              <div class="cabinet-plinth"><span>PERSONAL FILES</span><span>SECURE ACCESS <i></i></span></div>
+        <div class="cabinet-wrap" id="cabinet-wrap" aria-label="Interaktiver Aktenschrank">
+          <div class="cabinet">
+            <div class="cabinet-top"></div>
+            <div class="cabinet-side"></div>
+            <div class="cabinet-back"></div>
+            <div class="cabinet-bottom"></div>
+            <div class="cabinet-frame-left"></div><div class="cabinet-frame-right"></div>
+            <div class="drawer-stack" id="drawer-stack">
+              <button class="drawer selected" data-key="about" aria-label="Über mich öffnen">
+                <span class="drawer-interior"><i class="folder f1"></i><i class="folder f2"></i><i class="folder f3"></i></span>
+                <span class="drawer-face"><i class="drawer-icon">♙</i><b class="drawer-num">01</b><span class="drawer-copy"><strong>Über mich</strong><small>Mein Hintergrund, Ziele und Motivation</small></span><i class="drawer-arrow">›</i><i class="drawer-handle"></i><i class="screw s1"></i><i class="screw s2"></i><i class="screw s3"></i><i class="screw s4"></i></span>
+              </button>
+              <button class="drawer" data-key="skills" aria-label="Fähigkeiten öffnen">
+                <span class="drawer-interior"><i class="folder f1"></i><i class="folder f2"></i><i class="folder f3"></i></span>
+                <span class="drawer-face"><i class="drawer-icon">⚙</i><b class="drawer-num">02</b><span class="drawer-copy"><strong>Fähigkeiten</strong><small>Tools, Kenntnisse und Methoden</small></span><i class="drawer-arrow">›</i><i class="drawer-handle"></i><i class="screw s1"></i><i class="screw s2"></i><i class="screw s3"></i><i class="screw s4"></i></span>
+              </button>
+              <button class="drawer" data-key="education" aria-label="Weiterbildung öffnen">
+                <span class="drawer-interior"><i class="folder f1"></i><i class="folder f2"></i><i class="folder f3"></i></span>
+                <span class="drawer-face"><i class="drawer-icon">⌑</i><b class="drawer-num">03</b><span class="drawer-copy"><strong>Weiterbildung</strong><small>Schulungen, Kurse und Entwicklung</small></span><i class="drawer-arrow">›</i><i class="drawer-handle"></i><i class="screw s1"></i><i class="screw s2"></i><i class="screw s3"></i><i class="screw s4"></i></span>
+              </button>
+              <button class="drawer" data-key="usp" aria-label="Mein USP öffnen">
+                <span class="drawer-interior"><i class="folder f1"></i><i class="folder f2"></i><i class="folder f3"></i></span>
+                <span class="drawer-face"><i class="drawer-icon">✧</i><b class="drawer-num">04</b><span class="drawer-copy"><strong>Mein USP</strong><small>Was mich besonders auszeichnet</small></span><i class="drawer-arrow">›</i><i class="drawer-handle"></i><i class="screw s1"></i><i class="screw s2"></i><i class="screw s3"></i><i class="screw s4"></i></span>
+              </button>
+              <button class="drawer" data-key="projects" aria-label="Projekte öffnen">
+                <span class="drawer-interior"><i class="folder f1"></i><i class="folder f2"></i><i class="folder f3"></i></span>
+                <span class="drawer-face"><i class="drawer-icon">▱</i><b class="drawer-num">05</b><span class="drawer-copy"><strong>Projekte</strong><small>Eigene Projekte und Ergebnisse</small></span><i class="drawer-arrow">›</i><i class="drawer-handle"></i><i class="screw s1"></i><i class="screw s2"></i><i class="screw s3"></i><i class="screw s4"></i></span>
+              </button>
+              <button class="drawer" data-key="contact" aria-label="Kontakt öffnen">
+                <span class="drawer-interior"><i class="folder f1"></i><i class="folder f2"></i><i class="folder f3"></i></span>
+                <span class="drawer-face"><i class="drawer-icon">✉</i><b class="drawer-num">06</b><span class="drawer-copy"><strong>Kontakt</strong><small>So erreichst du mich</small></span><i class="drawer-arrow">›</i><i class="drawer-handle"></i><i class="screw s1"></i><i class="screw s2"></i><i class="screw s3"></i><i class="screw s4"></i></span>
+              </button>
             </div>
-            <div class="cabinet-floor-shadow"></div>
-            <div class="cabinet-caption">HOVER / CLICK TO OPEN <span>●</span></div>
-          </div>
-
-          <div class="content-column">
-            <div class="content-topline"><span id="content-index">FILE 01 / 06</span><span id="content-status">ARCHIVE OPEN</span></div>
-            <div id="drawer-content" class="drawer-content">
-              <div class="file-kicker">PERSONAL FILE / 001</div>
-              <h3>Über mich<span>.</span></h3>
-              <p>Ich interessiere mich für digitales Marketing und den praktischen Einsatz künstlicher Intelligenz. Aktuell absolviere ich eine Weiterbildung im Bereich Digital Business mit den Schwerpunkten IT-Anwendungsberatung und KI Digital Marketing Management.</p>
-              <div class="file-rule"></div>
-              <div class="file-meta"><span>FOKUS</span><strong>Verstehen. Anwenden. Weiterdenken.</strong></div>
-            </div>
-            <div class="content-bottom"><span>SELECT A FILE TO EXPLORE</span><span class="cyan-cross">✳</span></div>
+            <div class="cabinet-foot"></div>
           </div>
         </div>
-      </section>
-
-      <section class="statement-band">
-        <div class="overline">MEIN ANSATZ</div>
-        <p>Ich erkläre KI-Tools und Marketing-Automatisierung <em>verständlich und praxisnah</em>, damit Menschen sie für ihre eigenen Aufgaben einsetzen können.</p>
-      </section>
-    </section>
-
-    <section id="project-page" class="view inner-page">
-      <a class="back-link" href="#drawer/projekte">← ZURÜCK ZUM ARCHIV</a>
-      <div id="project-content"></div>
-    </section>
-
-    <section id="contact-page" class="view inner-page">
-      <a class="back-link" href="#portfolio">← ZURÜCK ZUM ARCHIV</a>
-      <div class="overline">KONTAKT</div><h1>In Verbindung <em>bleiben.</em></h1>
-      <p class="inner-lead" id="contact-copy">Du hast Fragen zu meinen Projekten oder möchtest dich austauschen? Ich freue mich auf deine Nachricht.</p>
-      <a id="contact-email" class="outline-link" hidden></a>
-    </section>
-
-    <section id="admin-page" class="view admin-page">
-      <div id="admin-login" class="login-panel">
-        <div class="overline">GESCHÜTZTER BEREICH</div><h1>Portfolio <em>Verwaltung</em></h1>
-        <p>Bitte melde dich mit deinem Supabase-Benutzer an.</p>
-        <form id="login-form"><label>E-Mail<input id="login-email" type="email" autocomplete="username" required></label><label>Passwort<input id="login-password" type="password" autocomplete="current-password" required></label><button class="solid-button" type="submit">ANMELDEN ↗</button><p id="login-message" class="form-message"></p></form>
+        <div class="stage-glow"></div>
       </div>
-      <div id="admin-panel" class="admin-panel" hidden>
-        <div class="admin-heading"><div><div class="overline">CONTROL ROOM</div><h1>Portfolio <em>bearbeiten</em></h1></div><button id="logout-button" class="outline-button">ABMELDEN</button></div>
-        <div class="admin-tabs"><button class="admin-tab active" data-tab="profile">Profil</button><button class="admin-tab" data-tab="drawers">Schubladen</button><button class="admin-tab" data-tab="projects">Projekte</button></div>
-        <section class="admin-section active" id="tab-profile"><h2>Profil und Startseite</h2><form id="profile-form" class="admin-form"><label>Name<input name="name" required></label><label>Berufszeile<input name="headline"></label><label>Einleitung<textarea name="introduction"></textarea></label><label>USP<textarea name="usp"></textarea></label><label>Kontakt-E-Mail<input name="contact_email" type="email"></label><label>Kontakttext<textarea name="contact_text"></textarea></label><label>Profilbild hochladen<input id="profile-upload" type="file" accept="image/*"></label><button class="solid-button">PROFIL SPEICHERN</button><p id="profile-message" class="form-message"></p></form></section>
-        <section class="admin-section" id="tab-drawers"><h2>Schubladen verwalten</h2><p class="admin-hint">Reihenfolge und Inhalte deiner Archiv-Schubladen bearbeiten.</p><div id="drawer-editor" class="editor-list"></div></section>
-        <section class="admin-section" id="tab-projects"><div class="admin-row-head"><h2>Projekte verwalten</h2><button id="new-project" class="solid-button compact">+ NEUES PROJEKT</button></div><div id="project-editor" class="editor-list"></div><div id="project-edit-form-wrap" hidden><h3 id="project-form-title">Projekt bearbeiten</h3><form id="project-form" class="admin-form"><input type="hidden" name="id"><label>Titel<input name="title" required></label><label>URL-Kennung<input name="slug" required></label><label>Kurzbeschreibung<textarea name="short_description"></textarea></label><label>Status<select name="status"><option value="draft">Entwurf</option><option value="published">Veröffentlicht</option><option value="archived">Archiviert</option></select></label><label>Reihenfolge<input name="sort_order" type="number"></label><label>Titelbild<input id="project-cover-upload" type="file" accept="image/*"></label><button class="solid-button">PROJEKT SPEICHERN</button><button type="button" id="cancel-project" class="outline-button">ABBRECHEN</button><p id="project-message" class="form-message"></p></form><div id="blocks-area" hidden><h3>Projekt-Inhaltsblöcke</h3><div class="block-add-row"><select id="block-type"><option value="text">Text / Überschrift</option><option value="image">Bild</option><option value="gallery">Galerie</option><option value="video">Video / Embed</option><option value="link">Externer Link</option><option value="results">Ergebnisse</option><option value="timeline">Zeitstrahl</option></select><button id="add-block" class="outline-button">BLOCK HINZUFÜGEN</button></div><div id="block-editor" class="editor-list"></div></div></div></section>
+      <div class="cabinet-caption"><span>INTERAKTIVER 3D-AKTENSCHRANK</span><span>HOVER / CLICK TO OPEN</span></div>
+      <div class="drawer-legend">Bewege die Maus über eine Schublade oder klicke sie an. Auf dem Smartphone genügt ein Tippen.</div>
+    </div>
+    <article class="content-panel" aria-live="polite">
+      <div class="panel-top"><span class="panel-tag"><i></i> FILE PREVIEW</span><span class="panel-code" id="panel-code">MG-FILE-001</span></div>
+      <div class="panel-content" id="panel-content">
+        <div class="file-symbol">01 <span>PERSONAL PROFILE</span></div><div class="eyebrow">DAS BIN ICH</div>
+        <h3>Hi, ich bin <em>Marc.</em></h3>
+        <p class="lead">Ich interessiere mich dafür, wie digitale Werkzeuge den Alltag einfacher machen können.</p>
+        <p>Mein Schwerpunkt liegt auf KI-Tools, digitalem Marketing und Automatisierung. Mir ist wichtig, Dinge nicht nur theoretisch zu verstehen, sondern sie praktisch auszuprobieren und verständlich zu erklären.</p>
+        <div class="panel-meta"><span>STATUS</span><strong>IN ENTWICKLUNG</strong></div>
       </div>
-    </section>
-  </main>
-
-  <footer class="footer"><span>© <span id="year"></span> MARC GUDERMANN</span><span>BUILT AROUND CURIOSITY & PRACTICE</span><a href="#admin">ADMIN ↗</a></footer>
-  <div id="toast" class="toast"></div>
-</body>
-</html>
+      <div class="panel-bottom"><span>MG DIGITAL PORTFOLIO</span><span>CONTENT LOAD <b>100%</b></span></div>
+    </article>
+  </div>
+</section>
+<section class="projects-strip" id="projects">
+  <div class="section-heading"><div><div class="eyebrow"><span></span> AUSGEWÄHLTE ARBEITEN</div><h2>Projekte in <em>Bewegung</em></h2></div><p>Ideen, die ich plane, entwickle<br>und Schritt für Schritt umsetze.</p></div>
+  <div class="project-grid">
+    <article class="project-card"><span>PROJECT / 01</span><div class="project-glyph">eG<span>_</span></div><h3>eGGad_Digital</h3><p>KI-Wissen verständlich vermitteln und digitale Produkte aufbauen.</p><b>KI · CONTENT · MARKETING</b></article>
+    <article class="project-card"><span>PROJECT / 02</span><div class="project-glyph">↗</div><h3>Growth-Bot</h3><p>Ein persönlicher Workflow für Planung, Check-ins und Content-Organisation.</p><b>MAKE · SLACK · SHEETS</b></article>
+    <article class="project-card"><span>PROJECT / 03</span><div class="project-glyph">▥</div><h3>Data Storytelling</h3><p>Daten aufbereiten, Kennzahlen verstehen und Erkenntnisse sichtbar machen.</p><b>LOOKER STUDIO · SHEETS</b></article>
+  </div>
+</section>
+<footer id="contact"><div><div class="eyebrow"><span></span> LASS UNS IN KONTAKT KOMMEN</div><h2>Eine gute Idee beginnt<br>mit einem <em>Gespräch.</em></h2></div><a class="hero-cta" href="mailto:kontakt@marc-gudermann.de">KONTAKT AUFNEHMEN <b>↗</b></a><div class="footer-bottom"><span>© 2026 MARC GUDERMANN</span><span>BUILT WITH CURIOSITY <b>✦</b></span></div></footer>
+</main>
+<script src="app.js"></script>
+</body></html>
