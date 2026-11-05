@@ -1,11 +1,6 @@
-MARC GUDERMANN PORTFOLIO – RESTORE HEADER / HERO / PROFILE
+INTEGRIERTE WEBSITE-VERSION
 
-Diese Version behält den neuen interaktiven CSS-3D-Aktenschrank bei und stellt gleichzeitig die vorherige persönliche Website-Gestaltung wieder her:
-- Kopfzeile mit MG-Monogramm, Navigation und Admin-Link
-- ursprüngliches Hero-Banner assets/hero-workspace.png
-- persönlicher Intro-Bereich mit Name, Berufszeile und Profilfoto
-- Profilfoto profile-photo.png
-- interaktiver Aktenschrank mit sechs beweglichen Schubladen und rechter Inhaltsvorschau
-- Projektübersicht und Kontaktbereich
-
-Wichtig: Der bisherige Supabase-Admin-Code wurde in der vorigen reinen CSS-3D-Neufassung nicht mitgeführt. Der Admin-Link ist daher hier nur ein Anker/Platzhalter und die Supabase-Anbindung muss im nächsten Integrationsschritt wieder eingehängt werden. Die ursprünglichen config.js und SQL-Dateien sind nicht gelöscht, aber nicht Bestandteil dieser ZIP.
+Ausgangspunkt ist die bisherige vollständige Website mit originalem Header, Intro, Profilfoto, Projekt-/Kontaktseiten, Admin-Oberfläche, Supabase-App-Logik und Konfiguration.
+Nur der Aktenschrank wurde visuell neu aufgebaut und mit dem 3D-Schubladen-Look versehen. Die vorhandenen JS-Hooks (#drawer-list, .cabinet-door, data-drawer) bleiben erhalten, damit Supabase die Schubladen weiterhin dynamisch befüllen kann.
+Das ursprüngliche Hero-Banner liegt unter assets/hero-workspace.png.
+Die bestehende profile-photo.png, app.js, config.js, storage-policies.sql und alle Admin-Funktionen bleiben erhalten.
