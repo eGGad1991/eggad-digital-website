@@ -1,17 +1,18 @@
-MARC GUDERMANN PORTFOLIO – VERSION 2
+MARC GUDERMANN PORTFOLIO – VISUAL PROTOTYPE
 
-Dateien im ZIP:
-- index.html: Portfolio, Aktenschrank, Projektansicht und Admin-Oberfläche
-- styles.css: vollständiges responsives Design
-- app.js: Interaktionen, Supabase-Datenzugriff und Admin-Funktionen
-- config.js: Supabase URL, Publishable Key und Bucket
-- profile-photo.png: bereitgestelltes Profilfoto
-- storage-policies.sql: Storage-Berechtigungen
+Enthalten:
+- index.html
+- styles.css
+- app.js
+- assets/hero-workspace.png
 
-WICHTIG:
-1. Das ist die neue Designversion. Noch nicht ungeprüft live schalten.
-2. Alle Dateien im Root von eggad-digital-website ablegen und die vorhandene index.html ersetzen.
-3. In Supabase den Inhalt von storage-policies.sql im SQL Editor ausführen.
-4. Der Publishable Key ist ein öffentlicher Frontend-Key. Niemals service_role/Secret Keys eintragen.
-5. Die fünf Projekte sind zunächst Entwürfe. Im Adminbereich veröffentlichen, wenn die Inhalte bereit sind.
-6. Vor Livegang Login, Storage-Upload, Projektveröffentlichung und Mobile-Verhalten testen.
+Start:
+1. ZIP entpacken.
+2. index.html im Browser öffnen.
+
+Hinweise:
+- Dies ist ein visueller, lokal lauffähiger Prototyp.
+- Die Schubladen reagieren auf Hover, Fokus und Klick. Auf Mobilgeräten funktioniert die Auswahl per Tippen.
+- Die Inhalte sind Beispieldaten aus dem bisherigen Projektkontext.
+- Supabase, Admin-Login, Uploads und dynamische Bearbeitung sind in diesem Design-Prototyp noch nicht angeschlossen.
+- Das Layout lädt Google Fonts online; bei fehlender Internetverbindung wird auf Standardschrift zurückgegriffen.
