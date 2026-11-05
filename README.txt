@@ -32,3 +32,10 @@ LABEL- UND DARSTELLUNGSFIX:
 - Beschriftung wurde auf echte Three.js-Sprites umgestellt, die sich mit der Schublade bewegen und zur Kamera ausgerichtet bleiben. Damit sind Titel und Untertitel nicht mehr von der Metallfront verdeckt.
 - Frontplatten und Griffe wurden neu angeordnet, damit die Schriftfläche Platz hat.
 - Kamera weiter zurückgesetzt und Licht-/Wandakzente reduziert, damit die Szene weniger wie ein schwarzer Rohbau wirkt.
+
+KORREKTUR – BESCHRIFTUNG DIREKT AUF DER SCHUBLADE:
+- Die schwebenden Kamera-Sprites wurden entfernt.
+- Jede Beschriftung ist jetzt eine echte Plane-Geometrie, direkt auf der Frontplatte montiert und Bestandteil der jeweiligen Schublade.
+- Die Platte fährt deshalb gemeinsam mit der Schublade heraus.
+- Die Fronten wurden heller und kontrastreicher gestaltet, mit klaren Kanten und Cyan-Akzenten.
+- Kamerawinkel stärker auf die Schrankfront ausgerichtet.
