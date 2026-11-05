@@ -3,145 +3,128 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#0a1118">
-  <meta name="description" content="Persönliches Portfolio von Marc Gudermann: Digital Business, KI und Marketing-Automatisierung.">
-  <title>Marc Gudermann | Portfolio</title>
+  <meta name="theme-color" content="#090e13">
+  <meta name="description" content="Marc Gudermann – Digital Business, KI und Marketing-Automatisierung.">
+  <title>Marc Gudermann | Digital Portfolio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="config.js"></script>
   <script defer src="app.js"></script>
 </head>
 <body>
-  <div class="ambient ambient-one"></div><div class="ambient ambient-two"></div>
-  <header class="site-header">
-    <a class="brand" href="#portfolio" aria-label="Portfolio Startseite">MG<span>.</span></a>
-    <nav class="main-nav" aria-label="Hauptnavigation">
-      <a href="#portfolio" class="nav-link active">Portfolio</a>
-      <a href="#projekt/eggad-digital" class="nav-link">Projekte</a>
-      <a href="#kontakt" class="nav-link">Kontakt</a>
-    </nav>
-    <a class="admin-link" href="#admin">Admin <span>↗</span></a>
+  <div class="grain"></div>
+  <header class="topbar">
+    <a class="monogram" href="#portfolio" aria-label="Zur Startseite">MG<span>/</span></a>
+    <div class="topbar-center"><span class="topbar-line"></span><span>PERSONAL DIGITAL ARCHIVE</span><span class="topbar-line"></span></div>
+    <a class="admin-shortcut" href="#admin">ADMIN <span>↗</span></a>
   </header>
 
   <main id="app">
     <section id="portfolio-page" class="view active">
-      <section class="hero wrap">
-        <div class="hero-copy">
-          <div class="eyebrow"><span class="pulse"></span> Persönliches Portfolio</div>
-          <h1>Marc <span>Gudermann</span></h1>
-          <p class="hero-lead">Digital Business · KI Digital Marketing · IT-Anwendungsberatung</p>
-          <p class="hero-intro">Ich interessiere mich für digitales Marketing und den praktischen Einsatz künstlicher Intelligenz. Ich entwickle und teste digitale Lösungen und erkläre komplexe Themen so, dass man sie direkt anwenden kann.</p>
-          <a class="primary-button" href="#drawer/projekte">Portfolio entdecken <span>↓</span></a>
+      <div class="intro-band">
+        <div class="intro-copy">
+          <div class="overline"><i></i> PERSÖNLICHES PORTFOLIO · 2026</div>
+          <h1>Marc <em>Gudermann</em></h1>
+          <p class="role-line">Digital Business <b>·</b> KI Digital Marketing <b>·</b> IT-Anwendungsberatung</p>
+          <p class="intro-text">Ich verbinde digitales Marketing mit dem praktischen Einsatz künstlicher Intelligenz. Ich probiere aus, entwickle Lösungen und mache komplexe digitale Themen verständlich und anwendbar.</p>
+          <div class="intro-foot"><span class="live-dot"></span> AKTUELL IN WEITERBILDUNG · DIGITAL BUSINESS</div>
         </div>
-        <div class="portrait-wrap">
-          <div class="portrait-ring"></div>
-          <img src="profile-photo.png" alt="Profilfoto von Marc Gudermann" class="portrait" onerror="this.style.display='none';document.querySelector('.portrait-fallback').style.display='grid'">
-          <div class="portrait-fallback">MG</div>
-          <div class="portrait-caption"><span class="status-dot"></span> Digital Business & KI</div>
+        <div class="profile-frame">
+          <div class="frame-corner corner-tl"></div><div class="frame-corner corner-br"></div>
+          <img src="profile-photo.png" alt="Profilfoto von Marc Gudermann" class="profile-photo">
+          <div class="photo-label"><span>MG / 001</span><span>PROFILE</span></div>
         </div>
-      </section>
+      </div>
 
-      <section class="cabinet-section wrap">
-        <div class="section-heading">
-          <div><div class="eyebrow">Ein Blick in meine Arbeit</div><h2>Mein Portfolio. <span>Meine Schubladen.</span></h2></div>
-          <p>Öffne eine Schublade und entdecke mehr über meine Fähigkeiten, meinen Weg und meine Projekte.</p>
+      <section class="archive-section">
+        <div class="archive-heading">
+          <div><div class="overline">DAS INTERAKTIVE ARCHIV</div><h2>Was möchtest du <em>entdecken?</em></h2></div>
+          <p>Wähle links eine Schublade. Sie öffnet sich nach rechts und gibt den jeweiligen Bereich frei.</p>
         </div>
-        <div class="cabinet-stage">
-          <div class="cabinet-halo"></div>
-          <div class="cabinet">
-            <div class="cabinet-top"><span class="cabinet-brand">MARC GUDERMANN</span><span class="cabinet-light"></span><span class="cabinet-label">DIGITAL ARCHIVE / 2026</span></div>
-            <div class="drawer-list" id="drawer-list">
-              <button class="drawer" data-drawer="ueber-mich"><span class="drawer-index">01</span><span class="drawer-name">Über mich</span><span class="drawer-handle"></span><span class="drawer-arrow">↗</span></button>
-              <button class="drawer" data-drawer="faehigkeiten"><span class="drawer-index">02</span><span class="drawer-name">Meine Fähigkeiten</span><span class="drawer-handle"></span><span class="drawer-arrow">↗</span></button>
-              <button class="drawer" data-drawer="weiterbildung"><span class="drawer-index">03</span><span class="drawer-name">Weiterbildung</span><span class="drawer-handle"></span><span class="drawer-arrow">↗</span></button>
-              <button class="drawer" data-drawer="usp"><span class="drawer-index">04</span><span class="drawer-name">Mein USP</span><span class="drawer-handle"></span><span class="drawer-arrow">↗</span></button>
-              <button class="drawer" data-drawer="projekte"><span class="drawer-index">05</span><span class="drawer-name">Meine Projekte</span><span class="drawer-handle"></span><span class="drawer-arrow">↗</span></button>
-              <button class="drawer" data-drawer="kontakt"><span class="drawer-index">06</span><span class="drawer-name">Kontakt</span><span class="drawer-handle"></span><span class="drawer-arrow">↗</span></button>
+
+        <div class="archive-layout">
+          <div class="cabinet-column">
+            <div class="cabinet-top-label"><span>MG / ARCHIVE SYSTEM</span><span class="cabinet-led"></span></div>
+            <div class="cabinet-shell">
+              <div class="cabinet-side"></div>
+              <div class="cabinet-front" id="drawer-list">
+                <button class="cabinet-door selected" data-drawer="ueber-mich" aria-label="Über mich öffnen">
+                  <span class="door-number">01</span><span class="door-title">ÜBER MICH</span><span class="door-grip"></span><span class="door-mark">↗</span>
+                </button>
+                <button class="cabinet-door" data-drawer="faehigkeiten" aria-label="Meine Fähigkeiten öffnen">
+                  <span class="door-number">02</span><span class="door-title">FÄHIGKEITEN</span><span class="door-grip"></span><span class="door-mark">↗</span>
+                </button>
+                <button class="cabinet-door" data-drawer="weiterbildung" aria-label="Weiterbildung öffnen">
+                  <span class="door-number">03</span><span class="door-title">WEITERBILDUNG</span><span class="door-grip"></span><span class="door-mark">↗</span>
+                </button>
+                <button class="cabinet-door" data-drawer="usp" aria-label="Mein USP öffnen">
+                  <span class="door-number">04</span><span class="door-title">MEIN USP</span><span class="door-grip"></span><span class="door-mark">↗</span>
+                </button>
+                <button class="cabinet-door" data-drawer="projekte" aria-label="Meine Projekte öffnen">
+                  <span class="door-number">05</span><span class="door-title">PROJEKTE</span><span class="door-grip"></span><span class="door-mark">↗</span>
+                </button>
+                <button class="cabinet-door" data-drawer="kontakt" aria-label="Kontakt öffnen">
+                  <span class="door-number">06</span><span class="door-title">KONTAKT</span><span class="door-grip"></span><span class="door-mark">↗</span>
+                </button>
+              </div>
+              <div class="cabinet-plinth"><span>PERSONAL FILES</span><span>SECURE ACCESS <i></i></span></div>
             </div>
-            <div class="cabinet-foot"><span>PERSONAL KNOWLEDGE SYSTEM</span><span>● ONLINE</span></div>
+            <div class="cabinet-floor-shadow"></div>
+            <div class="cabinet-caption">HOVER / CLICK TO OPEN <span>●</span></div>
           </div>
-          <div class="cabinet-shadow"></div>
+
+          <div class="content-column">
+            <div class="content-topline"><span id="content-index">FILE 01 / 06</span><span id="content-status">ARCHIVE OPEN</span></div>
+            <div id="drawer-content" class="drawer-content">
+              <div class="file-kicker">PERSONAL FILE / 001</div>
+              <h3>Über mich<span>.</span></h3>
+              <p>Ich interessiere mich für digitales Marketing und den praktischen Einsatz künstlicher Intelligenz. Aktuell absolviere ich eine Weiterbildung im Bereich Digital Business mit den Schwerpunkten IT-Anwendungsberatung und KI Digital Marketing Management.</p>
+              <div class="file-rule"></div>
+              <div class="file-meta"><span>FOKUS</span><strong>Verstehen. Anwenden. Weiterdenken.</strong></div>
+            </div>
+            <div class="content-bottom"><span>SELECT A FILE TO EXPLORE</span><span class="cyan-cross">✳</span></div>
+          </div>
         </div>
-        <p class="cabinet-hint"><span>↖</span> Schublade auswählen, um Inhalte zu öffnen</p>
       </section>
-      <section class="usp-strip wrap"><span class="eyebrow">Mein Anspruch</span><p>KI-Tools und Marketing-Automatisierung verständlich und praxisnah erklären.</p></section>
+
+      <section class="statement-band">
+        <div class="overline">MEIN ANSATZ</div>
+        <p>Ich erkläre KI-Tools und Marketing-Automatisierung <em>verständlich und praxisnah</em>, damit Menschen sie für ihre eigenen Aufgaben einsetzen können.</p>
+      </section>
     </section>
 
-    <section id="drawer-page" class="view wrap subpage">
-      <a class="back-link" href="#portfolio">← Zurück zum Portfolio</a>
-      <div id="drawer-content"></div>
-    </section>
-
-    <section id="project-page" class="view wrap subpage">
-      <a class="back-link" href="#drawer/projekte">← Zurück zu meinen Projekten</a>
+    <section id="project-page" class="view inner-page">
+      <a class="back-link" href="#drawer/projekte">← ZURÜCK ZUM ARCHIV</a>
       <div id="project-content"></div>
     </section>
 
-    <section id="contact-page" class="view wrap subpage">
-      <a class="back-link" href="#portfolio">← Zurück zum Portfolio</a>
-      <div class="eyebrow">Kontakt</div><h1>In Verbindung <span>bleiben.</span></h1>
-      <p class="page-lead">Du hast Fragen zu meinen Projekten oder möchtest dich austauschen? Die Kontaktdaten können später im Adminbereich ergänzt werden.</p>
-      <div class="content-card"><h3>Kontakt</h3><p id="contact-copy">Die Kontaktmöglichkeiten werden noch ergänzt.</p><a id="contact-email" class="text-link" hidden></a></div>
+    <section id="contact-page" class="view inner-page">
+      <a class="back-link" href="#portfolio">← ZURÜCK ZUM ARCHIV</a>
+      <div class="overline">KONTAKT</div><h1>In Verbindung <em>bleiben.</em></h1>
+      <p class="inner-lead" id="contact-copy">Du hast Fragen zu meinen Projekten oder möchtest dich austauschen? Ich freue mich auf deine Nachricht.</p>
+      <a id="contact-email" class="outline-link" hidden></a>
     </section>
 
-    <section id="admin-page" class="view wrap admin-view">
-      <div id="admin-login" class="login-card">
-        <div class="eyebrow">Geschützter Bereich</div><h1>Portfolio <span>Verwaltung</span></h1>
-        <p>Bitte melde dich mit deinem angelegten Supabase-Benutzer an.</p>
-        <form id="login-form">
-          <label for="login-email">E-Mail</label><input id="login-email" type="email" autocomplete="username" required>
-          <label for="login-password">Passwort</label><input id="login-password" type="password" autocomplete="current-password" required>
-          <button class="primary-button full" type="submit">Anmelden</button>
-          <p class="form-message" id="login-message" role="status"></p>
-        </form>
+    <section id="admin-page" class="view admin-page">
+      <div id="admin-login" class="login-panel">
+        <div class="overline">GESCHÜTZTER BEREICH</div><h1>Portfolio <em>Verwaltung</em></h1>
+        <p>Bitte melde dich mit deinem Supabase-Benutzer an.</p>
+        <form id="login-form"><label>E-Mail<input id="login-email" type="email" autocomplete="username" required></label><label>Passwort<input id="login-password" type="password" autocomplete="current-password" required></label><button class="solid-button" type="submit">ANMELDEN ↗</button><p id="login-message" class="form-message"></p></form>
       </div>
-      <div id="admin-panel" hidden>
-        <div class="admin-heading"><div><div class="eyebrow">Verwaltung</div><h1>Dein Portfolio <span>bearbeiten</span></h1></div><button id="logout-button" class="ghost-button">Abmelden</button></div>
-        <div class="admin-tabs">
-          <button class="admin-tab active" data-tab="profile">Profil</button>
-          <button class="admin-tab" data-tab="drawers">Schubladen</button>
-          <button class="admin-tab" data-tab="projects">Projekte</button>
-        </div>
-        <section class="admin-section active" id="tab-profile">
-          <h2>Profil und Startseite</h2>
-          <form id="profile-form" class="editor-form">
-            <label>Name</label><input name="name" required>
-            <label>Berufszeile</label><input name="headline">
-            <label>Einleitung</label><textarea name="introduction"></textarea>
-            <label>USP</label><textarea name="usp"></textarea>
-            <label>Kontakt-E-Mail</label><input name="contact_email" type="email">
-            <label>Kontakttext</label><textarea name="contact_text"></textarea>
-            <label>Profilbild hochladen</label><input id="profile-upload" type="file" accept="image/*">
-            <button class="primary-button" type="submit">Profil speichern</button><p class="form-message" id="profile-message"></p>
-          </form>
-        </section>
-        <section class="admin-section" id="tab-drawers">
-          <h2>Schubladen verwalten</h2><p class="muted">Ändere Texte und Reihenfolge. Die Pfeile verschieben eine Schublade nach oben oder unten.</p>
-          <div id="drawer-editor" class="editor-list"></div>
-        </section>
-        <section class="admin-section" id="tab-projects">
-          <div class="admin-subhead"><h2>Projekte verwalten</h2><button id="new-project" class="primary-button small">+ Neues Projekt</button></div>
-          <div id="project-editor" class="editor-list"></div>
-          <div id="project-edit-form-wrap" hidden>
-            <h3 id="project-form-title">Projekt bearbeiten</h3>
-            <form id="project-form" class="editor-form">
-              <input type="hidden" name="id">
-              <label>Titel</label><input name="title" required>
-              <label>URL-Kennung (Slug)</label><input name="slug" required>
-              <label>Kurzbeschreibung</label><textarea name="short_description"></textarea>
-              <label>Status</label><select name="status"><option value="draft">Entwurf</option><option value="published">Veröffentlicht</option><option value="archived">Archiviert</option></select>
-              <label>Reihenfolge</label><input name="sort_order" type="number" value="0">
-              <label>Titelbild</label><input id="project-cover-upload" type="file" accept="image/*">
-              <button class="primary-button" type="submit">Projekt speichern</button><button type="button" id="cancel-project" class="ghost-button">Abbrechen</button><p class="form-message" id="project-message"></p>
-            </form>
-            <div id="blocks-area" hidden><h3>Inhaltsblöcke</h3><p class="muted">Text, Bild, Galerie, Video, Link, Ergebnisse und Zeitstrahl werden als einzelne Blöcke verwaltet.</p><div class="block-add-row"><select id="block-type"><option value="text">Text und Überschrift</option><option value="image">Einzelbild</option><option value="gallery">Galerie</option><option value="video">Video / Embed</option><option value="link">Externer Link / Button</option><option value="results">Ergebnisse</option><option value="timeline">Zeitstrahl</option></select><button id="add-block" class="ghost-button">Block hinzufügen</button></div><div id="block-editor" class="editor-list"></div></div>
-          </div>
-        </section>
+      <div id="admin-panel" class="admin-panel" hidden>
+        <div class="admin-heading"><div><div class="overline">CONTROL ROOM</div><h1>Portfolio <em>bearbeiten</em></h1></div><button id="logout-button" class="outline-button">ABMELDEN</button></div>
+        <div class="admin-tabs"><button class="admin-tab active" data-tab="profile">Profil</button><button class="admin-tab" data-tab="drawers">Schubladen</button><button class="admin-tab" data-tab="projects">Projekte</button></div>
+        <section class="admin-section active" id="tab-profile"><h2>Profil und Startseite</h2><form id="profile-form" class="admin-form"><label>Name<input name="name" required></label><label>Berufszeile<input name="headline"></label><label>Einleitung<textarea name="introduction"></textarea></label><label>USP<textarea name="usp"></textarea></label><label>Kontakt-E-Mail<input name="contact_email" type="email"></label><label>Kontakttext<textarea name="contact_text"></textarea></label><label>Profilbild hochladen<input id="profile-upload" type="file" accept="image/*"></label><button class="solid-button">PROFIL SPEICHERN</button><p id="profile-message" class="form-message"></p></form></section>
+        <section class="admin-section" id="tab-drawers"><h2>Schubladen verwalten</h2><p class="admin-hint">Reihenfolge und Inhalte deiner Archiv-Schubladen bearbeiten.</p><div id="drawer-editor" class="editor-list"></div></section>
+        <section class="admin-section" id="tab-projects"><div class="admin-row-head"><h2>Projekte verwalten</h2><button id="new-project" class="solid-button compact">+ NEUES PROJEKT</button></div><div id="project-editor" class="editor-list"></div><div id="project-edit-form-wrap" hidden><h3 id="project-form-title">Projekt bearbeiten</h3><form id="project-form" class="admin-form"><input type="hidden" name="id"><label>Titel<input name="title" required></label><label>URL-Kennung<input name="slug" required></label><label>Kurzbeschreibung<textarea name="short_description"></textarea></label><label>Status<select name="status"><option value="draft">Entwurf</option><option value="published">Veröffentlicht</option><option value="archived">Archiviert</option></select></label><label>Reihenfolge<input name="sort_order" type="number"></label><label>Titelbild<input id="project-cover-upload" type="file" accept="image/*"></label><button class="solid-button">PROJEKT SPEICHERN</button><button type="button" id="cancel-project" class="outline-button">ABBRECHEN</button><p id="project-message" class="form-message"></p></form><div id="blocks-area" hidden><h3>Projekt-Inhaltsblöcke</h3><div class="block-add-row"><select id="block-type"><option value="text">Text / Überschrift</option><option value="image">Bild</option><option value="gallery">Galerie</option><option value="video">Video / Embed</option><option value="link">Externer Link</option><option value="results">Ergebnisse</option><option value="timeline">Zeitstrahl</option></select><button id="add-block" class="outline-button">BLOCK HINZUFÜGEN</button></div><div id="block-editor" class="editor-list"></div></div></div></section>
       </div>
     </section>
   </main>
 
-  <footer class="site-footer"><span>© <span id="year"></span> Marc Gudermann</span><span>Digital Business · KI · Marketing-Automatisierung</span><a href="#admin">Admin</a></footer>
-  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  <footer class="footer"><span>© <span id="year"></span> MARC GUDERMANN</span><span>BUILT AROUND CURIOSITY & PRACTICE</span><a href="#admin">ADMIN ↗</a></footer>
+  <div id="toast" class="toast"></div>
 </body>
 </html>

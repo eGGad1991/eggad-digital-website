@@ -1,22 +1,17 @@
-# Portfolio Marc Gudermann
+MARC GUDERMANN PORTFOLIO – VERSION 2
 
-## Dateien
-- `index.html`: Seitenstruktur und Views
-- `styles.css`: Design und responsive Darstellung
-- `app.js`: Navigation, Supabase-Lesezugriffe und Admin-Funktionen
-- `config.js`: Supabase-Projekt-URL, Publishable Key und Storage-Bucket
-- `profile-photo.png`: bereitgestelltes Profilfoto
+Dateien im ZIP:
+- index.html: Portfolio, Aktenschrank, Projektansicht und Admin-Oberfläche
+- styles.css: vollständiges responsives Design
+- app.js: Interaktionen, Supabase-Datenzugriff und Admin-Funktionen
+- config.js: Supabase URL, Publishable Key und Bucket
+- profile-photo.png: bereitgestelltes Profilfoto
+- storage-policies.sql: Storage-Berechtigungen
 
-## Veröffentlichung
-Alle Dateien im Root-Verzeichnis des GitHub-Repositories ablegen und committen. Cloudflare Pages veröffentlicht danach automatisch.
-
-## Wichtige Hinweise vor dem Livegang
-1. In Supabase müssen für den Storage-Bucket `portfolio-media` Storage-Policies eingerichtet werden: öffentliche Lesezugriffe und Upload/Änderung/Löschen nur für `public.is_portfolio_admin()`.
-2. Die Website nutzt die vorhandenen Tabellen `portfolio_profile`, `portfolio_drawers`, `projects`, `project_blocks`, `portfolio_media` und `app_admins`.
-3. Die Login-Seite ist nicht öffentlich registrierbar. Der bestehende Auth-Benutzer muss in `app_admins` eingetragen sein.
-4. Der Publishable Key ist für die Verwendung im Browser vorgesehen. Niemals `service_role` oder Secret Keys in `config.js` eintragen.
-5. Die Start-Projekte sind zunächst Entwürfe und werden daher öffentlich noch nicht angezeigt. Im Adminbereich können sie auf „Veröffentlicht“ gesetzt werden.
-6. Für den vollständigen Projektblock-Editor werden die JSON-Inhalte im jeweiligen Block bearbeitet. Bilddateien werden über den Medien-Upload ergänzt; der Storage-Bucket benötigt dafür die genannten Policies.
-
-## Lokaler Test
-Die Dateien über einen lokalen Webserver oder direkt über Cloudflare Pages öffnen. Für Login und Datenbankzugriff ist eine Internetverbindung erforderlich.
+WICHTIG:
+1. Das ist die neue Designversion. Noch nicht ungeprüft live schalten.
+2. Alle Dateien im Root von eggad-digital-website ablegen und die vorhandene index.html ersetzen.
+3. In Supabase den Inhalt von storage-policies.sql im SQL Editor ausführen.
+4. Der Publishable Key ist ein öffentlicher Frontend-Key. Niemals service_role/Secret Keys eintragen.
+5. Die fünf Projekte sind zunächst Entwürfe. Im Adminbereich veröffentlichen, wenn die Inhalte bereit sind.
+6. Vor Livegang Login, Storage-Upload, Projektveröffentlichung und Mobile-Verhalten testen.
