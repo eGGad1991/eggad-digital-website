@@ -1,1 +1,258 @@
 
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>eGGad_Digital | KI einfach verstehen</title>
+<meta name="description" content="KI verständlich erklärt: Tools, Prompts, Anleitungen und praktische Lösungen für Alltag und Business.">
+<style>
+:root {
+  --bg:#101419;
+  --surface:#191f27;
+  --surface2:#202a34;
+  --cyan:#00e5d4;
+  --white:#f4f7f8;
+  --muted:#b6c1c9;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:Arial,Helvetica,sans-serif;background:var(--bg);color:var(--white);line-height:1.7}
+a{color:inherit;text-decoration:none}
+header{position:sticky;top:0;z-index:10;background:#101419ee;backdrop-filter:blur(12px);border-bottom:1px solid #ffffff18}
+.nav{max-width:1200px;margin:auto;padding:16px 24px;display:flex;align-items:center;justify-content:space-between;gap:20px}
+.logo{font-size:22px;font-weight:800;letter-spacing:-1px}
+.logo span{color:var(--cyan)}
+nav{display:flex;gap:18px;flex-wrap:wrap}
+nav a{font-size:13px;color:var(--muted);transition:.2s}
+nav a:hover,nav a.active{color:var(--cyan)}
+main{min-height:75vh}
+.page{display:none;animation:fade .3s ease}
+.page.active{display:block}
+@keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.hero{padding:110px 24px 90px;text-align:center;background:radial-gradient(ellipse at 50% 0%,#00e5d420,transparent 65%)}
+.hero h1{font-size:clamp(38px,7vw,68px);line-height:1.1;margin:15px auto 22px;max-width:900px}
+.hero h1 span{color:var(--cyan)}
+.hero p{max-width:720px;margin:auto;color:var(--muted);font-size:18px}
+.eyebrow{color:var(--cyan);font-size:13px;text-transform:uppercase;letter-spacing:3px;font-weight:bold}
+.button{display:inline-block;margin-top:28px;padding:13px 24px;border-radius:7px;background:var(--cyan);color:#071615;font-weight:bold;transition:.2s}
+.button:hover{transform:translateY(-2px);box-shadow:0 8px 25px #00e5d433}
+.button.secondary{background:transparent;border:1px solid var(--cyan);color:var(--cyan);margin-left:8px}
+.container{max-width:1150px;margin:auto;padding:75px 24px}
+.section-title{text-align:center;margin-bottom:42px}
+.section-title h2{font-size:34px;margin-bottom:10px}
+.section-title p{color:var(--muted)}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:22px}
+.card{background:var(--surface);border:1px solid #ffffff12;border-radius:13px;padding:27px;transition:.25s}
+.card:hover{border-color:#00e5d477;transform:translateY(-4px)}
+.card h3{color:var(--cyan);font-size:20px;margin-bottom:12px}
+.card p{color:var(--muted);font-size:15px}
+.card .symbol{font-size:30px;margin-bottom:15px}
+.intro{max-width:800px;margin:0 auto 45px;text-align:center;color:var(--muted);font-size:17px}
+.content-panel{background:var(--surface);border:1px solid #ffffff12;border-radius:14px;padding:35px;margin-top:25px}
+.content-panel h2{color:var(--cyan);margin-bottom:15px}
+.content-panel p{color:var(--muted);margin-bottom:12px}
+.project-layout{display:grid;grid-template-columns:1fr 1fr;gap:35px;align-items:center}
+.project-visual{min-height:260px;border-radius:14px;background:linear-gradient(135deg,#123b42,#18252e 60%,#063b3c);display:flex;align-items:center;justify-content:center;text-align:center;padding:30px;border:1px solid #00e5d455}
+.project-visual strong{font-size:36px;color:var(--cyan)}
+.project-copy p{color:var(--muted);margin-top:12px}
+form{max-width:650px;margin:auto}
+input,textarea{width:100%;padding:14px;margin:8px 0 16px;background:var(--surface);border:1px solid #ffffff25;border-radius:7px;color:white;font:inherit}
+textarea{min-height:140px;resize:vertical}
+label{font-size:14px;color:var(--muted)}
+footer{border-top:1px solid #ffffff18;padding:35px 24px;text-align:center;color:var(--muted);font-size:13px}
+footer a{color:var(--cyan)}
+@media(max-width:760px){
+ .nav{align-items:flex-start;flex-direction:column}
+ nav{gap:12px}
+ .hero{padding:75px 20px}
+ .project-layout{grid-template-columns:1fr}
+ .container{padding:55px 20px}
+}
+</style>
+</head>
+<body>
+
+<header>
+<div class="nav">
+<a href="#home" class="logo">eGGad<span>_</span>Digital</a>
+<nav>
+<a href="#portfolio">Portfolio</a>
+<a href="#home">Projekt</a>
+<a href="#kostenlos">Kostenlose KI-Pakete</a>
+<a href="#premium">Premium</a>
+<a href="#tools">KI-Tools</a>
+<a href="#anleitungen">Anleitungen</a>
+<a href="#ueber-uns">Über uns</a>
+<a href="#kontakt">Kontakt</a>
+</nav>
+</div>
+</header>
+
+<main>
+
+<!-- PORTFOLIO -->
+<section class="page" id="portfolio">
+<div class="hero">
+<div class="eyebrow">Persönliches Portfolio</div>
+<h1>Marc <span>Gudermann</span></h1>
+<p>Digital Business · KI Digital Marketing · IT-Anwendungsberatung</p>
+<a href="#projekte" class="button">Meine Projekte entdecken</a>
+</div>
+<div class="container">
+<div class="section-title"><h2>Über mich</h2></div>
+<div class="intro">
+Ich interessiere mich für digitales Marketing und den praktischen Einsatz künstlicher Intelligenz. Aktuell absolviere ich eine Weiterbildung im Bereich Digital Business mit den Schwerpunkten IT-Anwendungsberatung und KI Digital Marketing Management. Mein Ziel ist es, moderne Technologien verständlich zu erklären und praktische Lösungen zu entwickeln.
+</div>
+<div class="content-panel">
+<h2>Was mich auszeichnet</h2>
+<p>Ich erkläre KI-Tools und Marketing-Automatisierung verständlich und praxisnah, damit Menschen sie für ihre eigenen Aufgaben einsetzen können.</p>
+</div>
+</div>
+<div class="container">
+<div class="section-title"><h2>Meine Fähigkeiten</h2><p>Meine Schwerpunkte im digitalen Bereich</p></div>
+<div class="grid">
+<div class="card"><div class="symbol">✦</div><h3>KI & digitale Technologien</h3><p>Neue KI-Anwendungen entdecken, verstehen und sinnvoll im Alltag und Beruf einsetzen.</p></div>
+<div class="card"><div class="symbol">◈</div><h3>Digitales Marketing</h3><p>Digitale Inhalte planen, Zielgruppen verstehen und Online-Marketing praktisch umsetzen.</p></div>
+<div class="card"><div class="symbol">⌘</div><h3>Marketing-Automatisierung</h3><p>Wiederkehrende Aufgaben vereinfachen und digitale Arbeitsabläufe effizienter gestalten.</p></div>
+</div>
+</div>
+<div class="container" id="projekte">
+<div class="section-title"><h2>Meine Projekte</h2></div>
+<div class="project-layout">
+<div class="project-visual"><strong>eGGad_<br>Digital</strong></div>
+<div class="project-copy">
+<h2>eGGad_Digital</h2>
+<p>Aufbau einer eigenen digitalen Marke rund um künstliche Intelligenz, digitale Tools und Marketing. Das Projekt umfasst eine eigene Website sowie einen Instagram-Kanal, auf dem ich KI-Wissen, praktische Anleitungen und hilfreiche Tools verständlich vermittle.</p>
+<a href="#home" class="button">Projekt ansehen</a>
+</div>
+</div>
+</div>
+</section>
+
+<!-- STARTSEITE / PROJEKT -->
+<section class="page active" id="home">
+<div class="hero">
+<div class="eyebrow">Willkommen bei eGGad_Digital</div>
+<h1>Künstliche Intelligenz.<br><span>Einfach gemacht.</span></h1>
+<p>Entdecke KI-Tools, praktische Anleitungen und hilfreiche Lösungen für deinen Alltag und dein Business. Verständlich erklärt und direkt anwendbar.</p>
+<a href="#kostenlos" class="button">Kostenlose KI-Pakete entdecken</a>
+<a href="#tools" class="button secondary">KI-Tools ansehen</a>
+</div>
+<div class="container">
+<div class="section-title"><h2>Was möchtest du entdecken?</h2><p>Finde den passenden Einstieg in die Welt der KI.</p></div>
+<div class="grid">
+<a href="#kostenlos" class="card"><div class="symbol">✦</div><h3>Kostenlose KI-Pakete</h3><p>Prompts, Vorlagen und praktische Helfer zum Ausprobieren.</p></a>
+<a href="#premium" class="card"><div class="symbol">◆</div><h3>Premium-Pakete</h3><p>Umfangreiche Lösungen für Alltag, Business und Automatisierung.</p></a>
+<a href="#tools" class="card"><div class="symbol">⚙</div><h3>KI-Tools</h3><p>Entdecke hilfreiche Werkzeuge für verschiedene Aufgaben.</p></a>
+<a href="#anleitungen" class="card"><div class="symbol">➜</div><h3>Anleitungen</h3><p>Setze eigene KI-Projekte Schritt für Schritt um.</p></a>
+</div>
+</div>
+</section>
+
+<!-- KOSTENLOSE PAKETE -->
+<section class="page" id="kostenlos">
+<div class="hero"><div class="eyebrow">Dein Einstieg</div><h1>Kostenlose <span>KI-Pakete</span></h1><p>Starte direkt mit praktischen KI-Helfern und entdecke, was künstliche Intelligenz für dich tun kann.</p></div>
+<div class="container">
+<p class="intro">Entdecke kostenlose KI-Pakete für deinen Alltag und dein Business. Hier findest du praktische Prompts, Vorlagen, Checklisten und digitale Helfer, mit denen du künstliche Intelligenz direkt ausprobieren und produktiver arbeiten kannst. Alle Pakete sind kostenlos und einfach anzuwenden.</p>
+<div class="grid">
+<div class="card"><h3>Prompt-Pakete</h3><p>Praktische Prompts für unterschiedliche Aufgaben und Anwendungsbereiche.</p></div>
+<div class="card"><h3>Vorlagen & Checklisten</h3><p>Hilfreiche Vorlagen, die dir den Einstieg und die tägliche Arbeit erleichtern.</p></div>
+<div class="card"><h3>Digitale Helfer</h3><p>Einfache Lösungen, mit denen du KI direkt ausprobieren kannst.</p></div>
+</div>
+</div>
+</section>
+
+<!-- PREMIUM -->
+<section class="page" id="premium">
+<div class="hero"><div class="eyebrow">Mehr Möglichkeiten</div><h1>Unsere <span>Premium-Pakete</span></h1><p>Durchdachte Lösungen für alle, die mehr aus künstlicher Intelligenz herausholen möchten.</p></div>
+<div class="container">
+<p class="intro">Du möchtest mehr aus künstlicher Intelligenz herausholen? Mit unseren Premium-Paketen erhältst du umfangreiche Prompts, professionelle Vorlagen und durchdachte Automatisierungen für deinen Alltag und dein Business. Spare Zeit, optimiere deine Arbeitsabläufe und entdecke neue Möglichkeiten mit KI. Mehr Möglichkeiten. Weniger Aufwand. Einfach smarter arbeiten.</p>
+<div class="grid">
+<div class="card"><h3>KI-Prompt-Pakete</h3><p>Umfangreiche Prompt-Sammlungen für verschiedene Anwendungsbereiche.</p></div>
+<div class="card"><h3>Marketing & Business</h3><p>Professionelle Vorlagen und KI-Lösungen für Unternehmen und Selbstständige.</p></div>
+<div class="card"><h3>Automation & Workflows</h3><p>Fertige Automatisierungen und Anleitungen für effizientere Arbeitsabläufe.</p></div>
+</div>
+</div>
+</section>
+
+<!-- KI TOOLS -->
+<section class="page" id="tools">
+<div class="hero"><div class="eyebrow">Werkzeuge entdecken</div><h1>Die Welt der <span>KI-Tools</span></h1><p>Finde das richtige Werkzeug für deine Ideen und Aufgaben.</p></div>
+<div class="container">
+<p class="intro">Die Welt der künstlichen Intelligenz bietet unzählige Möglichkeiten. Doch welches Tool ist eigentlich das richtige für dich? Wir zeigen dir hilfreiche KI-Tools für Texte, Bilder, Videos, Marketing und Automatisierung. Entdecke kostenlose und kostenpflichtige Werkzeuge, lerne ihre Funktionen kennen und finde heraus, wie du sie sinnvoll für dich einsetzen kannst.</p>
+<div class="grid">
+<div class="card"><h3>KI-Chatbots & Texte</h3><p>Tools für Texte, Recherche, Ideen und intelligente Unterstützung.</p></div>
+<div class="card"><h3>Bilder & Videos</h3><p>Entdecke Anwendungen zur Erstellung und Bearbeitung visueller Inhalte.</p></div>
+<div class="card"><h3>Produktivität & Automatisierung</h3><p>Werkzeuge, die Aufgaben vereinfachen und Arbeitsabläufe verbinden.</p></div>
+</div>
+</div>
+</section>
+
+<!-- ANLEITUNGEN -->
+<section class="page" id="anleitungen">
+<div class="hero"><div class="eyebrow">Schritt für Schritt</div><h1>KI-Projekte <span>selbst umsetzen</span></h1><p>Verstehen, ausprobieren und eigene Lösungen entwickeln.</p></div>
+<div class="container">
+<p class="intro">Du möchtest deine eigene KI einrichten, einen persönlichen KI-Assistenten erstellen oder eigene Automatisierungen entwickeln? Hier findest du praktische Schritt-für-Schritt-Anleitungen, mit denen du deine eigenen KI-Projekte verwirklichen kannst. Wir zeigen dir, welche Tools du brauchst, wie du sie einrichtest und wie du Schritt für Schritt zum Ergebnis kommst. Einfach erklärt, verständlich aufgebaut und möglichst kostenlos.</p>
+<div class="grid">
+<div class="card"><h3>KI selbst einrichten</h3><p>Lerne, wie du KI-Anwendungen installierst, einrichtest und verwendest.</p></div>
+<div class="card"><h3>Eigene KI-Projekte bauen</h3><p>Entwickle eigene Assistenten und digitale Helfer für deine Aufgaben.</p></div>
+<div class="card"><h3>KI online nutzen</h3><p>Setze KI-Projekte direkt online um, möglichst ohne lokale Installation.</p></div>
+</div>
+</div>
+</section>
+
+<!-- ÜBER UNS -->
+<section class="page" id="ueber-uns">
+<div class="hero"><div class="eyebrow">Das steckt dahinter</div><h1>Über <span>eGGad_Digital</span></h1><p>Ausprobieren. Verstehen. Selber machen.</p></div>
+<div class="container">
+<div class="intro">eGGad_Digital macht künstliche Intelligenz verständlich und für jeden zugänglich. Wir möchten zeigen, dass KI nicht kompliziert sein muss und jeder die Möglichkeit hat, sie sinnvoll einzusetzen. Dafür findest du bei uns praktische Anleitungen, hilfreiche KI-Tools, kostenlose Vorlagen und umfangreiche Lösungen für den Alltag und das Business. Unser Ziel: Weniger Berührungsängste, mehr Möglichkeiten und KI, die wirklich weiterhilft.</div>
+<div class="content-panel"><h2>Unsere Mission</h2><p>Wir möchten jedem den Einstieg in die Welt der künstlichen Intelligenz erleichtern. Egal, ob du KI privat nutzen, beruflich einsetzen oder eigene Projekte verwirklichen möchtest.</p></div>
+<div class="content-panel"><h2>Was wir erreichen möchten</h2><p>KI verständlich und praxisnah erklären.</p><p>Kostenlose Möglichkeiten und Werkzeuge zeigen.</p><p>Eigene KI-Projekte und Automatisierungen ermöglichen.</p><p>Wissen vermitteln, das direkt angewendet werden kann.</p></div>
+<div class="content-panel"><h2>Unser Versprechen</h2><p>Bei eGGad_Digital steht der praktische Nutzen im Mittelpunkt. Wir möchten keine komplizierten Fachbegriffe oder unnötigen Versprechungen. Stattdessen zeigen wir dir verständlich, was mit KI möglich ist und wie du es selbst umsetzen kannst.</p><p><strong>Ausprobieren. Verstehen. Selber machen. Schön, dass du dabei bist!</strong></p></div>
+</div>
+</section>
+
+<!-- KONTAKT -->
+<section class="page" id="kontakt">
+<div class="hero"><div class="eyebrow">Wir freuen uns auf dich</div><h1>Kontakt <span>aufnehmen</span></h1><p>Du hast Fragen, Ideen oder möchtest mit uns zusammenarbeiten?</p></div>
+<div class="container">
+<p class="intro">Schreib uns gerne eine Nachricht. Wir freuen uns über Feedback, Fragen und neue Ideen rund um künstliche Intelligenz und digitales Arbeiten.</p>
+<div class="content-panel">
+<p>Die Kontaktfunktion wird noch eingerichtet. Bis dahin kannst du hier später deine E-Mail-Adresse oder ein Kontaktformular ergänzen.</p>
+</div>
+</div>
+</section>
+
+</main>
+
+<footer>
+<p>© 2026 eGGad_Digital · KI verstehen. Möglichkeiten entdecken.</p>
+<p style="margin-top:8px"><a href="#portfolio">Portfolio von Marc Gudermann</a></p>
+</footer>
+
+<script>
+function showPage(){
+  const id=location.hash.replace("#","") || "home";
+  const pages=document.querySelectorAll(".page");
+  let found=false;
+  pages.forEach(page=>{
+    const active=page.id===id;
+    page.classList.toggle("active",active);
+    if(active) found=true;
+  });
+  if(!found){
+    document.getElementById("home").classList.add("active");
+  }
+  document.querySelectorAll("nav a").forEach(link=>{
+    link.classList.toggle("active",link.getAttribute("href")==="#"+id);
+  });
+  window.scrollTo(0,0);
+}
+window.addEventListener("hashchange",showPage);
+showPage();
+</script>
+
+</body>
+</html>
+
