@@ -24,6 +24,8 @@ showFile("about");
 
 const renderer=new THREE.WebGLRenderer({canvas,antialias:true,alpha:true});
 renderer.setPixelRatio(Math.min(window.devicePixelRatio,2));
+renderer.shadowMap.enabled=true;
+renderer.shadowMap.type=THREE.PCFSoftShadowMap;
 renderer.outputColorSpace=THREE.SRGBColorSpace;
 renderer.toneMapping=THREE.ACESFilmicToneMapping;
 renderer.toneMappingExposure=1.25;
@@ -33,8 +35,8 @@ const camera=new THREE.PerspectiveCamera(34,1,.1,100);
 camera.position.set(6.5,5.2,10.5);
 const controlsTarget=new THREE.Vector3(0,2.55,0);
 const hemi=new THREE.HemisphereLight(0x9cfaff,0x071114,2.0);scene.add(hemi);
-const keyLight=new THREE.DirectionalLight(0xe4ffff,3.2);keyLight.position.set(-4,8,7);scene.add(keyLight);
-const cyanLight=new THREE.PointLight(0x00eaff,32,12);cyanLight.position.set(-3,3,4);scene.add(cyanLight);
+const keyLight=new THREE.DirectionalLight(0xe4ffff,4.0);keyLight.position.set(-4,9,7);keyLight.castShadow=true;keyLight.shadow.mapSize.set(2048,2048);keyLight.shadow.camera.left=-8;keyLight.shadow.camera.right=8;keyLight.shadow.camera.top=8;keyLight.shadow.camera.bottom=-8;scene.add(keyLight);
+const cyanLight=new THREE.PointLight(0x00eaff,42,16);cyanLight.position.set(-3,3,4);cyanLight.castShadow=true;scene.add(cyanLight);
 const rimLight=new THREE.PointLight(0x007f91,26,10);rimLight.position.set(3,5,-3);scene.add(rimLight);
 const floorMat=new THREE.MeshStandardMaterial({color:0x061619,metalness:.75,roughness:.32});
 const metal=new THREE.MeshStandardMaterial({color:0x203b3e,metalness:.88,roughness:.28});
@@ -102,7 +104,7 @@ keys.forEach((key,i)=>{
    new THREE.PlaneGeometry(1.58,.395),
    new THREE.MeshBasicMaterial({map:tex,transparent:false,side:THREE.DoubleSide,toneMapped:false})
  );
- label.position.set(0,.015,.132);group.add(label);
+ label.position.set(0,.015,.165);group.add(label);
  // number marker and pull handle
  const handle=box(group,.75,.055,.12,edgeMetal,0,-.17,.14);
  box(group,.58,.022,.018,cyanMat,0,-.17,.205);
@@ -118,21 +120,45 @@ keys.forEach((key,i)=>{
  group.userData={key,index:i,open:0,target:0,baseZ:D/2-.05};
  drawers.push(group);
 });
-const ground=box(scene,18,.12,14,floorMat,0,-.08,0);ground.receiveShadow=true;
-// Subtle reflective floor tiles: restrained seams instead of a bright wireframe grid.
-const seamMat=new THREE.MeshStandardMaterial({color:0x0b5960,emissive:0x00363b,emissiveIntensity:.45,metalness:.55,roughness:.42});
-for(let x=-8;x<=8;x+=2){
-  const seam=box(scene,.012,.006,14,seamMat,x,-.012,0);
-  seam.material=seamMat;
+const groundMat=new THREE.MeshStandardMaterial({color:0x071416,metalness:.72,roughness:.22});
+const ground=box(scene,20,.16,16,groundMat,0,-.1,0);ground.receiveShadow=true;
+// Polished floor with subtle tile seams and reflected cyan light pools.
+const seamMat=new THREE.MeshStandardMaterial({color:0x16464a,emissive:0x002d32,emissiveIntensity:.35,metalness:.6,roughness:.38});
+for(let x=-9;x<=9;x+=2.25) box(scene,.012,.008,16,seamMat,x,-.014,0);
+for(let z=-7;z<=7;z+=2) box(scene,20,.008,.012,seamMat,0,-.014,z);
+// Architectural back wall and illuminated wall ribs.
+const backWallMat=new THREE.MeshStandardMaterial({color:0x071719,metalness:.58,roughness:.48});
+box(scene,20,8,.22,backWallMat,0,3.7,-2.8);
+for(let i=0;i<9;i++){
+ const x=-8+i*2;
+ box(scene,.035,7,.045,cyanMat,x,3.7,-2.66);
+ box(scene,.11,7,.07,darkMetal,x+.10,3.7,-2.68);
 }
-for(let z=-6;z<=6;z+=2){
-  const seam=box(scene,18,.006,.012,seamMat,0,-.012,z);
-  seam.material=seamMat;
-}
-// decorative back wall panel behind cabinet
-const backPanel=box(scene,7,6,.12,darkMetal,0,2.7,-2.3);
-for(let i=0;i<8;i++){
- const bar=box(scene,.012,5,.015,cyanMat,-3.1+i*.88,2.7,-2.22);bar.material=cyanMat;
+// Horizontal illuminated ceiling/wall rails.
+box(scene,18,.07,.12,cyanMat,0,7.25,-2.55);
+box(scene,18,.12,.16,darkMetal,0,7.12,-2.62);
+box(scene,18,.045,.1,cyanMat,0,.25,-2.62);
+// Left-side workstation silhouette: counter, monitor and plant add a real office context.
+const deskGroup=new THREE.Group();scene.add(deskGroup);
+box(deskGroup,3.6,.16,1.35,metal,-4.2,1.05,.35);
+box(deskGroup,3.45,.08,1.22,darkMetal,-4.2,1.16,.35);
+box(deskGroup,.12,1.05,.12,metal,-5.75,.52,.35);
+box(deskGroup,.12,1.05,.12,metal,-2.65,.52,.35);
+const monitor=box(deskGroup,1.55,1.05,.12,blackMat,-4.25,2.15,-.12);
+box(deskGroup,1.42,.91,.018,cyanMat,-4.25,2.15,-.055);
+box(deskGroup,1.34,.82,.02,blackMat,-4.25,2.15,-.035);
+box(deskGroup,.09,.55,.09,metal,-4.25,1.55,-.12);
+box(deskGroup,.65,.07,.42,metal,-4.25,1.28,-.12);
+// Monitor data bars
+for(let i=0;i<8;i++) box(deskGroup,.075,.18+(i%4)*.12,.025,cyanMat,-4.72+i*.13,1.88+(i%4)*.06,-.005);
+// Plant pot and stylized leaves on the desk
+const potMat=new THREE.MeshStandardMaterial({color:0x16393b,metalness:.45,roughness:.35});
+const pot=new THREE.Mesh(new THREE.CylinderGeometry(.22,.16,.34,24),potMat);pot.position.set(-5.55,1.42,.25);pot.castShadow=true;deskGroup.add(pot);
+const stemMat=new THREE.MeshStandardMaterial({color:0x1b6b4b,roughness:.8});
+for(let i=0;i<9;i++){
+ const angle=i*Math.PI*2/9;
+ const leaf=new THREE.Mesh(new THREE.SphereGeometry(.10,12,8),stemMat);
+ leaf.scale.set(.55,1.8,.45);leaf.position.set(-5.55+Math.cos(angle)*.22,1.78+(i%3)*.12,.25+Math.sin(angle)*.2);leaf.rotation.z=Math.cos(angle)*.65;leaf.castShadow=true;deskGroup.add(leaf);
 }
 // subtle floating cyan particles
 const particleGeo=new THREE.BufferGeometry();const pts=[];
@@ -177,7 +203,7 @@ canvas.addEventListener("pointerup",e=>{
 canvas.addEventListener("pointerleave",()=>{if(!down){hovered=-1;drawers.forEach((d,i)=>{if(i!==selected)d.userData.target=0;});}});
 function resize(){
  const w=stage.clientWidth,h=stage.clientHeight;renderer.setSize(w,h,false);camera.aspect=w/h;camera.updateProjectionMatrix();
- const narrow=w<500;camera.position.set(narrow?-7.5:-6.5,5.0,narrow?13.2:10.8);camera.lookAt(controlsTarget);
+ const narrow=w<500;camera.position.set(narrow?-8.2:-7.4,5.3,narrow?14.4:12.2);camera.lookAt(controlsTarget);
 }
 window.addEventListener("resize",resize);resize();
 const clock=new THREE.Clock();

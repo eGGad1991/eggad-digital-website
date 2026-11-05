@@ -22,3 +22,8 @@ KORREKTUR NACH ERSTEM 3D-TEST:
 - Boden auf dunkle, dezente Fliesen mit zurückhaltenden cyanfarbenen Fugen umgestellt.
 - Jede Schubladenfront hat nun eine kontrastreiche Beschriftung mit Titel und kurzer Inhaltsbeschreibung.
 - Rechtes Textfeld verbreitert und Schriftgrößen, Zeilenabstände sowie Innenabstände für bessere Lesbarkeit erhöht.
+
+NACHBESSERUNG:
+- Ursache der unsichtbaren Beschriftung behoben: Texttafeln liegen jetzt eindeutig vor der Metallfront und sind kontrastreich.
+- Umgebung deutlich aufgewertet: beleuchtete Architektur-Rückwand, Wandstreben, Deckenlicht, dunkler glänzender Fliesenboden, seitlicher Schreibtisch mit Monitor und Pflanze.
+- Schatten und Licht verstärkt, damit der Schrank räumlich in der Szene steht statt wie ein schwarzer Kasten vor leerem Hintergrund zu wirken.
