@@ -1,22 +1,18 @@
-MARC GUDERMANN PORTFOLIO – VISUAL PROTOTYPE
-
-Enthalten:
-- index.html
-- styles.css
-- app.js
-- assets/hero-workspace.png
+MARC GUDERMANN PORTFOLIO – ECHTES 3D
 
 Start:
 1. ZIP entpacken.
-2. index.html im Browser öffnen.
+2. Die Dateien samt assets-Ordner auf GitHub in das bestehende Website-Repository hochladen.
+3. Cloudflare Pages baut die Website nach dem Commit neu.
+4. Lokal kann die Seite wegen des ES-Modul-Imports und Browser-Sicherheitsregeln eventuell nicht direkt per Doppelklick starten. Auf GitHub Pages/Cloudflare Pages funktioniert sie über HTTPS.
 
-Hinweise:
-- Dies ist ein visueller, lokal lauffähiger Prototyp.
-- Die Schubladen reagieren auf Hover, Fokus und Klick. Auf Mobilgeräten funktioniert die Auswahl per Tippen.
-- Die Inhalte sind Beispieldaten aus dem bisherigen Projektkontext.
-- Supabase, Admin-Login, Uploads und dynamische Bearbeitung sind in diesem Design-Prototyp noch nicht angeschlossen.
-- Das Layout lädt Google Fonts online; bei fehlender Internetverbindung wird auf Standardschrift zurückgegriffen.
+Technik:
+- Three.js 0.160 über CDN (keine lokale Installation erforderlich)
+- Aktenschrank und jede Schublade sind echte 3D-Geometrien.
+- Jede Schublade fährt als eigenes 3D-Objekt entlang der Tiefe heraus. Innenseiten, Boden, Seitenwände, Rückwand, Schienen, Ordner und Front sind separate Geometrien.
+- Hover fährt die Schublade teilweise heraus, Klick öffnet sie vollständig und aktualisiert den Inhalt rechts.
+- Mausziehen dreht den Schrank leicht. Touch-Eingaben unterstützen Auswahl und Ziehen.
 
-KORREKTUR: Der Name ist bereits im Hintergrundbild enthalten. Deshalb wurde die zusätzliche HTML-Namenszeile entfernt, damit er nicht doppelt erscheint.
-
-UPDATE: Die Schubladen sind jetzt als einzelne 3D-Elemente umgesetzt. Beim Hover bzw. bei Auswahl fahren sie deutlich nach vorne heraus; oben werden die Ordner im ausgezogenen Schubfach sichtbar. Auf Touch-Geräten öffnet die Auswahl per Tippen.
+Hinweis:
+- Three.js wird beim Aufruf von jsDelivr geladen; Internetverbindung ist erforderlich.
+- Dies ist die Frontend-3D-Version. Supabase/Admin-Anbindung ist noch nicht integriert.

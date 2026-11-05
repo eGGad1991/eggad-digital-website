@@ -1,106 +1,67 @@
 <!doctype html>
 <html lang="de">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#041012">
-  <title>Marc Gudermann | Digital Portfolio</title>
-  <link rel="stylesheet" href="styles.css">
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#030b0d">
+<title>Marc Gudermann | Digital Portfolio</title>
+<link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <div class="ambient ambient-one"></div><div class="ambient ambient-two"></div>
-  <header class="topbar">
-    <a class="brand" href="#" aria-label="Startseite"><span class="brand-mark">MG</span><span>MARC GUDERMANN</span></a>
-    <nav><a href="#workspace">Portfolio</a><a href="#projects">Projekte</a><a href="#contact">Kontakt</a></nav>
-    <span class="status"><i></i> DIGITAL PORTFOLIO</span>
-  </header>
+<header class="topbar">
+  <a class="brand" href="#"><span class="brand-mark">MG</span><span>MARC GUDERMANN</span></a>
+  <nav><a href="#workspace">Portfolio</a><a href="#projects">Projekte</a><a href="#contact">Kontakt</a></nav>
+  <span class="status"><i></i> DIGITAL PORTFOLIO</span>
+</header>
+<main>
+<section class="hero">
+  <div class="hero-image"></div><div class="hero-shade"></div>
+  <div class="hero-copy">
+    <div class="eyebrow"><span></span> DIGITAL BUSINESS · KI · AUTOMATISIERUNG</div>
+    <p>Ich mache digitale Möglichkeiten verständlich<br>und praktisch nutzbar.</p>
+    <a class="hero-cta" href="#workspace">ARBEITSPLATZ ENTDECKEN <b>↘</b></a>
+  </div>
+  <div class="hero-index">PORTFOLIO <span>01 / 06</span></div>
+</section>
 
-  <main>
-    <section class="hero" aria-label="Einführung">
-      <div class="hero-image"></div>
-      <div class="hero-shade"></div>
-      <div class="hero-copy">
-        <div class="eyebrow"><span></span> DIGITAL BUSINESS · KI · AUTOMATISIERUNG</div>
-        <p>Ich mache digitale Möglichkeiten verständlich<br>und praktisch nutzbar.</p>
-        <a class="hero-cta" href="#workspace">ARBEITSPLATZ ENTDECKEN <b>↘</b></a>
+<section class="workspace" id="workspace">
+  <div class="section-heading">
+    <div><div class="eyebrow"><span></span> PERSÖNLICHER EINBLICK</div><h2>Mein digitaler <em>Arbeitsplatz</em></h2></div>
+    <p>Wähle eine Schublade. Sie fährt auf echten 3D-Schienen heraus<br>und gibt den Blick auf ihren Inhalt frei.</p>
+  </div>
+  <div class="desk-layout">
+    <div class="cabinet-zone">
+      <div class="cabinet-label"><span class="tiny-led"></span> 3D INFORMATION ARCHIVE <small>MG / 2026</small></div>
+      <div class="cabinet-stage" id="cabinet-stage">
+        <div class="loading-note" id="loading-note">3D-ARCHIV WIRD GELADEN …</div>
+        <canvas id="cabinet-canvas" aria-label="Dreidimensionaler Aktenschrank. Schubladen anklicken oder mit der Maus darüberfahren."></canvas>
       </div>
-      <div class="hero-index">PORTFOLIO <span>01 / 06</span></div>
-    </section>
-
-    <section class="workspace" id="workspace">
-      <div class="section-heading">
-        <div><div class="eyebrow"><span></span> PERSÖNLICHER EINBLICK</div><h2>Mein digitaler <em>Arbeitsplatz</em></h2></div>
-        <p>Öffne eine Schublade und entdecke<br>mehr über mich und meine Arbeit.</p>
+      <div class="cabinet-caption"><span>ECHTES 3D-MODELL</span><span>HOVER / CLICK TO OPEN</span></div>
+      <div class="drawer-legend">Ziehe mit der Maus, um den Schrank leicht zu drehen. Klicke eine Schublade zum Öffnen.</div>
+    </div>
+    <article class="content-panel" aria-live="polite">
+      <div class="panel-top"><span class="panel-tag"><i></i> FILE PREVIEW</span><span class="panel-code" id="panel-code">MG-FILE-001</span></div>
+      <div class="panel-content" id="panel-content">
+        <div class="file-symbol">01 <span>PERSONAL PROFILE</span></div>
+        <div class="eyebrow">DAS BIN ICH</div>
+        <h3>Hi, ich bin <em>Marc.</em></h3>
+        <p class="lead">Ich interessiere mich dafür, wie digitale Werkzeuge den Alltag einfacher machen können.</p>
+        <p>Mein Schwerpunkt liegt auf KI-Tools, digitalem Marketing und Automatisierung. Mir ist wichtig, Dinge nicht nur theoretisch zu verstehen, sondern sie praktisch auszuprobieren und verständlich zu erklären.</p>
+        <div class="panel-meta"><span>STATUS</span><strong>IN ENTWICKLUNG</strong></div>
       </div>
+      <div class="panel-bottom"><span>MG DIGITAL PORTFOLIO</span><span>CONTENT LOAD <b>100%</b></span></div>
+    </article>
+  </div>
+</section>
 
-      <div class="desk-layout">
-        <div class="cabinet-zone">
-          <div class="cabinet-label"><span class="tiny-led"></span> INFORMATION ARCHIVE <small>MG / 2026</small></div>
-          <div class="cabinet" role="group" aria-label="Portfolio-Navigation">
-            <div class="cabinet-top"><span>MG // ARCHIVE SYSTEM</span><span class="cabinet-power">● ONLINE</span></div>
-            <div class="cabinet-body">
-              <div class="cabinet-side"></div>
-              <div class="drawer-stack">
-                <button class="drawer active" data-panel="about" aria-pressed="true">
-                  <span class="drawer-tray" aria-hidden="true"><i></i><i></i><i></i><b></b></span>
-                  <span class="drawer-face"><span class="drawer-number">01</span><span class="drawer-icon">⌂</span><span class="drawer-name">ÜBER MICH</span><span class="drawer-handle"></span><span class="drawer-arrow">↗</span></span>
-                </button>
-                <button class="drawer" data-panel="skills" aria-pressed="false">
-                  <span class="drawer-tray" aria-hidden="true"><i></i><i></i><i></i><b></b></span>
-                  <span class="drawer-face"><span class="drawer-number">02</span><span class="drawer-icon">⌘</span><span class="drawer-name">FÄHIGKEITEN</span><span class="drawer-handle"></span><span class="drawer-arrow">↗</span></span>
-                </button>
-                <button class="drawer" data-panel="education" aria-pressed="false">
-                  <span class="drawer-tray" aria-hidden="true"><i></i><i></i><i></i><b></b></span>
-                  <span class="drawer-face"><span class="drawer-number">03</span><span class="drawer-icon">▤</span><span class="drawer-name">WEITERBILDUNG</span><span class="drawer-handle"></span><span class="drawer-arrow">↗</span></span>
-                </button>
-                <button class="drawer" data-panel="usp" aria-pressed="false">
-                  <span class="drawer-tray" aria-hidden="true"><i></i><i></i><i></i><b></b></span>
-                  <span class="drawer-face"><span class="drawer-number">04</span><span class="drawer-icon">✧</span><span class="drawer-name">MEIN USP</span><span class="drawer-handle"></span><span class="drawer-arrow">↗</span></span>
-                </button>
-                <button class="drawer" data-panel="projects" aria-pressed="false">
-                  <span class="drawer-tray" aria-hidden="true"><i></i><i></i><i></i><b></b></span>
-                  <span class="drawer-face"><span class="drawer-number">05</span><span class="drawer-icon">▣</span><span class="drawer-name">PROJEKTE</span><span class="drawer-handle"></span><span class="drawer-arrow">↗</span></span>
-                </button>
-                <button class="drawer" data-panel="contact" aria-pressed="false">
-                  <span class="drawer-tray" aria-hidden="true"><i></i><i></i><i></i><b></b></span>
-                  <span class="drawer-face"><span class="drawer-number">06</span><span class="drawer-icon">✉</span><span class="drawer-name">KONTAKT</span><span class="drawer-handle"></span><span class="drawer-arrow">↗</span></span>
-                </button>
-              </div>
-              <div class="cabinet-foot"><span>SECURE CONTENT STORAGE</span><span>v1.0.26</span></div>
-            </div>
-          </div>
-          <div class="cabinet-caption"><span>INTERAKTIVES ARCHIV</span><span>HOVER / CLICK TO OPEN</span></div>
-        </div>
-
-        <article class="content-panel" aria-live="polite">
-          <div class="panel-top"><span class="panel-tag"><i></i> FILE PREVIEW</span><span class="panel-code" id="panel-code">MG-FILE-001</span></div>
-          <div class="panel-content" id="panel-content">
-            <div class="file-symbol">01 <span>PERSONAL PROFILE</span></div>
-            <div class="eyebrow">DAS BIN ICH</div>
-            <h3>Hi, ich bin <em>Marc.</em></h3>
-            <p class="lead">Ich interessiere mich dafür, wie digitale Werkzeuge den Alltag einfacher machen können.</p>
-            <p>Mein Schwerpunkt liegt auf KI-Tools, digitalem Marketing und Automatisierung. Mir ist wichtig, Dinge nicht nur theoretisch zu verstehen, sondern sie praktisch auszuprobieren und verständlich zu erklären.</p>
-            <div class="panel-meta"><span>STATUS</span><strong>IN ENTWICKLUNG</strong></div>
-          </div>
-          <div class="panel-bottom"><span>MG DIGITAL PORTFOLIO</span><span>CONTENT LOAD <b>100%</b></span></div>
-        </article>
-      </div>
-    </section>
-
-    <section class="projects-strip" id="projects">
-      <div class="section-heading">
-        <div><div class="eyebrow"><span></span> AUSGEWÄHLTE ARBEITEN</div><h2>Projekte in <em>Bewegung</em></h2></div>
-        <p>Ideen, die ich plane, entwickle<br>und Schritt für Schritt umsetze.</p>
-      </div>
-      <div class="project-grid">
-        <article class="project-card"><span>PROJECT / 01</span><div class="project-glyph">eG<span>_</span></div><h3>eGGad_Digital</h3><p>KI-Wissen verständlich vermitteln und digitale Produkte aufbauen.</p><b>KI · CONTENT · MARKETING</b></article>
-        <article class="project-card"><span>PROJECT / 02</span><div class="project-glyph">↗</div><h3>Growth-Bot</h3><p>Ein persönlicher Workflow für Planung, Check-ins und Content-Organisation.</p><b>MAKE · SLACK · SHEETS</b></article>
-        <article class="project-card"><span>PROJECT / 03</span><div class="project-glyph">▥</div><h3>Data Storytelling</h3><p>Daten aufbereiten, Kennzahlen verstehen und Erkenntnisse sichtbar machen.</p><b>LOOKER STUDIO · SHEETS</b></article>
-      </div>
-    </section>
-
-    <footer id="contact"><div><div class="eyebrow"><span></span> LASS UNS IN KONTAKT KOMMEN</div><h2>Eine gute Idee beginnt<br>mit einem <em>Gespräch.</em></h2></div><a class="hero-cta" href="mailto:kontakt@marc-gudermann.de">KONTAKT AUFNEHMEN <b>↗</b></a><div class="footer-bottom"><span>© 2026 MARC GUDERMANN</span><span>BUILT WITH CURIOSITY <b>✦</b></span></div></footer>
-  </main>
-  <script src="app.js"></script>
-</body>
-</html>
+<section class="projects-strip" id="projects">
+  <div class="section-heading"><div><div class="eyebrow"><span></span> AUSGEWÄHLTE ARBEITEN</div><h2>Projekte in <em>Bewegung</em></h2></div><p>Ideen, die ich plane, entwickle<br>und Schritt für Schritt umsetze.</p></div>
+  <div class="project-grid">
+    <article class="project-card"><span>PROJECT / 01</span><div class="project-glyph">eG<span>_</span></div><h3>eGGad_Digital</h3><p>KI-Wissen verständlich vermitteln und digitale Produkte aufbauen.</p><b>KI · CONTENT · MARKETING</b></article>
+    <article class="project-card"><span>PROJECT / 02</span><div class="project-glyph">↗</div><h3>Growth-Bot</h3><p>Ein persönlicher Workflow für Planung, Check-ins und Content-Organisation.</p><b>MAKE · SLACK · SHEETS</b></article>
+    <article class="project-card"><span>PROJECT / 03</span><div class="project-glyph">▥</div><h3>Data Storytelling</h3><p>Daten aufbereiten, Kennzahlen verstehen und Erkenntnisse sichtbar machen.</p><b>LOOKER STUDIO · SHEETS</b></article>
+  </div>
+</section>
+<footer id="contact"><div><div class="eyebrow"><span></span> LASS UNS IN KONTAKT KOMMEN</div><h2>Eine gute Idee beginnt<br>mit einem <em>Gespräch.</em></h2></div><a class="hero-cta" href="mailto:kontakt@marc-gudermann.de">KONTAKT AUFNEHMEN <b>↗</b></a><div class="footer-bottom"><span>© 2026 MARC GUDERMANN</span><span>BUILT WITH CURIOSITY <b>✦</b></span></div></footer>
+</main>
+<script type="module" src="app.js"></script>
+</body></html>
