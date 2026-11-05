@@ -1,54 +1,9 @@
-MARC GUDERMANN PORTFOLIO – ECHTES 3D
+MARC GUDERMANN PORTFOLIO – INTERAKTIVER AKTENSCHRANK
 
-Start:
-1. ZIP entpacken.
-2. Die Dateien samt assets-Ordner auf GitHub in das bestehende Website-Repository hochladen.
-3. Cloudflare Pages baut die Website nach dem Commit neu.
-4. Lokal kann die Seite wegen des ES-Modul-Imports und Browser-Sicherheitsregeln eventuell nicht direkt per Doppelklick starten. Auf GitHub Pages/Cloudflare Pages funktioniert sie über HTTPS.
+Diese Version verwendet einen CSS-3D-Aktenschrank statt der bisherigen Three.js-Box-Konstruktion.
+Die sechs Schubladen sind echte HTML-Elemente mit 3D-Perspektive, Metallfronten, Beschriftung und CSS-Transformation.
+Beim Hover, Fokus oder Klick fährt die jeweilige Schublade sichtbar nach vorne/rechts. Gleichzeitig wechselt die Datei-Vorschau rechts.
+Auf Touch-Geräten wird die Schublade per Tippen ausgewählt.
 
-Technik:
-- Three.js 0.160 über CDN (keine lokale Installation erforderlich)
-- Aktenschrank und jede Schublade sind echte 3D-Geometrien.
-- Jede Schublade fährt als eigenes 3D-Objekt entlang der Tiefe heraus. Innenseiten, Boden, Seitenwände, Rückwand, Schienen, Ordner und Front sind separate Geometrien.
-- Hover fährt die Schublade teilweise heraus, Klick öffnet sie vollständig und aktualisiert den Inhalt rechts.
-- Mausziehen dreht den Schrank leicht. Touch-Eingaben unterstützen Auswahl und Ziehen.
-
-Hinweis:
-- Three.js wird beim Aufruf von jsDelivr geladen; Internetverbindung ist erforderlich.
-- Dies ist die Frontend-3D-Version. Supabase/Admin-Anbindung ist noch nicht integriert.
-
-KORREKTUR NACH ERSTEM 3D-TEST:
-- Kamerarichtung korrigiert: Vorderseite und linke Schrankseite sind jetzt sichtbar.
-- Boden auf dunkle, dezente Fliesen mit zurückhaltenden cyanfarbenen Fugen umgestellt.
-- Jede Schubladenfront hat nun eine kontrastreiche Beschriftung mit Titel und kurzer Inhaltsbeschreibung.
-- Rechtes Textfeld verbreitert und Schriftgrößen, Zeilenabstände sowie Innenabstände für bessere Lesbarkeit erhöht.
-
-NACHBESSERUNG:
-- Ursache der unsichtbaren Beschriftung behoben: Texttafeln liegen jetzt eindeutig vor der Metallfront und sind kontrastreich.
-- Umgebung deutlich aufgewertet: beleuchtete Architektur-Rückwand, Wandstreben, Deckenlicht, dunkler glänzender Fliesenboden, seitlicher Schreibtisch mit Monitor und Pflanze.
-- Schatten und Licht verstärkt, damit der Schrank räumlich in der Szene steht statt wie ein schwarzer Kasten vor leerem Hintergrund zu wirken.
-
-LABEL- UND DARSTELLUNGSFIX:
-- Beschriftung wurde auf echte Three.js-Sprites umgestellt, die sich mit der Schublade bewegen und zur Kamera ausgerichtet bleiben. Damit sind Titel und Untertitel nicht mehr von der Metallfront verdeckt.
-- Frontplatten und Griffe wurden neu angeordnet, damit die Schriftfläche Platz hat.
-- Kamera weiter zurückgesetzt und Licht-/Wandakzente reduziert, damit die Szene weniger wie ein schwarzer Rohbau wirkt.
-
-KORREKTUR – BESCHRIFTUNG DIREKT AUF DER SCHUBLADE:
-- Die schwebenden Kamera-Sprites wurden entfernt.
-- Jede Beschriftung ist jetzt eine echte Plane-Geometrie, direkt auf der Frontplatte montiert und Bestandteil der jeweiligen Schublade.
-- Die Platte fährt deshalb gemeinsam mit der Schublade heraus.
-- Die Fronten wurden heller und kontrastreicher gestaltet, mit klaren Kanten und Cyan-Akzenten.
-- Kamerawinkel stärker auf die Schrankfront ausgerichtet.
-
-ROOT CAUSE FIX – TEXT DIRECTLY ON THE FRONT MATERIAL:
-- The drawer label is no longer a separate plane or sprite.
-- The text is now rendered into a CanvasTexture and applied to the +Z/front material of the drawer's actual fascia BoxGeometry.
-- This makes the title and description physically part of the visible front face, so it cannot float separately or sit behind the front panel.
-- The pull handle is positioned below the text.
-- Camera is closer to frontal so the lettering remains legible.
-
-DESIGN-ÜBERARBEITUNG – MODERNER PREMIUM-LOOK:
-- Schubladenfronten neu aufgebaut: satinierte Graphit-Metallfront, eingelassene dunkle Label-Zone, klarer Lichtsaum und breiter Metallgriff.
-- Beschriftung ist eine echte Frontfläche auf der senkrechten +Z-Seite, direkt an die bewegliche Schublade gekoppelt.
-- Raum neu gestaltet: ruhige dunkle Wandpaneele, dezente Bodenfugen, einzelner Lichtakzent und ein seitlicher Arbeitsplatz. Kein dominantes Drahtgitter oder überladene Leuchtstreben.
-- Licht und Materialien auf einen modernen, hochwertigen Anthrazit-/Petrol-/Cyan-Look abgestimmt.
+Keine externe 3D-Bibliothek nötig. Nur Google Fonts wird optional online geladen.
+Cloudflare Pages: index.html, styles.css und app.js direkt im Projektstamm verwenden.

@@ -1,7 +1,8 @@
 <!doctype html>
 <html lang="de">
 <head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="theme-color" content="#030b0d">
 <title>Marc Gudermann | Digital Portfolio</title>
 <link rel="stylesheet" href="styles.css">
@@ -17,6 +18,7 @@
   <div class="hero-image"></div><div class="hero-shade"></div>
   <div class="hero-copy">
     <div class="eyebrow"><span></span> DIGITAL BUSINESS · KI · AUTOMATISIERUNG</div>
+    <h1>Marc <em>Gudermann</em></h1>
     <p>Ich mache digitale Möglichkeiten verständlich<br>und praktisch nutzbar.</p>
     <a class="hero-cta" href="#workspace">ARBEITSPLATZ ENTDECKEN <b>↘</b></a>
   </div>
@@ -26,23 +28,64 @@
 <section class="workspace" id="workspace">
   <div class="section-heading">
     <div><div class="eyebrow"><span></span> PERSÖNLICHER EINBLICK</div><h2>Mein digitaler <em>Arbeitsplatz</em></h2></div>
-    <p>Wähle eine Schublade. Sie fährt auf echten 3D-Schienen heraus<br>und gibt den Blick auf ihren Inhalt frei.</p>
+    <p>Wähle eine Schublade. Sie fährt sichtbar aus dem Schrank<br>und gibt den Blick auf ihren Inhalt frei.</p>
   </div>
   <div class="desk-layout">
     <div class="cabinet-zone">
       <div class="cabinet-label"><span class="tiny-led"></span> 3D INFORMATION ARCHIVE <small>MG / 2026</small></div>
       <div class="cabinet-stage" id="cabinet-stage">
-        <div class="loading-note" id="loading-note">3D-ARCHIV WIRD GELADEN …</div>
-        <canvas id="cabinet-canvas" aria-label="Dreidimensionaler Aktenschrank. Schubladen anklicken oder mit der Maus darüberfahren."></canvas>
+        <div class="room-back">
+          <div class="wall-light light-a"></div><div class="wall-light light-b"></div>
+          <div class="shelf shelf-one"><i></i><i></i><i></i><i></i></div>
+          <div class="plant"><span></span><span></span><span></span><span></span><span></span><b></b></div>
+          <div class="side-desk"><div class="monitor"><div class="monitor-chart"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div></div><div class="desk-lamp"></div></div>
+          <div class="floor-reflection"></div>
+        </div>
+        <div class="cabinet-wrap" id="cabinet-wrap" aria-label="Interaktiver Aktenschrank">
+          <div class="cabinet">
+            <div class="cabinet-top"></div>
+            <div class="cabinet-side"></div>
+            <div class="cabinet-back"></div>
+            <div class="cabinet-bottom"></div>
+            <div class="cabinet-frame-left"></div><div class="cabinet-frame-right"></div>
+            <div class="drawer-stack" id="drawer-stack">
+              <button class="drawer selected" data-key="about" aria-label="Über mich öffnen">
+                <span class="drawer-interior"><i class="folder f1"></i><i class="folder f2"></i><i class="folder f3"></i></span>
+                <span class="drawer-face"><i class="drawer-icon">♙</i><b class="drawer-num">01</b><span class="drawer-copy"><strong>Über mich</strong><small>Mein Hintergrund, Ziele und Motivation</small></span><i class="drawer-arrow">›</i><i class="drawer-handle"></i><i class="screw s1"></i><i class="screw s2"></i><i class="screw s3"></i><i class="screw s4"></i></span>
+              </button>
+              <button class="drawer" data-key="skills" aria-label="Fähigkeiten öffnen">
+                <span class="drawer-interior"><i class="folder f1"></i><i class="folder f2"></i><i class="folder f3"></i></span>
+                <span class="drawer-face"><i class="drawer-icon">⚙</i><b class="drawer-num">02</b><span class="drawer-copy"><strong>Fähigkeiten</strong><small>Tools, Kenntnisse und Methoden</small></span><i class="drawer-arrow">›</i><i class="drawer-handle"></i><i class="screw s1"></i><i class="screw s2"></i><i class="screw s3"></i><i class="screw s4"></i></span>
+              </button>
+              <button class="drawer" data-key="education" aria-label="Weiterbildung öffnen">
+                <span class="drawer-interior"><i class="folder f1"></i><i class="folder f2"></i><i class="folder f3"></i></span>
+                <span class="drawer-face"><i class="drawer-icon">⌑</i><b class="drawer-num">03</b><span class="drawer-copy"><strong>Weiterbildung</strong><small>Schulungen, Kurse und Entwicklung</small></span><i class="drawer-arrow">›</i><i class="drawer-handle"></i><i class="screw s1"></i><i class="screw s2"></i><i class="screw s3"></i><i class="screw s4"></i></span>
+              </button>
+              <button class="drawer" data-key="usp" aria-label="Mein USP öffnen">
+                <span class="drawer-interior"><i class="folder f1"></i><i class="folder f2"></i><i class="folder f3"></i></span>
+                <span class="drawer-face"><i class="drawer-icon">✧</i><b class="drawer-num">04</b><span class="drawer-copy"><strong>Mein USP</strong><small>Was mich besonders auszeichnet</small></span><i class="drawer-arrow">›</i><i class="drawer-handle"></i><i class="screw s1"></i><i class="screw s2"></i><i class="screw s3"></i><i class="screw s4"></i></span>
+              </button>
+              <button class="drawer" data-key="projects" aria-label="Projekte öffnen">
+                <span class="drawer-interior"><i class="folder f1"></i><i class="folder f2"></i><i class="folder f3"></i></span>
+                <span class="drawer-face"><i class="drawer-icon">▱</i><b class="drawer-num">05</b><span class="drawer-copy"><strong>Projekte</strong><small>Eigene Projekte und Ergebnisse</small></span><i class="drawer-arrow">›</i><i class="drawer-handle"></i><i class="screw s1"></i><i class="screw s2"></i><i class="screw s3"></i><i class="screw s4"></i></span>
+              </button>
+              <button class="drawer" data-key="contact" aria-label="Kontakt öffnen">
+                <span class="drawer-interior"><i class="folder f1"></i><i class="folder f2"></i><i class="folder f3"></i></span>
+                <span class="drawer-face"><i class="drawer-icon">✉</i><b class="drawer-num">06</b><span class="drawer-copy"><strong>Kontakt</strong><small>So erreichst du mich</small></span><i class="drawer-arrow">›</i><i class="drawer-handle"></i><i class="screw s1"></i><i class="screw s2"></i><i class="screw s3"></i><i class="screw s4"></i></span>
+              </button>
+            </div>
+            <div class="cabinet-foot"></div>
+          </div>
+        </div>
+        <div class="stage-glow"></div>
       </div>
-      <div class="cabinet-caption"><span>ECHTES 3D-MODELL</span><span>HOVER / CLICK TO OPEN</span></div>
-      <div class="drawer-legend">Ziehe mit der Maus, um den Schrank leicht zu drehen. Klicke eine Schublade zum Öffnen.</div>
+      <div class="cabinet-caption"><span>INTERAKTIVER 3D-AKTENSCHRANK</span><span>HOVER / CLICK TO OPEN</span></div>
+      <div class="drawer-legend">Bewege die Maus über eine Schublade oder klicke sie an. Auf dem Smartphone genügt ein Tippen.</div>
     </div>
     <article class="content-panel" aria-live="polite">
       <div class="panel-top"><span class="panel-tag"><i></i> FILE PREVIEW</span><span class="panel-code" id="panel-code">MG-FILE-001</span></div>
       <div class="panel-content" id="panel-content">
-        <div class="file-symbol">01 <span>PERSONAL PROFILE</span></div>
-        <div class="eyebrow">DAS BIN ICH</div>
+        <div class="file-symbol">01 <span>PERSONAL PROFILE</span></div><div class="eyebrow">DAS BIN ICH</div>
         <h3>Hi, ich bin <em>Marc.</em></h3>
         <p class="lead">Ich interessiere mich dafür, wie digitale Werkzeuge den Alltag einfacher machen können.</p>
         <p>Mein Schwerpunkt liegt auf KI-Tools, digitalem Marketing und Automatisierung. Mir ist wichtig, Dinge nicht nur theoretisch zu verstehen, sondern sie praktisch auszuprobieren und verständlich zu erklären.</p>
@@ -52,7 +95,6 @@
     </article>
   </div>
 </section>
-
 <section class="projects-strip" id="projects">
   <div class="section-heading"><div><div class="eyebrow"><span></span> AUSGEWÄHLTE ARBEITEN</div><h2>Projekte in <em>Bewegung</em></h2></div><p>Ideen, die ich plane, entwickle<br>und Schritt für Schritt umsetze.</p></div>
   <div class="project-grid">
@@ -63,5 +105,5 @@
 </section>
 <footer id="contact"><div><div class="eyebrow"><span></span> LASS UNS IN KONTAKT KOMMEN</div><h2>Eine gute Idee beginnt<br>mit einem <em>Gespräch.</em></h2></div><a class="hero-cta" href="mailto:kontakt@marc-gudermann.de">KONTAKT AUFNEHMEN <b>↗</b></a><div class="footer-bottom"><span>© 2026 MARC GUDERMANN</span><span>BUILT WITH CURIOSITY <b>✦</b></span></div></footer>
 </main>
-<script type="module" src="app.js"></script>
+<script src="app.js"></script>
 </body></html>
