@@ -39,3 +39,10 @@ KORREKTUR – BESCHRIFTUNG DIREKT AUF DER SCHUBLADE:
 - Die Platte fährt deshalb gemeinsam mit der Schublade heraus.
 - Die Fronten wurden heller und kontrastreicher gestaltet, mit klaren Kanten und Cyan-Akzenten.
 - Kamerawinkel stärker auf die Schrankfront ausgerichtet.
+
+ROOT CAUSE FIX – TEXT DIRECTLY ON THE FRONT MATERIAL:
+- The drawer label is no longer a separate plane or sprite.
+- The text is now rendered into a CanvasTexture and applied to the +Z/front material of the drawer's actual fascia BoxGeometry.
+- This makes the title and description physically part of the visible front face, so it cannot float separately or sit behind the front panel.
+- The pull handle is positioned below the text.
+- Camera is closer to frontal so the lettering remains legible.

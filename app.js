@@ -81,39 +81,41 @@ keys.forEach((key,i)=>{
    box(folder,.29,.012,.012,edgeMetal,0,.17,.036);
  }
  // front fascia and separate front plate
- const faceMaterial=new THREE.MeshStandardMaterial({color:0x29484c,metalness:.82,roughness:.24,emissive:0x071c20,emissiveIntensity:.65});
+ const faceMaterial=new THREE.MeshStandardMaterial({color:0x385b60,metalness:.76,roughness:.26,emissive:0x0a2529,emissiveIntensity:.45});
  const front=box(group,W-.2,drawerH-.08,.16,faceMaterial,0,0,0);
- const fascia=box(group,W-.48,.49,.065,darkMetal,0,.035,.112);
- box(group,W-.40,.018,.025,cyanMat,0,.285,.155);
- box(group,W-.40,.018,.025,cyanMat,0,-.215,.155);
- // subtle vertical edge strips make each drawer boundary easy to distinguish
- box(group,.025,drawerH-.18,.025,edgeMetal,-(W-.24)/2,0,.12);
- box(group,.025,drawerH-.18,.025,edgeMetal,(W-.24)/2,0,.12);
- // cyan accent bar on the lower fascia
- box(group,.88,.035,.035,cyanMat,0,-.29,.11);
- // Physical label mounted directly on the drawer front.
- // The plate and text are part of this drawer group and move with it on the rails.
- const labelCanvas=document.createElement("canvas");labelCanvas.width=1200;labelCanvas.height=300;
+
+ // The label is painted onto the actual front face material of the drawer fascia.
+ // This avoids a separate plane being hidden, clipped or floating in front of the drawer.
+ const labelCanvas=document.createElement("canvas");labelCanvas.width=1024;labelCanvas.height=256;
  const ctx=labelCanvas.getContext("2d");
- ctx.clearRect(0,0,1200,300);
- ctx.fillStyle="#092126";ctx.fillRect(0,0,1200,300);
- ctx.strokeStyle="#20dce2";ctx.lineWidth=8;ctx.strokeRect(5,5,1190,290);
- ctx.fillStyle="#00e4e8";ctx.font="bold 76px Arial";ctx.textAlign="left";ctx.textBaseline="middle";
- ctx.fillText(String(i+1).padStart(2,"0"),48,103);
- ctx.fillStyle="#f3ffff";ctx.font="bold 76px Arial";
+ ctx.fillStyle="#0b2428";ctx.fillRect(0,0,1024,256);
+ ctx.fillStyle="#00e4e8";ctx.fillRect(0,0,12,256);
+ ctx.strokeStyle="#00dce4";ctx.lineWidth=5;ctx.strokeRect(14,8,1000,240);
+ ctx.fillStyle="#00e4e8";ctx.font="bold 64px Arial";ctx.textAlign="left";ctx.textBaseline="middle";
+ ctx.fillText(String(i+1).padStart(2,"0"),42,83);
+ ctx.fillStyle="#f4ffff";ctx.font="bold 63px Arial";
  const labels=["ÜBER MICH","FÄHIGKEITEN","WEITERBILDUNG","MEIN USP","PROJEKTE","KONTAKT"];
  const descriptions=["Weg · Erfahrungen · Ziele","Tools · Kenntnisse · Methoden","DCI · Qualifikationen · Zertifikate","Stärken · Arbeitsweise · Mehrwert","Eigene Arbeiten · Ergebnisse","Nachricht · Austausch · Links"];
- ctx.fillText(labels[i],190,103);
- ctx.fillStyle="#b5d5d7";ctx.font="43px Arial";
- ctx.fillText(descriptions[i],194,218);
- const tex=new THREE.CanvasTexture(labelCanvas);tex.colorSpace=THREE.SRGBColorSpace;tex.anisotropy=renderer.capabilities.getMaxAnisotropy();
- const labelMaterial=new THREE.MeshBasicMaterial({map:tex,side:THREE.DoubleSide,toneMapped:false});
- const label=new THREE.Mesh(new THREE.PlaneGeometry(1.82,.455),labelMaterial);
- // Drawer front fascia surface is at z=+0.144. This plane is only 4 mm in front of it.
- label.position.set(0,.035,.149);label.renderOrder=4;group.add(label);
+ ctx.fillText(labels[i],160,83);
+ ctx.fillStyle="#b9d8da";ctx.font="34px Arial";
+ ctx.fillText(descriptions[i],163,178);
+ const tex=new THREE.CanvasTexture(labelCanvas);
+ tex.colorSpace=THREE.SRGBColorSpace;
+ tex.anisotropy=renderer.capabilities.getMaxAnisotropy();
+ // BoxGeometry material order: +x, -x, +y, -y, +z, -z.
+ const fasciaSide=new THREE.MeshStandardMaterial({color:0x29484c,metalness:.82,roughness:.25});
+ const fasciaFront=new THREE.MeshBasicMaterial({map:tex,toneMapped:false});
+ const fasciaBack=new THREE.MeshStandardMaterial({color:0x183337,metalness:.75,roughness:.3});
+ const fascia=box(group,W-.48,.49,.065,[fasciaSide,fasciaSide,fasciaSide,fasciaSide,fasciaFront,fasciaBack],0,.035,.112);
+ // Bright frame edges and a separate pull handle below the printed label.
+ box(group,W-.40,.018,.025,cyanMat,0,.285,.155);
+ box(group,W-.40,.018,.025,cyanMat,0,-.215,.155);
+ box(group,.025,drawerH-.18,.025,edgeMetal,-(W-.24)/2,0,.12);
+ box(group,.025,drawerH-.18,.025,edgeMetal,(W-.24)/2,0,.12);
+ box(group,.88,.035,.035,cyanMat,0,-.29,.11);
  // number marker and pull handle
- const handle=box(group,.72,.055,.12,edgeMetal,0,-.255,.17);
- box(group,.56,.022,.018,cyanMat,0,-.255,.24);
+ const handle=box(group,.68,.05,.10,edgeMetal,0,-.275,.17);
+ box(group,.52,.018,.018,cyanMat,0,-.275,.225);
  // front corner rivets
  for(const sx of [-1,1])for(const sy of [-1,1]){
   const rivet=new THREE.Mesh(new THREE.SphereGeometry(.027,12,8),edgeMetal);rivet.position.set(sx*(W-.34)/2,sy*(drawerH-.22)/2,.095);group.add(rivet);
@@ -209,7 +211,7 @@ canvas.addEventListener("pointerup",e=>{
 canvas.addEventListener("pointerleave",()=>{if(!down){hovered=-1;drawers.forEach((d,i)=>{if(i!==selected)d.userData.target=0;});}});
 function resize(){
  const w=stage.clientWidth,h=stage.clientHeight;renderer.setSize(w,h,false);camera.aspect=w/h;camera.updateProjectionMatrix();
- const narrow=w<500;camera.position.set(narrow?-5.2:-4.8,4.6,narrow?15.8:13.8);camera.lookAt(controlsTarget);
+ const narrow=w<500;camera.position.set(narrow?-2.8:-2.4,4.55,narrow?16.5:14.5);camera.lookAt(controlsTarget);
 }
 window.addEventListener("resize",resize);resize();
 const clock=new THREE.Clock();
