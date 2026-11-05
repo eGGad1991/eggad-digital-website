@@ -33,16 +33,16 @@ const scene=new THREE.Scene();
 scene.background=null;
 const camera=new THREE.PerspectiveCamera(34,1,.1,100);
 camera.position.set(6.5,5.2,10.5);
-const controlsTarget=new THREE.Vector3(0,2.55,0);
-const hemi=new THREE.HemisphereLight(0x9cfaff,0x071114,2.0);scene.add(hemi);
-const keyLight=new THREE.DirectionalLight(0xe4ffff,4.0);keyLight.position.set(-4,9,7);keyLight.castShadow=true;keyLight.shadow.mapSize.set(2048,2048);keyLight.shadow.camera.left=-8;keyLight.shadow.camera.right=8;keyLight.shadow.camera.top=8;keyLight.shadow.camera.bottom=-8;scene.add(keyLight);
-const cyanLight=new THREE.PointLight(0x00eaff,42,16);cyanLight.position.set(-3,3,4);cyanLight.castShadow=true;scene.add(cyanLight);
+const controlsTarget=new THREE.Vector3(-.25,2.45,0);
+const hemi=new THREE.HemisphereLight(0x9cfaff,0x071114,1.45);scene.add(hemi);
+const keyLight=new THREE.DirectionalLight(0xe4ffff,2.6);keyLight.position.set(-4,9,7);keyLight.castShadow=true;keyLight.shadow.mapSize.set(2048,2048);keyLight.shadow.camera.left=-8;keyLight.shadow.camera.right=8;keyLight.shadow.camera.top=8;keyLight.shadow.camera.bottom=-8;scene.add(keyLight);
+const cyanLight=new THREE.PointLight(0x00eaff,28,16);cyanLight.position.set(-3,3,4);cyanLight.castShadow=true;scene.add(cyanLight);
 const rimLight=new THREE.PointLight(0x007f91,26,10);rimLight.position.set(3,5,-3);scene.add(rimLight);
 const floorMat=new THREE.MeshStandardMaterial({color:0x061619,metalness:.75,roughness:.32});
 const metal=new THREE.MeshStandardMaterial({color:0x203b3e,metalness:.88,roughness:.28});
 const darkMetal=new THREE.MeshStandardMaterial({color:0x0a1b1e,metalness:.82,roughness:.32});
 const edgeMetal=new THREE.MeshStandardMaterial({color:0x52777a,metalness:.92,roughness:.2});
-const cyanMat=new THREE.MeshStandardMaterial({color:0x00e4e8,emissive:0x00aeb8,emissiveIntensity:2.6,metalness:.4,roughness:.22});
+const cyanMat=new THREE.MeshStandardMaterial({color:0x00cbd2,emissive:0x007d84,emissiveIntensity:1.45,metalness:.55,roughness:.25});
 const blackMat=new THREE.MeshStandardMaterial({color:0x071012,metalness:.55,roughness:.35});
 const cabinet=new THREE.Group();scene.add(cabinet);
 const W=3.5,H=5.25,D=2.05,wall=.16;
@@ -82,32 +82,33 @@ keys.forEach((key,i)=>{
  }
  // front fascia and separate front plate
  const front=box(group,W-.2,drawerH-.08,.16,metal,0,0,0);
- box(group,W-.52,.39,.055,darkMetal,0,.03,.105);
+ box(group,W-.48,.45,.065,darkMetal,0,.035,.112);
+ box(group,W-.40,.018,.025,cyanMat,0,.265,.155);
+ box(group,W-.40,.018,.025,cyanMat,0,-.195,.155);
  // cyan accent bar at bottom of face
  box(group,.88,.035,.035,cyanMat,0,-.26,.11);
- // High-contrast front label: drawer title plus a short description of its contents.
+ // Front label as a high-contrast 3D sprite, attached to the moving drawer.
+ // Sprites always face the camera, so the title stays readable while the cabinet is rotated.
  const labelCanvas=document.createElement("canvas");labelCanvas.width=1024;labelCanvas.height=256;
  const ctx=labelCanvas.getContext("2d");
  ctx.clearRect(0,0,1024,256);
- ctx.fillStyle="rgba(3,17,20,.94)";ctx.fillRect(0,0,1024,256);
- ctx.strokeStyle="#00dce4";ctx.lineWidth=5;ctx.strokeRect(3,3,1018,250);
- ctx.fillStyle="#00e4e8";ctx.font="bold 54px Arial";ctx.textAlign="left";ctx.textBaseline="middle";
- ctx.fillText(String(i+1).padStart(2,"0"),42,84);
- ctx.fillStyle="#f1ffff";ctx.font="bold 58px Arial";
+ ctx.fillStyle="rgba(3,17,20,.97)";ctx.fillRect(8,8,1008,240);
+ ctx.strokeStyle="#00e4e8";ctx.lineWidth=7;ctx.strokeRect(10,10,1004,236);
+ ctx.fillStyle="#00e4e8";ctx.font="bold 58px Arial";ctx.textAlign="left";ctx.textBaseline="middle";
+ ctx.fillText(String(i+1).padStart(2,"0"),42,83);
+ ctx.fillStyle="#f2ffff";ctx.font="bold 64px Arial";
  const labels=["ÜBER MICH","FÄHIGKEITEN","WEITERBILDUNG","MEIN USP","PROJEKTE","KONTAKT"];
  const descriptions=["Weg · Erfahrungen · Ziele","Tools · Kenntnisse · Methoden","DCI · Qualifikationen · Zertifikate","Stärken · Arbeitsweise · Mehrwert","Eigene Arbeiten · Ergebnisse","Nachricht · Austausch · Links"];
- ctx.fillText(labels[i],142,84);
- ctx.fillStyle="#9fc6c9";ctx.font="34px Arial";
- ctx.fillText(descriptions[i],144,177);
- const tex=new THREE.CanvasTexture(labelCanvas);tex.colorSpace=THREE.SRGBColorSpace;
- const label=new THREE.Mesh(
-   new THREE.PlaneGeometry(1.58,.395),
-   new THREE.MeshBasicMaterial({map:tex,transparent:false,side:THREE.DoubleSide,toneMapped:false})
- );
- label.position.set(0,.015,.165);group.add(label);
+ ctx.fillText(labels[i],150,83);
+ ctx.fillStyle="#a8d0d2";ctx.font="36px Arial";
+ ctx.fillText(descriptions[i],152,177);
+ const tex=new THREE.CanvasTexture(labelCanvas);tex.colorSpace=THREE.SRGBColorSpace;tex.needsUpdate=true;
+ const spriteMat=new THREE.SpriteMaterial({map:tex,transparent:true,depthTest:false,depthWrite:false,toneMapped:false});
+ const label=new THREE.Sprite(spriteMat);
+ label.position.set(0,.015,.255);label.scale.set(1.78,.445,1);label.renderOrder=20;group.add(label);
  // number marker and pull handle
- const handle=box(group,.75,.055,.12,edgeMetal,0,-.17,.14);
- box(group,.58,.022,.018,cyanMat,0,-.17,.205);
+ const handle=box(group,.72,.055,.12,edgeMetal,0,-.255,.17);
+ box(group,.56,.022,.018,cyanMat,0,-.255,.24);
  // front corner rivets
  for(const sx of [-1,1])for(const sy of [-1,1]){
   const rivet=new THREE.Mesh(new THREE.SphereGeometry(.027,12,8),edgeMetal);rivet.position.set(sx*(W-.34)/2,sy*(drawerH-.22)/2,.095);group.add(rivet);
@@ -131,11 +132,11 @@ const backWallMat=new THREE.MeshStandardMaterial({color:0x071719,metalness:.58,r
 box(scene,20,8,.22,backWallMat,0,3.7,-2.8);
 for(let i=0;i<9;i++){
  const x=-8+i*2;
- box(scene,.035,7,.045,cyanMat,x,3.7,-2.66);
+ box(scene,.022,6.5,.035,cyanMat,x,3.7,-2.66);
  box(scene,.11,7,.07,darkMetal,x+.10,3.7,-2.68);
 }
 // Horizontal illuminated ceiling/wall rails.
-box(scene,18,.07,.12,cyanMat,0,7.25,-2.55);
+box(scene,18,.045,.10,cyanMat,0,7.25,-2.55);
 box(scene,18,.12,.16,darkMetal,0,7.12,-2.62);
 box(scene,18,.045,.1,cyanMat,0,.25,-2.62);
 // Left-side workstation silhouette: counter, monitor and plant add a real office context.
@@ -203,7 +204,7 @@ canvas.addEventListener("pointerup",e=>{
 canvas.addEventListener("pointerleave",()=>{if(!down){hovered=-1;drawers.forEach((d,i)=>{if(i!==selected)d.userData.target=0;});}});
 function resize(){
  const w=stage.clientWidth,h=stage.clientHeight;renderer.setSize(w,h,false);camera.aspect=w/h;camera.updateProjectionMatrix();
- const narrow=w<500;camera.position.set(narrow?-8.2:-7.4,5.3,narrow?14.4:12.2);camera.lookAt(controlsTarget);
+ const narrow=w<500;camera.position.set(narrow?-8.8:-8.4,5.15,narrow?16.2:14.2);camera.lookAt(controlsTarget);
 }
 window.addEventListener("resize",resize);resize();
 const clock=new THREE.Clock();

@@ -27,3 +27,8 @@ NACHBESSERUNG:
 - Ursache der unsichtbaren Beschriftung behoben: Texttafeln liegen jetzt eindeutig vor der Metallfront und sind kontrastreich.
 - Umgebung deutlich aufgewertet: beleuchtete Architektur-Rückwand, Wandstreben, Deckenlicht, dunkler glänzender Fliesenboden, seitlicher Schreibtisch mit Monitor und Pflanze.
 - Schatten und Licht verstärkt, damit der Schrank räumlich in der Szene steht statt wie ein schwarzer Kasten vor leerem Hintergrund zu wirken.
+
+LABEL- UND DARSTELLUNGSFIX:
+- Beschriftung wurde auf echte Three.js-Sprites umgestellt, die sich mit der Schublade bewegen und zur Kamera ausgerichtet bleiben. Damit sind Titel und Untertitel nicht mehr von der Metallfront verdeckt.
+- Frontplatten und Griffe wurden neu angeordnet, damit die Schriftfläche Platz hat.
+- Kamera weiter zurückgesetzt und Licht-/Wandakzente reduziert, damit die Szene weniger wie ein schwarzer Rohbau wirkt.
