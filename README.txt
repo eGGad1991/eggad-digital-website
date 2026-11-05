@@ -18,3 +18,7 @@ Keine Anpassung am Aktenschrank vorgenommen.
 
 HINTERGRUND-FEINSCHLIFF:
 Der Seitenhintergrund nutzt jetzt einen dunklen, transparent abgetönten Ausschnitt der originalen Hero-Wellen-/Netzwerkgrafik. So läuft die gleiche türkisfarbene Lichtwelt in die übrige Website weiter. Der Aktenschrank und app.js wurden nicht verändert.
+
+
+KLARER HINTERGRUND:
+Der dunkle Schleier wurde entfernt. Die abgedunkelte Banner-Wellen-Grafik ist jetzt deutlich weniger überlagert; nur eine sehr leichte Abdunklung bleibt für die Lesbarkeit. Der Aktenschrank und seine Animationen wurden nicht verändert.
