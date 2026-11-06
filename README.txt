@@ -26,3 +26,10 @@ WICHTIG:
 - Vor Livebetrieb Datenschutzerklärung vervollständigen: Verantwortlicher, Google-Auftragsverarbeitung, Datenübermittlungen, Speicherdauer und konkrete Kontoeinstellungen prüfen.
 - Nach Deployment testen: frischer Browser ohne gespeicherte Zustimmung, Ablehnen (kein Analytics-Request), Zustimmung (GA4-Request), Widerruf über Footer.
 - Die Website muss über HTTPS erreichbar sein.
+
+KURZE INSTAGRAM-TRACKING-LINKS
+Diese drei Kurzpfade werden über die Cloudflare-Pages-Datei _redirects weitergeleitet:
+- https://mila-einfach.pages.dev/profil
+- https://mila-einfach.pages.dev/reel
+- https://mila-einfach.pages.dev/beitrag
+Die Weiterleitungen ergänzen die passenden UTM-Parameter für Google Analytics.
