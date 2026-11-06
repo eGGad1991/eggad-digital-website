@@ -1,19 +1,16 @@
-MILA WEBSITE – ERSTE FASSUNG
+MILA WEBSITE – VERSION 3
 
-Dateien:
-- index.html
-- styles.css
-- script.js
-- assets/ (für Milas freigegebene Originalfotos)
+Enthalten sind die Startseite, Styles, Menü-Script und das freigegebene Sommerfoto von Mila.
+
+Neu in dieser Fassung:
+- Das Sommerfoto bleibt das große Aufmacherbild auf der Startseite.
+- Milas Lifestyle- und Gaming-Persönlichkeit bleibt im Mittelpunkt.
+- Ein eigener, aber optisch zurückhaltender Bereich greift KI im Alltag, Social Media & Content sowie Marketing-Automatisierung auf.
+- Die Themen orientieren sich an der Richtung Digital Business / KI Digital Marketing, ohne die Seite wie eine Schulungs- oder Unternehmenswebsite wirken zu lassen.
+- Der Hinweis auf Milas virtuelle Persönlichkeit bleibt dezent im Footer.
 
 Lokal testen: index.html im Browser öffnen.
 
-Upload:
-1. ZIP entpacken.
-2. Dateien in dein bestehendes GitHub-Repository übernehmen.
-3. Vorhandene Dateien vorher sichern.
-4. Änderungen committen und pushen.
-5. Cloudflare Pages veröffentlicht automatisch, wenn das Repository verbunden ist.
+Upload: ZIP entpacken und den Inhalt in das bestehende Website-Repository übernehmen. Vorhandene Dateien vorher sichern. Bei verbundener Cloudflare-Pages-Bereitstellung wird nach Commit und Push automatisch veröffentlicht.
 
-Hinweis:
-Diese erste Fassung ist eine statische Website. Sie enthält noch keine Supabase-Anbindung und keinen echten KI-Chat. Social-Media-Links sind noch nicht hinterlegt. Die großen Bildflächen sind zunächst gestaltete Platzhalter. Bitte dort später nur freigegebene Mila-Referenzbilder einsetzen.
+Technik: statische HTML/CSS/JavaScript-Seite. Noch keine Supabase-Anbindung, kein echter KI-Chat und keine Social-Media-Links.
