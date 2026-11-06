@@ -33,3 +33,12 @@ Diese drei Kurzpfade werden über die Cloudflare-Pages-Datei _redirects weiterge
 - https://mila-einfach.pages.dev/reel
 - https://mila-einfach.pages.dev/beitrag
 Die Weiterleitungen ergänzen die passenden UTM-Parameter für Google Analytics.
+
+
+GOOGLE PRIVACY & MESSAGING CMP (NEUE VERSION)
+- Das bisherige selbstgebaute Cookie-Banner wurde entfernt.
+- Google AdSense Privacy & Messaging wird über den AdSense-Tag (Publisher-ID ca-pub-3222565371747920) geladen.
+- Google Analytics 4 bleibt mit Mess-ID G-M2E0X0Y1QK eingebunden und startet mit standardmäßig verweigerter Analytics-Speicherung.
+- Die Google-CMP muss in AdSense unter Datenschutz und Mitteilungen veröffentlicht sein. Für die Weitergabe der Einwilligung an Google Analytics muss der Einwilligungsmodus dort aktiviert sein.
+- Der Footer-Link „Cookie-Einstellungen“ öffnet Googles Widerrufs-/Einstellungsdialog.
+- Die AdSense-Einbindung fügt keine Anzeigenblöcke hinzu und aktiviert keine automatischen Anzeigen.
