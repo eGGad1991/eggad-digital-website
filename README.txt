@@ -11,3 +11,18 @@ WICHTIG VOR VERÖFFENTLICHUNG:
 - ZIP entpacken und den Inhalt in das bestehende Mila-Website-Projekt übernehmen.
 
 Technik: HTML, CSS, Vanilla JavaScript; keine Datenbank erforderlich.
+
+
+GOOGLE ANALYTICS 4 UND COOKIE-EINWILLIGUNG (V5)
+- GA4-Mess-ID: G-M2E0X0Y1QK
+- Analytics wird erst nach aktiver Zustimmung geladen.
+- Besucher können ablehnen, alle akzeptieren oder Statistik in den Einstellungen separat erlauben.
+- Die Auswahl kann über „Cookie-Einstellungen“ im Footer später geändert werden.
+- „Analytics (Betreiber)“ öffnet das Google-Analytics-Dashboard; Anmeldung ist erforderlich.
+- Google Fonts werden nicht mehr extern geladen, damit beim Seitenaufruf nicht schon dadurch eine Verbindung zu Google entsteht.
+
+WICHTIG:
+- Diese technische Einwilligungslösung ist eine Basis, keine Rechtsberatung und keine Garantie für vollständige DSGVO-/TTDSG-Konformität.
+- Vor Livebetrieb Datenschutzerklärung vervollständigen: Verantwortlicher, Google-Auftragsverarbeitung, Datenübermittlungen, Speicherdauer und konkrete Kontoeinstellungen prüfen.
+- Nach Deployment testen: frischer Browser ohne gespeicherte Zustimmung, Ablehnen (kein Analytics-Request), Zustimmung (GA4-Request), Widerruf über Footer.
+- Die Website muss über HTTPS erreichbar sein.
