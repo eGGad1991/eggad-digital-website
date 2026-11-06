@@ -1,30 +1,19 @@
-TOP-BEREICH KORRIGIERT – AKTENSCHRANK UNVERÄNDERT
+MILA WEBSITE – ERSTE FASSUNG
 
-Diese Version basiert exakt auf dem ZIP „neuer-aktenschrank“.
-Unverändert übernommen wurden:
-- cabinet markup und alle sechs 3D-Schubladen
-- die komplette CSS-3D-Mechanik und Animation
-- app.js und Interaktionen
-- Projekt- und Kontaktbereich
+Dateien:
+- index.html
+- styles.css
+- script.js
+- assets/ (für Milas freigegebene Originalfotos)
 
-Ergänzt wurden ausschließlich:
-- Kopfzeile / Navigation
-- ursprüngliches Hero-Banner
-- persönlicher Intro-Bereich
-- Profilfoto
+Lokal testen: index.html im Browser öffnen.
 
-Keine Anpassung am Aktenschrank vorgenommen.
+Upload:
+1. ZIP entpacken.
+2. Dateien in dein bestehendes GitHub-Repository übernehmen.
+3. Vorhandene Dateien vorher sichern.
+4. Änderungen committen und pushen.
+5. Cloudflare Pages veröffentlicht automatisch, wenn das Repository verbunden ist.
 
-
-HINTERGRUND-FEINSCHLIFF:
-Der Seitenhintergrund nutzt jetzt einen dunklen, transparent abgetönten Ausschnitt der originalen Hero-Wellen-/Netzwerkgrafik. So läuft die gleiche türkisfarbene Lichtwelt in die übrige Website weiter. Der Aktenschrank und app.js wurden nicht verändert.
-
-
-KLARER HINTERGRUND:
-Der dunkle Schleier wurde entfernt. Die abgedunkelte Banner-Wellen-Grafik ist jetzt deutlich weniger überlagert; nur eine sehr leichte Abdunklung bleibt für die Lesbarkeit. Der Aktenschrank und seine Animationen wurden nicht verändert.
-
-
-KONTAKTTEXT KORRIGIERT: Der Satz lautet jetzt 'Du hast eine Frage, eine Idee oder möchtest dich austauschen?' Der restliche Stand wurde unverändert übernommen.
-
-
-SCHUBLADENBEDIENUNG: Hover zeigt nur eine kleine Aktenvorschau. Klick öffnet die große Datei-Vorschau rechts. Auf Touch-Geräten: erstes Tippen zeigt die kleine Vorschau, zweites Tippen öffnet die große Ansicht. Schrankoptik und Schubladenbewegung bleiben bestehen.
+Hinweis:
+Diese erste Fassung ist eine statische Website. Sie enthält noch keine Supabase-Anbindung und keinen echten KI-Chat. Social-Media-Links sind noch nicht hinterlegt. Die großen Bildflächen sind zunächst gestaltete Platzhalter. Bitte dort später nur freigegebene Mila-Referenzbilder einsetzen.
