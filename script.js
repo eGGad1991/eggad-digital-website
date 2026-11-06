@@ -152,11 +152,22 @@ function createCookieUI() {
 }
 
 function initCookieConsent() {
+  // Oberfläche auf jeder Seite erzeugen, damit Cookie-Einstellungen
+  // auch nach einer gespeicherten Auswahl über den Footer erreichbar bleiben.
+  createCookieUI();
+
   const stored = readConsent();
-  if (stored && stored.analytics) {
-    loadAnalytics();
-  } else if (!stored) {
-    createCookieUI();
+  const banner = document.getElementById("cookie-banner");
+
+  if (stored) {
+    if (banner) banner.hidden = true;
+    if (stored.analytics) {
+      loadAnalytics();
+    } else {
+      updateGoogleConsent(false);
+    }
+  } else {
+    if (banner) banner.hidden = false;
   }
 }
 
