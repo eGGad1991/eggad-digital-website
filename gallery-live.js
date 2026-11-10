@@ -3,7 +3,8 @@
   if (!window.supabase || !cfg.url || !cfg.anonKey || cfg.anonKey.startsWith("HIER_")) return;
   const client = window.supabase.createClient(cfg.url, cfg.anonKey);
   const bucket = cfg.bucket || "portfolio-media";
-  const categories = ["lifestyle", "gaming", "ki-digital", "reisen", "alltag"];
+  // Neue Uploads landen gesammelt in "galerie". Alte Kategorie-Ordner bleiben sichtbar.
+  const categories = ["galerie", "lifestyle", "gaming", "ki-digital", "reisen", "alltag"];
 
   async function load() {
     const grid = document.getElementById("mila-live-gallery");
@@ -19,7 +20,7 @@
         console.warn("Mila Galerie:", error.message);
         continue;
       }
-      (data || []).filter(x => x.name && !x.name.startsWith(".")).forEach(file => {
+      (data || []).filter(x => x.name && !x.name.startsWith(".") && x.id).forEach(file => {
         const { data: publicData } = client.storage.from(bucket).getPublicUrl(category + "/" + file.name);
         all.push({ url: publicData.publicUrl, name: file.name, category, created: file.created_at || file.updated_at || "" });
       });

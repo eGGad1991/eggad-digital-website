@@ -65,11 +65,10 @@
   uploadButton.addEventListener("click", async () => {
     if (!selectedFiles.length) return;
     uploadButton.disabled = true;
-    const category = document.getElementById("category").value;
     let success = 0;
     for (const file of selectedFiles) {
       const safeName = file.name.normalize("NFKD").replace(/[^a-zA-Z0-9._-]+/g, "-").replace(/^-+|-+$/g, "");
-      const path = `${category}/${Date.now()}-${crypto.randomUUID()}-${safeName || "bild"}`;
+      const path = `galerie/${Date.now()}-${crypto.randomUUID()}-${safeName || "bild"}`;
       message(uploadMessage, `Lade hoch (${success + 1}/${selectedFiles.length}): ${file.name}`);
       const {error} = await client.storage.from(cfg.bucket || "portfolio-media").upload(path, file, {
         cacheControl: "3600", upsert: false, contentType: file.type
