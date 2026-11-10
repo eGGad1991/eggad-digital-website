@@ -3,7 +3,7 @@
 <html lang="de">
 <head>
 <meta charset="utf-8"/><meta content="width=device-width,initial-scale=1,viewport-fit=cover" name="viewport"/>
-<meta content="#211c30" name="theme-color"/><meta content="yes" name="apple-mobile-web-app-capable"/>
+<meta content="#211c30" name="theme-color"/><meta name="robots" content="noindex,nofollow,noarchive"/><meta content="yes" name="apple-mobile-web-app-capable"/>
 <meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"/>
 <link href="manifest.webmanifest" rel="manifest"/><link href="icons/icon-192.png" rel="apple-touch-icon"/><link href="app.css" rel="stylesheet"/>
 <title>Mila · Upload</title>
@@ -11,9 +11,9 @@
 <body>
 <main class="shell">
 <header><a aria-label="Zur Mila-Startseite" class="brand" href="/">mila<span>♡</span></a><div class="sub">PRIVATE GALERIE-VERWALTUNG</div></header>
-<div class="utility-links"><a href="/">← Zurück zur Website</a><a href="/galerie/">Galerie ansehen</a></div>
+<div class="utility-links"><a href="/">← Zurück zur Website</a><a href="/galerie/">Öffentliche Galerie</a><a href="/mila-k7/">Privates Archiv</a></div>
 <section class="panel" id="login">
-<h1>Willkommen zurück</h1><p>Melde dich an, um neue Bilder in Milas Galerie hochzuladen.</p>
+<h1>Willkommen zurück</h1><p>Melde dich mit deinem freigeschalteten Administratorkonto an, um Bilder hochzuladen.</p>
 <form id="login-form">
 <label for="email">E-Mail-Adresse</label><input autocomplete="username" id="email" required="" type="email"/>
 <label for="password">Passwort</label><input autocomplete="current-password" id="password" required="" type="password"/>
@@ -21,13 +21,15 @@
 </form><p class="message" id="login-message" role="status"></p>
 </section>
 <section class="panel" hidden="" id="uploader">
-<div class="topline"><div><h1>Bilder hochladen</h1><p>Neue Bilder erscheinen automatisch in der Website-Galerie.</p></div><button class="quiet" id="logout" type="button">Abmelden</button></div>
-<p class="gallery-note">Alle Bilder werden direkt in Milas Galerie gespeichert. Du musst keine Kategorie auswählen.</p>
+<div class="topline"><div><h1>Bilder hochladen</h1><p>Lege vor dem Upload fest, wo die ausgewählten Bilder gespeichert werden.</p></div><button class="quiet" id="logout" type="button">Abmelden</button></div>
+<label for="destination">Speicherort der Bilder</label>
+<select id="destination"><option value="public">Öffentliche Galerie</option><option value="private">Privates Archiv (nur Admin)</option></select>
+<p class="gallery-note" id="destination-note">Öffentliche Galerie: Die Bilder können anschließend von allen Besuchern der Website angesehen werden.</p>
 <label class="drop" for="files"><span class="upload-icon">＋</span><strong>Bilder auswählen</strong><span>Mehrere Bilder möglich · JPG, PNG, WebP, GIF · max. 50 MB pro Bild</span><input accept="image/jpeg,image/png,image/webp,image/gif" id="files" multiple="" type="file"/></label>
 <div class="preview" id="preview"></div>
 <button class="primary" disabled="" id="upload-button" type="button">Ausgewählte Bilder hochladen</button>
 <p class="message" id="upload-message" role="status"></p>
-<div class="footnote">Uploads sind nur nach Anmeldung möglich. Bitte keine privaten oder fremden Bilder ohne Berechtigung hochladen.</div>
+<div class="footnote">Uploads sind nur für freigeschaltete Administratoren möglich. Private Bilder werden getrennt gespeichert und erscheinen nicht in der öffentlichen Galerie. <a href="/mila-k7/">Privates Archiv öffnen</a>.</div>
 </section>
 <footer>Mila Galerie</footer>
 </main>

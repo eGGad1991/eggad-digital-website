@@ -7,3 +7,5 @@
 .utility-links a{display:inline-flex;align-items:center;justify-content:center;min-height:42px;padding:9px 13px;border:1px solid #edadd577;border-radius:10px;color:#fff;background:#ffffff12;font-size:12px;font-weight:650;text-decoration:none}
 .utility-links a:hover{background:#ffffff22;border-color:#edadd5}
 .utility-links a:focus-visible{outline:3px solid #edadd5;outline-offset:3px}
+
+#destination{margin:0 0 12px;font-size:14px}.gallery-note{margin:8px 0 14px;padding:12px 14px;border-radius:12px;background:#f7f1fa;color:#62536e;font-size:13px;line-height:1.45}.footnote a{color:#8a5ca7;font-weight:700}

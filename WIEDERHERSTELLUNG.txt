@@ -19,3 +19,11 @@ Version 22 – privater Admin-Bereich
 - Dateien werden mit zufälligen Namen gespeichert; Original-Dateinamen werden nicht übernommen
 - Lesen, Hochladen, Aktualisieren und Löschen sind per Storage-RLS auf Administratoren beschränkt
 - Der öffentliche Bucket portfolio-media bleibt unverändert
+
+
+Version 23 – Upload-Zielwahl und privates Archiv
+- Im Admin-Upload kann vor dem Hochladen zwischen öffentlicher Galerie und privatem Archiv gewählt werden.
+- Öffentliche Bilder landen im öffentlichen Bucket portfolio-media unter galerie/.
+- Private Bilder landen ausschließlich im privaten Bucket mila-private-vault.
+- /mila-k7/ ist die getrennte, admin-geschützte Archivseite zum Anzeigen und Löschen privater Bilder.
+- /upload/ und /mila-k7/ prüfen beide den Admin-Status über Supabase.

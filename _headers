@@ -1,4 +1,7 @@
-
 /mila-k7/*
   X-Robots-Tag: noindex, nofollow, noarchive
   Cache-Control: private, no-store
+
+/upload/*
+  X-Robots-Tag: noindex, nofollow, noarchive
+  Cache-Control: no-store
