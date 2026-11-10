@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#211c30"><meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<link rel="manifest" href="manifest.webmanifest"><link rel="apple-touch-icon" href="icons/icon-192.png"><link rel="stylesheet" href="app.css">
+<title>Mila · Upload</title>
+</head>
+<body>
+<main class="shell">
+  <header><div class="brand">mila<span>♡</span></div><div class="sub">PRIVATE GALERIE-VERWALTUNG</div></header>
+  <section id="login" class="panel">
+    <h1>Willkommen zurück</h1><p>Melde dich an, um neue Bilder in Milas Galerie hochzuladen.</p>
+    <form id="login-form">
+      <label for="email">E-Mail-Adresse</label><input id="email" type="email" autocomplete="username" required>
+      <label for="password">Passwort</label><input id="password" type="password" autocomplete="current-password" required>
+      <button class="primary" type="submit">Anmelden</button>
+    </form><p id="login-message" class="message" role="status"></p>
+  </section>
+  <section id="uploader" class="panel" hidden>
+    <div class="topline"><div><h1>Bilder hochladen</h1><p>Neue Bilder erscheinen automatisch in der Website-Galerie.</p></div><button id="logout" class="quiet" type="button">Abmelden</button></div>
+    <label for="category">Kategorie</label>
+    <select id="category"><option value="lifestyle">Lifestyle</option><option value="gaming">Gaming</option><option value="ki-digital">KI & Digital</option><option value="reisen">Reisen</option><option value="alltag">Alltag</option></select>
+    <label class="drop" for="files"><span class="upload-icon">＋</span><strong>Bilder auswählen</strong><span>Mehrere Bilder möglich · JPG, PNG, WebP, GIF · max. 50 MB pro Bild</span><input id="files" type="file" accept="image/jpeg,image/png,image/webp,image/gif" multiple></label>
+    <div id="preview" class="preview"></div>
+    <button id="upload-button" class="primary" type="button" disabled>Ausgewählte Bilder hochladen</button>
+    <p id="upload-message" class="message" role="status"></p>
+    <div class="footnote">Uploads sind nur nach Anmeldung möglich. Bitte keine privaten oder fremden Bilder ohne Berechtigung hochladen.</div>
+  </section>
+  <footer>eGGad_ · Mila Galerie</footer>
+</main>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="../supabase-config.js"></script>
+<script src="app.js"></script>
+</body></html>
