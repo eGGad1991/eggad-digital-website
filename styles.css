@@ -24,3 +24,11 @@
 .gallery-lightbox:focus-visible,.gallery-lightbox-close:focus-visible{outline:3px solid var(--pink);outline-offset:4px}
 @media(max-width:760px){.gallery-lightbox{padding:14px}.gallery-lightbox img{max-width:96vw;max-height:82vh}.gallery-lightbox-close{top:10px;right:10px;width:42px;height:42px}}
 @media(prefers-reduced-motion:reduce){.gallery img{transition:none}}
+
+
+/* Einheitliche Rückwege auf allen Unterseiten */
+.back-home-wrap{max-width:var(--max);margin:0 auto;padding:18px 24px 0}
+.back-home{display:inline-flex;align-items:center;gap:8px;color:#d9c9e6;font-size:13px;font-weight:650;padding:8px 12px;border:1px solid #ffffff26;border-radius:999px;background:#211c3066;transition:background .18s ease,border-color .18s ease,color .18s ease}
+.back-home:hover{color:#fff;background:#352845;border-color:var(--pink)}
+.back-home:focus-visible,.route-links a:focus-visible,.bottom-links a:focus-visible{outline:3px solid var(--pink);outline-offset:3px}
+@media(max-width:480px){.back-home-wrap{padding:14px 18px 0}}

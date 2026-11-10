@@ -9,7 +9,7 @@
 </head>
 <body>
 <main class="shell">
-  <header><div class="brand">mila<span>♡</span></div><div class="sub">PRIVATE GALERIE-VERWALTUNG</div></header>
+  <header><a class="brand" href="/" aria-label="Zur Mila-Startseite">mila<span>♡</span></a><div class="sub">PRIVATE GALERIE-VERWALTUNG</div></header>
   <section id="login" class="panel">
     <h1>Willkommen zurück</h1><p>Melde dich an, um neue Bilder in Milas Galerie hochzuladen.</p>
     <form id="login-form">
@@ -17,17 +17,20 @@
       <label for="password">Passwort</label><input id="password" type="password" autocomplete="current-password" required>
       <button class="primary" type="submit">Anmelden</button>
     </form><p id="login-message" class="message" role="status"></p>
+    <nav class="route-links login-routes" aria-label="Weitere Mila-Seiten"><a href="/galerie.html">← Zur Galerie</a><a href="/">Zur Website</a></nav>
   </section>
   <section id="uploader" class="panel" hidden>
     <div class="topline"><div><h1>Bilder hochladen</h1><p>Neue Bilder erscheinen automatisch in der Website-Galerie.</p></div><button id="logout" class="quiet" type="button">Abmelden</button></div>
+    <nav class="route-links uploader-routes" aria-label="Navigation"><a href="/galerie.html">← Zur Galerie</a><a href="/">Zur Website</a></nav>
     <p class="gallery-note">Alle Bilder werden direkt in Milas Galerie gespeichert. Du musst keine Kategorie auswählen.</p>
     <label class="drop" for="files"><span class="upload-icon">＋</span><strong>Bilder auswählen</strong><span>Mehrere Bilder möglich · JPG, PNG, WebP, GIF · max. 50 MB pro Bild</span><input id="files" type="file" accept="image/jpeg,image/png,image/webp,image/gif" multiple></label>
     <div id="preview" class="preview"></div>
     <button id="upload-button" class="primary" type="button" disabled>Ausgewählte Bilder hochladen</button>
     <p id="upload-message" class="message" role="status"></p>
+    <a id="gallery-after-upload" class="gallery-after-upload" href="/galerie.html" hidden>Galerie mit den neuen Bildern öffnen →</a>
     <div class="footnote">Uploads sind nur nach Anmeldung möglich. Bitte keine privaten oder fremden Bilder ohne Berechtigung hochladen.</div>
   </section>
-  <footer>eGGad_ · Mila Galerie</footer>
+  <footer><span>Mila Galerie</span><nav class="route-links footer-routes" aria-label="Weitere Mila-Seiten"><a href="/galerie.html">Galerie</a><a href="/">Startseite</a></nav></footer>
 </main>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="../supabase-config.js"></script>
