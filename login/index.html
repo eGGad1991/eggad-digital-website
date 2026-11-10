@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#211c30">
+  <meta name="robots" content="noindex,nofollow">
+  <title>Mila · Admin-Login</title>
+  <link rel="stylesheet" href="login.css">
+</head>
+<body>
+  <main class="page">
+    <a class="brand" href="/">mila<span>♡</span></a>
+    <p class="eyebrow">PRIVATER BEREICH</p>
+    <section class="card" aria-labelledby="title">
+      <div class="lock" aria-hidden="true">⌑</div>
+      <h1 id="title">Schön, dass du da bist.</h1>
+      <p class="intro">Melde dich an, um Milas Bilder und Galerie zu verwalten.</p>
+      <form id="login-form">
+        <label for="email">E-Mail-Adresse</label>
+        <input id="email" name="email" type="email" autocomplete="username" inputmode="email" placeholder="name@beispiel.de" required>
+        <label for="password">Passwort</label>
+        <input id="password" name="password" type="password" autocomplete="current-password" placeholder="Dein Passwort" required>
+        <button id="login-button" type="submit">Anmelden</button>
+      </form>
+      <p id="message" class="message" role="status" aria-live="polite"></p>
+      <div class="bottom-links">
+        <a href="/upload/">Direkt zum Bilder-Upload</a>
+        <a href="/">Zurück zu Milas Website</a>
+      </div>
+    </section>
+    <p class="note">Nur für die Verwaltung der Mila-Galerie. Der Zugang ist geschützt.</p>
+  </main>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="/supabase-config.js"></script>
+  <script src="login.js"></script>
+</body>
+</html>

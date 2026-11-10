@@ -30,3 +30,6 @@ Sicherheit und Datenschutz:
 
 Wichtig:
 Die Supabase-Verbindung und Storage-Richtlinien wurden eingerichtet. Der Live-Upload über die veröffentlichte Cloudflare-Seite ist noch nicht getestet, weil diese Version noch nicht deployed wurde.
+
+
+V15-HINWEIS: Für den Handy-Zugang gibt es jetzt /login/ und im Website-Footer den Link „Admin-Login“. Nach Anmeldung öffnet sich /upload/.
