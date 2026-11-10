@@ -1,39 +1,99 @@
 <!DOCTYPE html>
-
 <html lang="de">
 <head>
-<meta charset="utf-8"/><meta content="width=device-width,initial-scale=1,viewport-fit=cover" name="viewport"/>
-<meta content="#211c30" name="theme-color"/><meta name="robots" content="noindex,nofollow,noarchive"/><meta content="yes" name="apple-mobile-web-app-capable"/>
-<meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"/>
-<link href="manifest.webmanifest" rel="manifest"/><link href="icons/icon-192.png" rel="apple-touch-icon"/><link href="app.css" rel="stylesheet"/>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#211c30">
+<meta name="robots" content="noindex,nofollow,noarchive">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icons/icon-192.png">
+<link rel="stylesheet" href="app.css">
 <title>Mila · Upload</title>
 </head>
 <body>
 <main class="shell">
-<header><a aria-label="Zur Mila-Startseite" class="brand" href="/">mila<span>♡</span></a><div class="sub">PRIVATE GALERIE-VERWALTUNG</div></header>
-<div class="utility-links"><a href="/">← Zurück zur Website</a><a href="/galerie/">Öffentliche Galerie</a><a href="/mila-k7/">Privates Archiv</a></div>
-<section class="panel" id="login">
-<h1>Willkommen zurück</h1><p>Melde dich mit deinem freigeschalteten Administratorkonto an, um Bilder hochzuladen.</p>
-<form id="login-form">
-<label for="email">E-Mail-Adresse</label><input autocomplete="username" id="email" required="" type="email"/>
-<label for="password">Passwort</label><input autocomplete="current-password" id="password" required="" type="password"/>
-<button class="primary" type="submit">Anmelden</button>
-</form><p class="message" id="login-message" role="status"></p>
-</section>
-<section class="panel" hidden="" id="uploader">
-<div class="topline"><div><h1>Bilder hochladen</h1><p>Lege vor dem Upload fest, wo die ausgewählten Bilder gespeichert werden.</p></div><button class="quiet" id="logout" type="button">Abmelden</button></div>
-<label for="destination">Speicherort der Bilder</label>
-<select id="destination"><option value="public">Öffentliche Galerie</option><option value="private">Privates Archiv (nur Admin)</option></select>
-<p class="gallery-note" id="destination-note">Öffentliche Galerie: Die Bilder können anschließend von allen Besuchern der Website angesehen werden.</p>
-<label class="drop" for="files"><span class="upload-icon">＋</span><strong>Bilder auswählen</strong><span>Mehrere Bilder möglich · JPG, PNG, WebP, GIF · max. 50 MB pro Bild</span><input accept="image/jpeg,image/png,image/webp,image/gif" id="files" multiple="" type="file"/></label>
-<div class="preview" id="preview"></div>
-<button class="primary" disabled="" id="upload-button" type="button">Ausgewählte Bilder hochladen</button>
-<p class="message" id="upload-message" role="status"></p>
-<div class="footnote">Uploads sind nur für freigeschaltete Administratoren möglich. Private Bilder werden getrennt gespeichert und erscheinen nicht in der öffentlichen Galerie. <a href="/mila-k7/">Privates Archiv öffnen</a>.</div>
-</section>
-<footer>Mila Galerie</footer>
+  <header>
+    <a class="brand" href="/" aria-label="Zur Mila-Startseite">mila<span>♡</span></a>
+    <div class="sub">PRIVATE GALERIE-VERWALTUNG</div>
+  </header>
+
+  <nav class="utility-links" aria-label="Workspace-Navigation">
+    <a href="/">← Zurück zur Website</a>
+    <a href="/galerie/">Öffentliche Galerie</a>
+  </nav>
+
+  <a class="private-gallery-cta" href="/mila-k7/">
+    <span class="private-gallery-icon" aria-hidden="true">▣</span>
+    <span class="private-gallery-copy">
+      <strong>Hier kommst du zur privaten Galerie</strong>
+      <small>Privates Archiv öffnen · Admin-Anmeldung erforderlich</small>
+    </span>
+    <span class="private-gallery-arrow" aria-hidden="true">›</span>
+  </a>
+
+  <section class="destination-panel" aria-labelledby="destination-title">
+    <div>
+      <p class="eyebrow">UPLOAD-EINSTELLUNG</p>
+      <h2 id="destination-title">In welche Galerie sollen die Bilder?</h2>
+      <p class="destination-intro">Wähle hier den Speicherort. Die Auswahl gilt für den nächsten Upload.</p>
+    </div>
+    <div class="destination-options" role="radiogroup" aria-labelledby="destination-title">
+      <label class="destination-option">
+        <input type="radio" name="destination" value="public" checked>
+        <span class="destination-choice-text">
+          <strong>Öffentliche Galerie</strong>
+          <small>Auf der normalen Website für Besucher sichtbar</small>
+        </span>
+      </label>
+      <label class="destination-option private-option">
+        <input type="radio" name="destination" value="private">
+        <span class="destination-choice-text">
+          <strong>Private Galerie</strong>
+          <small>Nur für dein freigeschaltetes Admin-Konto sichtbar</small>
+        </span>
+      </label>
+    </div>
+    <p class="destination-note" id="destination-note" aria-live="polite">Öffentliche Galerie: Die Bilder können anschließend von allen Besuchern der Website angesehen werden.</p>
+    <p class="destination-security-note">Der Upload selbst ist erst nach erfolgreicher Admin-Anmeldung möglich.</p>
+  </section>
+
+  <section class="panel" id="login">
+    <h1>Willkommen zurück</h1>
+    <p>Melde dich mit deinem freigeschalteten Administratorkonto an, um Bilder hochzuladen.</p>
+    <form id="login-form">
+      <label for="email">E-Mail-Adresse</label>
+      <input id="email" type="email" autocomplete="username" required>
+      <label for="password">Passwort</label>
+      <input id="password" type="password" autocomplete="current-password" required>
+      <button class="primary" type="submit">Anmelden</button>
+    </form>
+    <p class="message" id="login-message" role="status" aria-live="polite"></p>
+  </section>
+
+  <section class="panel" id="uploader" hidden>
+    <div class="topline">
+      <div><h1>Bilder hochladen</h1><p>Der oben ausgewählte Speicherort wird für diesen Upload verwendet.</p></div>
+      <button class="quiet" id="logout" type="button">Abmelden</button>
+    </div>
+    <p class="active-destination" id="upload-destination-summary">Aktiver Speicherort: Öffentliche Galerie</p>
+    <label class="drop" for="files">
+      <span class="upload-icon">＋</span>
+      <strong>Bilder auswählen</strong>
+      <span>Mehrere Bilder möglich · JPG, PNG, WebP, GIF · max. 50 MB pro Bild</span>
+      <input id="files" type="file" accept="image/jpeg,image/png,image/webp,image/gif" multiple>
+    </label>
+    <div class="preview" id="preview"></div>
+    <button class="primary" id="upload-button" type="button" disabled>Ausgewählte Bilder hochladen</button>
+    <p class="message" id="upload-message" role="status" aria-live="polite"></p>
+    <div class="footnote">Private Bilder werden getrennt von der öffentlichen Galerie gespeichert. <a href="/mila-k7/">Hier kommst du zur privaten Galerie.</a></div>
+  </section>
+
+  <footer>Mila Galerie-Verwaltung</footer>
 </main>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="../supabase-config.js"></script>
 <script src="app.js"></script>
-</body></html>
+</body>
+</html>

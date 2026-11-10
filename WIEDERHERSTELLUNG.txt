@@ -27,3 +27,12 @@ Version 23 – Upload-Zielwahl und privates Archiv
 - Private Bilder landen ausschließlich im privaten Bucket mila-private-vault.
 - /mila-k7/ ist die getrennte, admin-geschützte Archivseite zum Anzeigen und Löschen privater Bilder.
 - /upload/ und /mila-k7/ prüfen beide den Admin-Status über Supabase.
+
+Version 24 – Upload-Auswahl und Archiv-Link sichtbar gemacht
+- Die Auswahl zwischen öffentlicher und privater Galerie ist jetzt als zwei große Auswahlfelder direkt auf der Upload-Seite sichtbar, auch vor der Anmeldung.
+- Die Auswahl bleibt nach dem Admin-Login bestehen und wird unmittelbar über dem Upload-Feld nochmals als aktiver Speicherort angezeigt.
+- Der Link „Hier kommst du zur privaten Galerie“ steht gut sichtbar direkt auf der Upload-Seite und zusätzlich im Upload-Bereich.
+- Die Linkziele sind /mila-k7/ (privates Archiv) und /upload/ (Upload-Verwaltung).
+- Die Upload-Funktion bleibt bis zur erfolgreichen Admin-Prüfung gesperrt.
+
+- Service-Worker-Cache auf v4 aktualisiert, damit alte Upload-Seiten nicht weiter aus dem Cache angezeigt werden.

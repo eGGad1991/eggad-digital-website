@@ -1,6 +1,6 @@
 (() => {
   'use strict';
-  if ("serviceWorker" in navigator) window.addEventListener("load", () => navigator.serviceWorker.register("/upload/sw.js").catch(() => {}));
+  if ("serviceWorker" in navigator) window.addEventListener("load", () => navigator.serviceWorker.register("/upload/sw.js", { updateViaCache: "none" }).then(registration => registration.update()).catch(() => {}));
 
   const cfg = window.MILA_SUPABASE_CONFIG || {};
   const loginPanel = document.getElementById("login");
@@ -11,8 +11,9 @@
   const fileInput = document.getElementById("files");
   const preview = document.getElementById("preview");
   const uploadButton = document.getElementById("upload-button");
-  const destination = document.getElementById("destination");
+  const destinationInputs = Array.from(document.querySelectorAll('input[name="destination"]'));
   const destinationNote = document.getElementById("destination-note");
+  const uploadDestinationSummary = document.getElementById("upload-destination-summary");
   const logoutButton = document.getElementById("logout");
   const maxFileSize = 50 * 1024 * 1024;
   const allowedTypes = new Set(["image/jpeg", "image/png", "image/webp", "image/gif"]);
@@ -43,11 +44,21 @@
     uploaderPanel.hidden = false;
     message(loginMessage, "");
   }
+  function selectedDestination() {
+    const selected = destinationInputs.find(input => input.checked);
+    return selected ? selected.value : "public";
+  }
+
   function updateDestinationNote() {
-    if (destination.value === "private") {
-      destinationNote.textContent = "Privates Archiv: Die Bilder werden getrennt gespeichert und sind nur nach Admin-Anmeldung im privaten Archiv sichtbar.";
+    const target = selectedDestination();
+    if (target === "private") {
+      destinationNote.textContent = "PRIVATE GALERIE: Die Bilder werden im getrennten privaten Speicher abgelegt und sind nur nach Admin-Anmeldung im Privaten Archiv sichtbar.";
+      uploadDestinationSummary.textContent = "Aktiver Speicherort: Private Galerie · nur Admin";
+      uploadDestinationSummary.classList.add("is-private");
     } else {
-      destinationNote.textContent = "Öffentliche Galerie: Die Bilder können anschließend von allen Besuchern der Website angesehen werden.";
+      destinationNote.textContent = "ÖFFENTLICHE GALERIE: Die Bilder können nach dem Upload von allen Besuchern der Website angesehen werden.";
+      uploadDestinationSummary.textContent = "Aktiver Speicherort: Öffentliche Galerie";
+      uploadDestinationSummary.classList.remove("is-private");
     }
   }
 
@@ -109,7 +120,7 @@
     showLogin("Du wurdest abgemeldet.");
   });
 
-  destination.addEventListener("change", updateDestinationNote);
+  destinationInputs.forEach(input => input.addEventListener("change", updateDestinationNote));
   updateDestinationNote();
 
   fileInput.addEventListener("change", () => {
@@ -137,7 +148,7 @@
   uploadButton.addEventListener("click", async () => {
     if (!selectedFiles.length || uploadButton.disabled) return;
     uploadButton.disabled = true;
-    const target = destination.value;
+    const target = selectedDestination();
     const bucket = target === "private" ? (cfg.privateBucket || "mila-private-vault") : (cfg.bucket || "portfolio-media");
     let uploaded = 0;
     for (const file of selectedFiles) {
