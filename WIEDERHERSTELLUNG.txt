@@ -1,0 +1,12 @@
+MILA WEBSITE – CLOUDFLARE ROUTEN-FIX
+Version: v21
+
+Diese Version basiert auf dem wiederhergestellten v20-Stand.
+
+Wichtige Änderung:
+- Inhaltsseiten liegen jetzt jeweils in einem eigenen Ordner mit index.html.
+- Die Navigation verwendet feste, absolute Pfade wie /galerie/ und /gaming/.
+- Dadurch muss die Navigation keine .html-Adressen mehr verwenden, die Cloudflare Pages automatisch auf extension-lose URLs umleitet.
+- Die Rückwege zur Startseite bleiben auf allen Seiten erhalten.
+
+Cloudflare Pages: ZIP entpacken und den Inhalt dieses Ordners veröffentlichen, sodass die Startseiten-index.html direkt im Veröffentlichungs-Root liegt.

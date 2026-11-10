@@ -9,7 +9,6 @@
   const fileInput = document.getElementById("files");
   const preview = document.getElementById("preview");
   const uploadButton = document.getElementById("upload-button");
-  const galleryAfterUpload = document.getElementById("gallery-after-upload");
   let selectedFiles = [];
   let client;
 
@@ -46,13 +45,11 @@
     selectedFiles = [];
     preview.innerHTML = "";
     fileInput.value = "";
-    if (galleryAfterUpload) galleryAfterUpload.hidden = true;
   });
 
   fileInput.addEventListener("change", () => {
     selectedFiles = Array.from(fileInput.files || []);
     preview.innerHTML = "";
-    if (galleryAfterUpload) galleryAfterUpload.hidden = true;
     let valid = true;
     selectedFiles.forEach(file => {
       if (!/^image\/(jpeg|png|webp|gif)$/.test(file.type) || file.size > 50 * 1024 * 1024) valid = false;
@@ -86,8 +83,7 @@
     selectedFiles = [];
     preview.innerHTML = "";
     fileInput.value = "";
-    message(uploadMessage, `${success} Bild(er) erfolgreich hochgeladen.`, "success");
-    if (galleryAfterUpload) galleryAfterUpload.hidden = false;
+    message(uploadMessage, `${success} Bild(er) erfolgreich hochgeladen. Sie erscheinen nach dem Neuladen in der Galerie.`, "success");
     uploadButton.disabled = true;
   });
 })();

@@ -26,9 +26,12 @@
 @media(prefers-reduced-motion:reduce){.gallery img{transition:none}}
 
 
-/* Einheitliche Rückwege auf allen Unterseiten */
+/* Einheitlicher Rückweg: auf jeder Unterseite gut sichtbar */
 .back-home-wrap{max-width:var(--max);margin:0 auto;padding:18px 24px 0}
-.back-home{display:inline-flex;align-items:center;gap:8px;color:#d9c9e6;font-size:13px;font-weight:650;padding:8px 12px;border:1px solid #ffffff26;border-radius:999px;background:#211c3066;transition:background .18s ease,border-color .18s ease,color .18s ease}
-.back-home:hover{color:#fff;background:#352845;border-color:var(--pink)}
-.back-home:focus-visible,.route-links a:focus-visible,.bottom-links a:focus-visible{outline:3px solid var(--pink);outline-offset:3px}
-@media(max-width:480px){.back-home-wrap{padding:14px 18px 0}}
+.back-home-link{display:inline-flex;align-items:center;gap:8px;min-height:40px;padding:8px 13px;border:1px solid #e6a2d155;border-radius:999px;background:#211c30;color:#f8f4f7;font-size:13px;font-weight:600;transition:background .18s ease,border-color .18s ease,transform .18s ease}
+.back-home-link:hover{background:#382942;border-color:var(--pink);transform:translateX(-2px)}
+.back-home-link:focus-visible,.utility-links a:focus-visible{outline:3px solid var(--pink);outline-offset:3px}
+.utility-links{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin:0 auto 18px;padding:0 18px}
+.utility-links a{display:inline-flex;align-items:center;justify-content:center;min-height:42px;padding:9px 15px;border:1px solid #e6a2d155;border-radius:10px;background:#211c30;color:#f8f4f7;font-size:13px;font-weight:600}
+.utility-links a:hover{background:#382942;border-color:var(--pink)}
+@media(max-width:760px){.back-home-wrap{padding:14px 18px 0}.back-home-link{min-height:42px;font-size:14px}.utility-links{margin-bottom:14px}.utility-links a{flex:1 1 145px}}

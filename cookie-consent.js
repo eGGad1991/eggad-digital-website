@@ -109,7 +109,7 @@
     banner.innerHTML = `
       <div>
         <h2 id="mila-cookie-title">Deine Privatsphäre ist uns wichtig</h2>
-        <p>Wir verwenden notwendige Technologien für den Betrieb dieser Website. Mit deiner Zustimmung nutzen wir zusätzlich Google Analytics, um die Nutzung der Website statistisch auszuwerten. Du kannst deine Auswahl jederzeit ändern. Weitere Informationen findest du in unserer <a href="datenschutz.html">Datenschutzerklärung</a>.</p>
+        <p>Wir verwenden notwendige Technologien für den Betrieb dieser Website. Mit deiner Zustimmung nutzen wir zusätzlich Google Analytics, um die Nutzung der Website statistisch auszuwerten. Du kannst deine Auswahl jederzeit ändern. Weitere Informationen findest du in unserer <a href="/datenschutz/">Datenschutzerklärung</a>.</p>
       </div>
       <div class="mila-cookie-actions">
         <button type="button" class="mila-cookie-btn primary" id="mila-cookie-accept">Alle akzeptieren</button>
@@ -128,7 +128,7 @@
         <label><span><strong>Notwendige Technologien</strong><br><span class="small">Immer aktiv, damit die Website funktioniert.</span></span><input type="checkbox" checked disabled></label>
         <label><span><strong>Statistik (Google Analytics)</strong><br><span class="small">Hilft uns zu verstehen, wie die Website genutzt wird.</span></span><input type="checkbox" id="mila-cookie-analytics"></label>
         <p><strong>Werbung:</strong> Google AdSense ist vorerst deaktiviert. Für personalisierte Anzeigen im EWR ist eine von Google zertifizierte, TCF-integrierte CMP erforderlich. Dieses eigene Banner ersetzt diese CMP nicht.</p>
-        <p><a href="datenschutz.html">Datenschutzerklärung öffnen</a></p>
+        <p><a href="/datenschutz/">Datenschutzerklärung öffnen</a></p>
         <div class="mila-cookie-actions">
           <button type="button" class="mila-cookie-btn primary" id="mila-cookie-save">Auswahl speichern</button>
           <button type="button" class="mila-cookie-btn" id="mila-cookie-close">Schließen</button>
