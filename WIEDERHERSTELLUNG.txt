@@ -10,3 +10,12 @@ Wichtige Änderung:
 - Die Rückwege zur Startseite bleiben auf allen Seiten erhalten.
 
 Cloudflare Pages: ZIP entpacken und den Inhalt dieses Ordners veröffentlichen, sodass die Startseiten-index.html direkt im Veröffentlichungs-Root liegt.
+
+Version 22 – privater Admin-Bereich
+- Neuer, nicht in der öffentlichen Navigation verlinkter Bereich unter /mila-k7/
+- Seite ist mit noindex/nofollow versehen und verlangt eine Supabase-Anmeldung plus Admin-Prüfung über public.is_portfolio_admin()
+- Separater privater Storage-Bucket: mila-private-vault
+- Uploads werden nicht in die öffentliche Galerie geschrieben
+- Dateien werden mit zufälligen Namen gespeichert; Original-Dateinamen werden nicht übernommen
+- Lesen, Hochladen, Aktualisieren und Löschen sind per Storage-RLS auf Administratoren beschränkt
+- Der öffentliche Bucket portfolio-media bleibt unverändert
