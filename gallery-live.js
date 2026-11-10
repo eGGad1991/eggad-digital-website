@@ -34,7 +34,6 @@
       img.alt = "Mila – " + item.category.replace("-", " ");
       img.loading = "lazy";
       img.decoding = "async";
-      img.addEventListener("click", () => window.open(item.url, "_blank", "noopener"));
       grid.appendChild(img);
     });
   }
