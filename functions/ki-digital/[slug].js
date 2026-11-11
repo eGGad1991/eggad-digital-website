@@ -98,6 +98,67 @@ function formatDate(value) {
   return new Intl.DateTimeFormat("de-DE", { day: "2-digit", month: "long", year: "numeric", timeZone: "Europe/Berlin" }).format(date);
 }
 
+function imageSectionNumber(image) {
+  const alt = String(image?.alt_text || '').toLowerCase();
+  if (/browser|website-server|sitzung wiedererkennen|session-id/.test(alt)) return 1;
+  if (/einsatzbereiche|warenkorb|spracheinstellungen|nutzungsanalyse|personalisierte werbung/.test(alt)) return 2;
+  if (/cookie-arten|session-cookies|first-party|third-party/.test(alt)) return 3;
+  if (/einwilligung|datenschutz|cookie-banner|optionale cookies/.test(alt)) return 5;
+  return 0;
+}
+
+function placeInlineImages(bodyHtml, images) {
+  let body = String(bodyHtml || '');
+  const remaining = [];
+  const storagePrefix = `${SUPABASE_URL}/storage/v1/object/public/${BLOG_BUCKET}/`;
+  const list = (images || []).filter((item) => item?.public_url && !body.includes(item.public_url));
+
+  for (const item of list) {
+    let safeUrl = '';
+    try {
+      const parsed = new URL(item.public_url);
+      if (parsed.href.startsWith(storagePrefix)) safeUrl = parsed.href;
+    } catch (_) {}
+    if (!safeUrl) { remaining.push(item); continue; }
+
+    const sectionNumber = imageSectionNumber(item);
+    const headings = [...body.matchAll(/<h2\b[^>]*>[\s\S]*?<\/h2>/gi)];
+    const heading = headings.find((match) => {
+      const label = match[0].replace(/<[^>]+>/g, ' ').replace(/&nbsp;/gi, ' ').trim();
+      return new RegExp(`^${sectionNumber}\\s*\\.`, 'i').test(label);
+    });
+    if (!sectionNumber || !heading) { remaining.push(item); continue; }
+
+    const start = heading.index + heading[0].length;
+    const nextHeading = headings.find((match) => match.index > heading.index);
+    const end = nextHeading ? nextHeading.index : body.length;
+    const section = body.slice(start, end);
+    let insertion = -1;
+
+    if (sectionNumber === 1) {
+      const paragraphs = [...section.matchAll(/<p\b[^>]*>[\s\S]*?<\/p>/gi)];
+      const sessionParagraph = paragraphs.find((match) => /session[- ]?id/i.test(match[0]));
+      if (sessionParagraph) insertion = start + sessionParagraph.index + sessionParagraph[0].length;
+      else if (paragraphs[0]) insertion = start + paragraphs[0].index + paragraphs[0][0].length;
+    } else if (sectionNumber === 2) {
+      const lists = [...section.matchAll(/<ul\b[^>]*>[\s\S]*?<\/ul>/gi)];
+      if (lists.length) insertion = start + lists[0].index + lists[0][0].length;
+    } else {
+      // Cookie types and consent are best illustrated after the full explanation in that section.
+      const contentNodes = [...section.matchAll(/<(?:p|ul|ol|blockquote)\b[^>]*>[\s\S]*?<\/(?:p|ul|ol|blockquote)>/gi)];
+      if (contentNodes.length) {
+        const last = contentNodes[contentNodes.length - 1];
+        insertion = start + last.index + last[0].length;
+      }
+    }
+
+    if (insertion < 0) { remaining.push(item); continue; }
+    const figure = `<figure class="article-inline-image"><img src="${esc(safeUrl)}" alt="${esc(item.alt_text || 'Bild zum Blogbeitrag')}" loading="lazy" decoding="async"></figure>`;
+    body = `${body.slice(0, insertion)}\n${figure}\n${body.slice(insertion)}`;
+  }
+  return { body, remaining };
+}
+
 function articleHtml(post, images, origin) {
   const canonical = `${origin}/ki-digital/${encodeURIComponent(post.slug)}/`;
   const title = `${post.title} | KI & Digital | Mila`;
@@ -106,9 +167,11 @@ function articleHtml(post, images, origin) {
   const image = post.cover_image || fallbackImage;
   const published = post.published_at || post.created_at;
   const modified = post.updated_at || published;
-  const body = safeArticleHtml(post.body, origin);
-  const gallery = (images || []).filter((x) => x.public_url && !body.includes(x.public_url)).map((x) =>
-    `<figure><img src="${esc(x.public_url)}" alt="${esc(x.alt_text || "Bild aus dem Blogbeitrag")}" loading="lazy" decoding="async">${x.alt_text ? `<figcaption>${esc(x.alt_text)}</figcaption>` : ""}</figure>`
+  const safeBody = safeArticleHtml(post.body, origin);
+  const placed = placeInlineImages(safeBody, images);
+  const body = placed.body;
+  const gallery = placed.remaining.map((x) =>
+    `<figure><img src="${esc(x.public_url)}" alt="${esc(x.alt_text || "Bild aus dem Blogbeitrag")}" loading="lazy" decoding="async"></figure>`
   ).join("");
   const schema = {
     "@context": "https://schema.org",
