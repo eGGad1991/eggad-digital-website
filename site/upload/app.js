@@ -45,9 +45,11 @@
   }
   function updateDestinationNote() {
     if (destination.value === "private") {
-      destinationNote.textContent = "Privates Archiv: Die Bilder werden getrennt gespeichert und sind nur nach Admin-Anmeldung im privaten Archiv sichtbar.";
+      destinationNote.textContent = "Privates Archiv: Upload in den geschützten Supabase-Speicher „mila-private-vault“. Die Bilder sind nur nach Admin-Anmeldung unter /mila-k7/ sichtbar.";
+      uploadButton.textContent = "Bilder privat speichern";
     } else {
-      destinationNote.textContent = "Öffentliche Galerie: Die Bilder können anschließend von allen Besuchern der Website angesehen werden.";
+      destinationNote.textContent = "Öffentliche Galerie: Upload in den öffentlichen Supabase-Speicher „portfolio-media/galerie“. Die Bilder erscheinen anschließend auf /galerie/ und sind für alle Besucher sichtbar.";
+      uploadButton.textContent = "Bilder in die öffentliche Galerie hochladen";
     }
   }
 
@@ -138,8 +140,14 @@
     if (!selectedFiles.length || uploadButton.disabled) return;
     uploadButton.disabled = true;
     const target = destination.value;
+    if (target !== "public" && target !== "private") {
+      message(uploadMessage, "Bitte zuerst einen gültigen Speicherort auswählen.", "error");
+      uploadButton.disabled = false;
+      return;
+    }
     const bucket = target === "private" ? (cfg.privateBucket || "mila-private-vault") : (cfg.bucket || "portfolio-media");
     let uploaded = 0;
+    message(uploadMessage, target === "private" ? "Ziel: Privates Archiv (nur Admin)." : "Ziel: Öffentliche Galerie (für alle sichtbar).");
     for (const file of selectedFiles) {
       const safeName = file.name.normalize("NFKD").replace(/[^a-zA-Z0-9._-]+/g, "-").replace(/^-+|-+$/g, "").slice(-90);
       const path = target === "private"
@@ -160,9 +168,9 @@
     }
     clearSelection();
     if (target === "private") {
-      message(uploadMessage, `${uploaded} Bild(er) wurden privat gespeichert. Du findest sie im Privaten Archiv.`, "success");
+      message(uploadMessage, `${uploaded} Bild(er) wurden privat im Archiv gespeichert. Öffne „Privates Archiv“, um sie anzusehen.`, "success");
     } else {
-      message(uploadMessage, `${uploaded} Bild(er) wurden in der öffentlichen Galerie gespeichert.`, "success");
+      message(uploadMessage, `${uploaded} Bild(er) wurden in der öffentlichen Galerie gespeichert. Sie erscheinen unter „Öffentliche Galerie“.`, "success");
     }
   });
 })();

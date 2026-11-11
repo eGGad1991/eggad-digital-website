@@ -11,7 +11,11 @@
 <body>
 <main class="shell">
 <header><a aria-label="Zur Mila-Startseite" class="brand" href="/">mila<span>♡</span></a><div class="sub">PRIVATE GALERIE-VERWALTUNG</div></header>
-<div class="utility-links"><a href="/">← Zurück zur Website</a><a href="/galerie/">Öffentliche Galerie</a><a href="/mila-k7/">Privates Archiv</a></div>
+<nav class="utility-links" aria-label="Navigation">
+<a href="/">← Zurück zur Website</a>
+<a href="/galerie/">Öffentliche Galerie ansehen</a>
+<a href="/mila-k7/">Privates Archiv öffnen</a>
+</nav>
 <section class="panel" id="login">
 <h1>Willkommen zurück</h1><p>Melde dich mit deinem freigeschalteten Administratorkonto an, um Bilder hochzuladen.</p>
 <form id="login-form">
@@ -21,15 +25,25 @@
 </form><p class="message" id="login-message" role="status"></p>
 </section>
 <section class="panel" hidden="" id="uploader">
-<div class="topline"><div><h1>Bilder hochladen</h1><p>Lege vor dem Upload fest, wo die ausgewählten Bilder gespeichert werden.</p></div><button class="quiet" id="logout" type="button">Abmelden</button></div>
-<label for="destination">Speicherort der Bilder</label>
-<select id="destination"><option value="public">Öffentliche Galerie</option><option value="private">Privates Archiv (nur Admin)</option></select>
-<p class="gallery-note" id="destination-note">Öffentliche Galerie: Die Bilder können anschließend von allen Besuchern der Website angesehen werden.</p>
-<label class="drop" for="files"><span class="upload-icon">＋</span><strong>Bilder auswählen</strong><span>Mehrere Bilder möglich · JPG, PNG, WebP, GIF · max. 50 MB pro Bild</span><input accept="image/jpeg,image/png,image/webp,image/gif" id="files" multiple="" type="file"/></label>
+<div class="topline"><div><h1>Bilder hochladen</h1><p>Wähle zuerst aus, in welchem Bereich die Bilder gespeichert werden sollen.</p></div><button class="quiet" id="logout" type="button">Abmelden</button></div>
+<div class="upload-navigation" aria-label="Schnellnavigation">
+<a href="/" class="back-link">← Zurück zur Website</a>
+<a href="/galerie/">Öffentliche Galerie</a>
+<a href="/mila-k7/">Privates Archiv</a>
+</div>
+<div class="destination-box">
+<label for="destination">1. Speicherort auswählen</label>
+<select id="destination" name="destination" required>
+<option value="public">Öffentliche Galerie · für alle Besucher sichtbar</option>
+<option value="private">Privates Archiv · nur für Administratoren sichtbar</option>
+</select>
+<p class="gallery-note" id="destination-note">Öffentliche Galerie: Die Bilder werden im öffentlichen Speicher abgelegt und können anschließend von allen Besuchern angesehen werden.</p>
+</div>
+<label class="drop" for="files"><span class="step-label">2. Bilder auswählen</span><span class="upload-icon">＋</span><strong>Bilder auswählen</strong><span>Mehrere Bilder möglich · JPG, PNG, WebP, GIF · max. 50 MB pro Bild</span><input accept="image/jpeg,image/png,image/webp,image/gif" id="files" multiple="" type="file"/></label>
 <div class="preview" id="preview"></div>
-<button class="primary" disabled="" id="upload-button" type="button">Ausgewählte Bilder hochladen</button>
+<button class="primary" disabled="" id="upload-button" type="button">Bilder in den ausgewählten Bereich hochladen</button>
 <p class="message" id="upload-message" role="status"></p>
-<div class="footnote">Uploads sind nur für freigeschaltete Administratoren möglich. Private Bilder werden getrennt gespeichert und erscheinen nicht in der öffentlichen Galerie. <a href="/mila-k7/">Privates Archiv öffnen</a>.</div>
+<div class="footnote">Uploads sind nur für freigeschaltete Administratoren möglich. Die öffentliche Galerie und das private Archiv verwenden getrennte Speicherbereiche. Private Bilder erscheinen niemals in der öffentlichen Galerie.</div>
 </section>
 <footer>Mila Galerie</footer>
 </main>

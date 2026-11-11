@@ -9,3 +9,17 @@
 .utility-links a:focus-visible{outline:3px solid #edadd5;outline-offset:3px}
 
 #destination{margin:0 0 12px;font-size:14px}.gallery-note{margin:8px 0 14px;padding:12px 14px;border-radius:12px;background:#f7f1fa;color:#62536e;font-size:13px;line-height:1.45}.footnote a{color:#8a5ca7;font-weight:700}
+
+
+/* Upload-Navigation und Speicherort deutlich hervorheben */
+.upload-navigation{display:flex;flex-wrap:wrap;gap:8px;margin:4px 0 20px}
+.upload-navigation a{display:inline-flex;align-items:center;justify-content:center;min-height:40px;padding:9px 12px;border:1px solid #dacde5;border-radius:10px;background:#faf7fc;color:#51435d;font-size:12px;font-weight:700;text-decoration:none}
+.upload-navigation a.back-link{background:#392a4b;border-color:#392a4b;color:#fff}
+.upload-navigation a:hover{filter:brightness(.97);transform:translateY(-1px)}
+.destination-box{padding:15px;border:1px solid #e4d9ec;border-radius:15px;background:#fcfaff;margin:2px 0 16px}
+.destination-box label{margin:0 0 8px;font-size:14px}
+.destination-box select{border:2px solid #b895d3;background:#fff;min-height:50px;font-weight:650}
+.destination-box .gallery-note{margin:10px 0 0}
+.step-label{align-self:flex-start!important;color:#8a5ca7!important;font-size:11px!important;font-weight:800!important;text-transform:uppercase;letter-spacing:.08em}
+.utility-links{margin-bottom:16px}
+@media(max-width:520px){.upload-navigation{display:grid;grid-template-columns:1fr}.upload-navigation a{width:100%}.destination-box{padding:12px}}

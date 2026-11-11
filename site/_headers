@@ -30,3 +30,6 @@
 
 /datenschutz/*
   X-Robots-Tag: noindex, follow
+
+/upload/sw.js
+  Cache-Control: no-cache, no-store, must-revalidate

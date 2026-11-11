@@ -1,5 +1,57 @@
-const CACHE='mila-upload-v3';
-const FILES=['/upload/','/upload/index.html','/upload/app.css','/upload/app.js','/upload/manifest.webmanifest','/supabase-config.js'];
-self.addEventListener('install',e=>e.waitUntil(caches.open(CACHE).then(c=>c.addAll(FILES))));
-self.addEventListener('activate',e=>e.waitUntil(caches.keys().then(keys=>Promise.all(keys.filter(k=>k!==CACHE).map(k=>caches.delete(k))))));
-self.addEventListener('fetch',e=>{if(e.request.method!=='GET')return;const u=new URL(e.request.url);if(u.origin!==location.origin)return;e.respondWith(caches.match(e.request).then(r=>r||fetch(e.request)));});
+const CACHE = "mila-upload-v4";
+const FILES = [
+  "/upload/",
+  "/upload/index.html",
+  "/upload/app.css",
+  "/upload/app.js",
+  "/upload/manifest.webmanifest",
+  "/supabase-config.js"
+];
+const NETWORK_FIRST = new Set(FILES);
+
+self.addEventListener("install", (event) => {
+  event.waitUntil((async () => {
+    const cache = await caches.open(CACHE);
+    await cache.addAll(FILES);
+    await self.skipWaiting();
+  })());
+});
+
+self.addEventListener("activate", (event) => {
+  event.waitUntil((async () => {
+    const keys = await caches.keys();
+    await Promise.all(keys
+      .filter((key) => key.startsWith("mila-upload-") && key !== CACHE)
+      .map((key) => caches.delete(key)));
+    await self.clients.claim();
+  })());
+});
+
+self.addEventListener("fetch", (event) => {
+  const request = event.request;
+  if (request.method !== "GET") return;
+  const url = new URL(request.url);
+  if (url.origin !== self.location.origin) return;
+
+  const isUploadUi = NETWORK_FIRST.has(url.pathname);
+  if (isUploadUi) {
+    event.respondWith((async () => {
+      const cache = await caches.open(CACHE);
+      try {
+        const fresh = await fetch(new Request(request, { cache: "no-store" }));
+        if (fresh && fresh.ok) await cache.put(request, fresh.clone());
+        return fresh;
+      } catch (error) {
+        const fallback = await cache.match(request);
+        if (fallback) return fallback;
+        throw error;
+      }
+    })());
+    return;
+  }
+
+  event.respondWith((async () => {
+    const cached = await caches.match(request);
+    return cached || fetch(request);
+  })());
+});
