@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+
+<html lang="de">
+<head>
+<meta charset="utf-8"/><meta content="width=device-width,initial-scale=1,viewport-fit=cover" name="viewport"/>
+<meta content="#100e19" name="theme-color"/>
+<title>Blogverwaltung | Mila</title><link href="/styles.css" rel="stylesheet"/><link href="/blog.css" rel="stylesheet"/>
+<meta content="noindex,nofollow,noarchive" name="robots"/></head>
+<body class="admin-body">
+<header><div class="bar"><a class="logo" href="/">mila<span>♡</span></a><div class="admin-top-links"><a href="/ki-digital/">Blog ansehen ↗</a><a href="/upload/">Bilder-Upload</a><button class="admin-logout" hidden="" id="logout-button" type="button">Abmelden</button></div></div></header>
+<main class="wrap admin-wrap">
+<section class="admin-login panel" id="admin-login-panel">
+<span class="eyebrow">PRIVATER BEREICH</span><h1>Blogverwaltung</h1><p>Melde dich mit deinem bestehenden Admin-Konto an. Nur freigegebene Administratoren können Beiträge und Blogbilder verwalten.</p>
+<form class="admin-form-grid" id="admin-login-form">
+<label for="admin-email">E-Mail-Adresse</label><input autocomplete="username" id="admin-email" required="" type="email"/>
+<label for="admin-password">Passwort</label><input autocomplete="current-password" id="admin-password" required="" type="password"/>
+<button class="btn" id="admin-login-button" type="submit">Anmelden</button>
+</form><p class="admin-message" id="admin-login-message" role="status"></p>
+</section>
+<section hidden="" id="admin-app">
+<div class="admin-title-row"><div><span class="eyebrow">INHALTE VERWALTEN</span><h2>Dein Blog</h2><p>Entwürfe bleiben privat. Erst nach deiner Freigabe wird ein Beitrag öffentlich angezeigt.</p></div><button class="btn" id="new-post-button" type="button">+ Neuer Beitrag</button></div>
+<div class="admin-layout">
+<section class="panel admin-editor-panel">
+<div class="editor-head"><h2 id="editor-heading">Neuen Beitrag vorbereiten</h2><span class="status-pill" id="editor-status">Noch nicht gespeichert</span></div>
+<form class="admin-form-grid" id="post-form">
+<label for="post-title">Titel</label><input id="post-title" maxlength="160" placeholder="Worum geht es in deinem Beitrag?" required=""/>
+<label for="post-slug">URL / Kurzname</label><input id="post-slug" maxlength="120" placeholder="wird-aus-dem-titel-erstellt" required=""/>
+<small class="form-hint" id="slug-hint">Wird beim ersten Speichern als Teil der Artikeladresse verwendet.</small>
+<label for="post-category">Kategorie</label>
+<select id="post-category"><option>KI im Alltag</option><option>KI-Tools</option><option>Content &amp; Social Media</option><option>Digitales Marketing</option><option>Marketing-Automation</option><option>Anleitungen &amp; Tutorials</option><option>Erfahrungen</option></select>
+<label for="post-excerpt">Kurzbeschreibung</label><textarea id="post-excerpt" maxlength="320" placeholder="Der kurze Text, der auf der Blogübersicht erscheint." rows="3"></textarea>
+<label>Artikelinhalt</label>
+<div class="rich-editor-wrap">
+<div aria-label="Text formatieren" class="editor-toolbar" role="toolbar">
+<button data-command="formatBlock" data-value="h2" type="button">Überschrift</button>
+<button data-command="formatBlock" data-value="h3" type="button">Zwischenüberschrift</button>
+<button data-command="bold" type="button"><b>Fett</b></button>
+<button data-command="italic" type="button"><i>Kursiv</i></button>
+<button data-command="insertUnorderedList" type="button">• Liste</button>
+<button data-command="insertOrderedList" type="button">1. Liste</button>
+<button id="add-link-button" type="button">Link</button>
+</div>
+<div aria-multiline="true" class="rich-editor" contenteditable="true" data-placeholder="Schreibe hier deinen Artikel …" id="post-body" role="textbox"></div>
+</div>
+<div class="media-section">
+<h3>Bilder für diesen Beitrag</h3>
+<p class="form-hint">Beim Speichern bekommt jeder Beitrag seinen eigenen Medienordner. Titelbild und Bilder im Text werden darin abgelegt.</p>
+<div class="media-actions">
+<label class="upload-control" for="cover-upload">Titelbild hochladen</label><input accept="image/jpeg,image/png,image/webp,image/gif" hidden="" id="cover-upload" type="file"/>
+<label class="upload-control secondary-upload" for="inline-upload">Bild in den Text einfügen</label><input accept="image/jpeg,image/png,image/webp,image/gif" hidden="" id="inline-upload" type="file"/>
+</div>
+<div class="current-cover-preview" hidden="" id="current-cover-preview"></div>
+<div class="post-media-list" id="post-media-list"></div>
+</div>
+<div class="folder-note"><strong>Medienordner:</strong> <code id="media-folder-label">Wird beim Speichern erstellt</code></div>
+<div class="editor-actions">
+<button class="btn" id="save-draft-button" type="submit">Entwurf speichern</button>
+<button class="btn publish-button" disabled="" id="publish-post-button" type="button">Beitrag freigeben &amp; veröffentlichen</button>
+<button class="danger-button" hidden="" id="delete-post-button" type="button">Beitrag löschen</button>
+</div>
+<p class="admin-message" id="post-form-message" role="status"></p>
+</form>
+</section>
+<aside class="panel admin-list-panel">
+<div class="list-head"><h2>Beiträge</h2><span class="blog-count" id="admin-post-count"></span></div>
+<div class="admin-post-list" id="admin-post-list"><p class="form-hint">Beiträge werden geladen …</p></div>
+</aside>
+</div>
+</section>
+</main>
+<footer><a class="logo" href="/">mila<span>♡</span></a><div class="footerlinks"><a href="/ki-digital/">Blog ansehen</a><a href="/">Zur Startseite</a></div><small>Privater Verwaltungsbereich · Mila</small></footer>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.119.0"></script><script src="/supabase-config.js"></script><script defer="" src="/blog-admin/blog-admin.js"></script>
+</body></html>

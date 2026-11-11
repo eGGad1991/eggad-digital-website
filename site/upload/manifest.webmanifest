@@ -1,0 +1,13 @@
+{
+  "name": "Mila Galerie Upload",
+  "short_name": "Mila Upload",
+  "start_url": "/upload/",
+  "scope": "/upload/",
+  "display": "standalone",
+  "background_color": "#211c30",
+  "theme_color": "#211c30",
+  "icons": [
+    { "src": "/upload/icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "/upload/icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" }
+  ]
+}

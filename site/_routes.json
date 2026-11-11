@@ -1,0 +1,11 @@
+{
+  "version": 1,
+  "include": [
+    "/ki-digital/*",
+    "/sitemap.xml"
+  ],
+  "exclude": [
+    "/ki-digital/",
+    "/ki-digital/index.html"
+  ]
+}
