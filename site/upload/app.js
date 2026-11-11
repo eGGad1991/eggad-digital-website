@@ -13,6 +13,12 @@
   const uploadButton = document.getElementById("upload-button");
   const destination = document.getElementById("destination");
   const destinationNote = document.getElementById("destination-note");
+  const blogOptions = document.getElementById("blog-options");
+  const blogPostSelect = document.getElementById("blog-post-select");
+  const blogImageKind = document.getElementById("blog-image-kind");
+  const blogAltText = document.getElementById("blog-alt-text");
+  const fileSelectionHint = document.getElementById("file-selection-hint");
+  const blogNote = document.getElementById("blog-note");
   const logoutButton = document.getElementById("logout");
   const maxFileSize = 50 * 1024 * 1024;
   const allowedTypes = new Set(["image/jpeg", "image/png", "image/webp", "image/gif"]);
@@ -20,6 +26,8 @@
   let selectedPreviewUrls = [];
   let client;
   let verifiedToken = null;
+  let blogPosts = [];
+  let blogPostsLoaded = false;
 
   function message(el, text, type = "") {
     el.textContent = text;
@@ -44,12 +52,85 @@
     message(loginMessage, "");
   }
   function updateDestinationNote() {
-    if (destination.value === "private") {
+    const target = destination.value;
+    const isBlog = target === "blog";
+    blogOptions.hidden = !isBlog;
+    fileInput.multiple = !isBlog;
+    fileSelectionHint.textContent = isBlog
+      ? "Ein Bild pro Upload · JPG, PNG, WebP, GIF · max. 50 MB"
+      : "Mehrere Bilder möglich · JPG, PNG, WebP, GIF · max. 50 MB pro Bild";
+
+    if (isBlog) {
+      destinationNote.textContent = "Blog: Upload in den öffentlichen Supabase-Speicher „mila-blog-media“. Wähle einen Beitrag, den Bildtyp und einen passenden Alt-Text. Das Bild wird direkt mit dem Beitrag verknüpft.";
+      uploadButton.textContent = "Bild dem Blogbeitrag hinzufügen";
+      if (selectedFiles.length > 1) {
+        clearSelection();
+        message(uploadMessage, "Für Blogbilder bitte jeweils ein Bild auswählen, damit jeder Alt-Text einzeln gespeichert wird.", "error");
+      }
+      if (!blogPostsLoaded) loadBlogPosts().catch((error) => {
+        blogNote.textContent = `Blogbeiträge konnten nicht geladen werden: ${error.message || "Bitte erneut anmelden."}`;
+      });
+    } else if (target === "private") {
       destinationNote.textContent = "Privates Archiv: Upload in den geschützten Supabase-Speicher „mila-private-vault“. Die Bilder sind nur nach Admin-Anmeldung unter /mila-k7/ sichtbar.";
       uploadButton.textContent = "Bilder privat speichern";
     } else {
       destinationNote.textContent = "Öffentliche Galerie: Upload in den öffentlichen Supabase-Speicher „portfolio-media/galerie“. Die Bilder erscheinen anschließend auf /galerie/ und sind für alle Besucher sichtbar.";
       uploadButton.textContent = "Bilder in die öffentliche Galerie hochladen";
+    }
+  }
+
+  async function loadBlogPosts() {
+    if (blogPostsLoaded) return;
+    blogPostSelect.disabled = true;
+    blogPostSelect.replaceChildren(new Option("Blogbeiträge werden geladen …", ""));
+    const { data, error } = await client.from("blog_posts")
+      .select("id,title,slug,media_folder,status,updated_at")
+      .order("updated_at", { ascending: false });
+    if (error) throw error;
+    blogPosts = data || [];
+    blogPostSelect.replaceChildren(new Option(
+      blogPosts.length ? "Bitte Blogbeitrag auswählen" : "Noch keine Blogbeiträge vorhanden",
+      ""
+    ));
+    blogPosts.forEach((post) => {
+      const status = post.status === "published" ? "veröffentlicht" : "Entwurf";
+      blogPostSelect.add(new Option(`${post.title} · ${status}`, post.id));
+    });
+    if (blogPosts.length === 1) blogPostSelect.value = blogPosts[0].id;
+    blogPostSelect.disabled = blogPosts.length === 0;
+    blogPostsLoaded = true;
+    blogNote.textContent = blogPosts.length
+      ? "Blogbilder werden im Bucket „mila-blog-media“ im Medienordner des Beitrags gespeichert. Jeder Upload erhält einen eigenen Alt-Text."
+      : "Es gibt noch keine gespeicherten Blogbeiträge. Lege zuerst in der Blogverwaltung einen Entwurf an.";
+  }
+
+  function slugifyFilename(value) {
+    return String(value || "bild").toLowerCase().trim()
+      .replace(/ä/g, "ae").replace(/ö/g, "oe").replace(/ü/g, "ue").replace(/ß/g, "ss")
+      .normalize("NFD").replace(/[\u0300-\u036f]/g, "")
+      .replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "").slice(0, 100) || "bild";
+  }
+
+  async function optimizeBlogImage(file) {
+    if (!file || file.type === "image/gif" || !("createImageBitmap" in window)) return file;
+    if (!["image/jpeg", "image/png", "image/webp"].includes(file.type)) return file;
+    try {
+      const bitmap = await createImageBitmap(file);
+      const maxEdge = 1800;
+      const scale = Math.min(1, maxEdge / Math.max(bitmap.width, bitmap.height));
+      const canvas = document.createElement("canvas");
+      canvas.width = Math.max(1, Math.round(bitmap.width * scale));
+      canvas.height = Math.max(1, Math.round(bitmap.height * scale));
+      const context = canvas.getContext("2d", { alpha: true });
+      context.drawImage(bitmap, 0, 0, canvas.width, canvas.height);
+      bitmap.close?.();
+      const blob = await new Promise((resolve) => canvas.toBlob(resolve, "image/webp", 0.82));
+      if (!blob || blob.size >= file.size) return file;
+      const base = file.name.replace(/\.[^.]+$/, "") || "bild";
+      return new File([blob], `${base}.webp`, { type: "image/webp", lastModified: Date.now() });
+    } catch (error) {
+      console.warn("Blogbild-Optimierung übersprungen:", error);
+      return file;
     }
   }
 
@@ -80,6 +161,9 @@
       return;
     }
     showUploader();
+    loadBlogPosts().catch((loadError) => {
+      blogNote.textContent = `Blogbeiträge konnten nicht geladen werden: ${loadError.message || "Bitte erneut versuchen."}`;
+    });
   }
 
   client.auth.onAuthStateChange((_event, session) => {
@@ -140,11 +224,98 @@
     if (!selectedFiles.length || uploadButton.disabled) return;
     uploadButton.disabled = true;
     const target = destination.value;
-    if (target !== "public" && target !== "private") {
+    if (!["public", "private", "blog"].includes(target)) {
       message(uploadMessage, "Bitte zuerst einen gültigen Speicherort auswählen.", "error");
       uploadButton.disabled = false;
       return;
     }
+
+    if (target === "blog") {
+      const post = blogPosts.find((item) => item.id === blogPostSelect.value);
+      const kind = blogImageKind.value;
+      const altText = blogAltText.value.trim();
+      if (!post) {
+        message(uploadMessage, "Bitte zuerst einen Blogbeitrag auswählen.", "error");
+        uploadButton.disabled = false;
+        return;
+      }
+      if (!["cover", "inline"].includes(kind)) {
+        message(uploadMessage, "Bitte einen gültigen Bildtyp auswählen.", "error");
+        uploadButton.disabled = false;
+        return;
+      }
+      if (selectedFiles.length !== 1) {
+        message(uploadMessage, "Für Blogbilder bitte genau ein Bild pro Upload auswählen.", "error");
+        uploadButton.disabled = false;
+        return;
+      }
+      if (!altText) {
+        message(uploadMessage, "Bitte einen passenden Alt-Text für das Bild eintragen.", "error");
+        uploadButton.disabled = false;
+        blogAltText.focus();
+        return;
+      }
+      const originalFile = selectedFiles[0];
+      const file = await optimizeBlogImage(originalFile);
+      const extension = (file.name.split(".").pop() || "jpg").toLowerCase().replace(/[^a-z0-9]/g, "") || "jpg";
+      const baseName = slugifyFilename(file.name.replace(/\.[^.]+$/, ""));
+      const mediaFolder = post.media_folder || `blog-posts/${post.slug}`;
+      const folder = kind === "cover" ? "cover" : "inline";
+      const storagePath = `${mediaFolder}/${folder}/${Date.now()}-${baseName}.${extension}`;
+      const bucket = cfg.blogBucket || "mila-blog-media";
+      message(uploadMessage, `Lade Blogbild für „${post.title}“ hoch …`);
+      const { error: uploadError } = await client.storage.from(bucket).upload(storagePath, file, {
+        contentType: file.type, upsert: false, cacheControl: "31536000"
+      });
+      if (uploadError) {
+        message(uploadMessage, `Blog-Upload fehlgeschlagen: ${uploadError.message}`, "error");
+        uploadButton.disabled = false;
+        return;
+      }
+
+      const { data: publicData } = client.storage.from(bucket).getPublicUrl(storagePath);
+      const publicUrl = publicData?.publicUrl;
+      if (!publicUrl) {
+        await client.storage.from(bucket).remove([storagePath]);
+        message(uploadMessage, "Die öffentliche Bildadresse konnte nicht erstellt werden.", "error");
+        uploadButton.disabled = false;
+        return;
+      }
+
+      const { data: imageRow, error: rowError } = await client.from("blog_post_images").insert({
+        post_id: post.id,
+        storage_path: storagePath,
+        public_url: publicUrl,
+        alt_text: altText,
+        image_kind: kind
+      }).select("id").single();
+      if (rowError) {
+        await client.storage.from(bucket).remove([storagePath]);
+        message(uploadMessage, `Bilddatei wurde hochgeladen, aber nicht dem Beitrag zugeordnet: ${rowError.message}`, "error");
+        uploadButton.disabled = false;
+        return;
+      }
+
+      if (kind === "cover") {
+        const { error: coverError } = await client.from("blog_posts")
+          .update({ cover_image: publicUrl }).eq("id", post.id);
+        if (coverError) {
+          await client.from("blog_post_images").delete().eq("id", imageRow.id);
+          await client.storage.from(bucket).remove([storagePath]);
+          message(uploadMessage, `Das Titelbild konnte nicht im Beitrag gesetzt werden: ${coverError.message}`, "error");
+          uploadButton.disabled = false;
+          return;
+        }
+      }
+
+      clearSelection();
+      blogAltText.value = "";
+      message(uploadMessage, kind === "cover"
+        ? `Titelbild wurde „${post.title}“ zugeordnet und gespeichert.`
+        : `Bild wurde „${post.title}“ als Beitragsbild zugeordnet. Es erscheint im Bereich „Weitere Bilder“ des Artikels.`, "success");
+      return;
+    }
+
     const bucket = target === "private" ? (cfg.privateBucket || "mila-private-vault") : (cfg.bucket || "portfolio-media");
     let uploaded = 0;
     message(uploadMessage, target === "private" ? "Ziel: Privates Archiv (nur Admin)." : "Ziel: Öffentliche Galerie (für alle sichtbar).");

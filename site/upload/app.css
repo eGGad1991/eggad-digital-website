@@ -23,3 +23,12 @@
 .step-label{align-self:flex-start!important;color:#8a5ca7!important;font-size:11px!important;font-weight:800!important;text-transform:uppercase;letter-spacing:.08em}
 .utility-links{margin-bottom:16px}
 @media(max-width:520px){.upload-navigation{display:grid;grid-template-columns:1fr}.upload-navigation a{width:100%}.destination-box{padding:12px}}
+
+
+/* Zusätzliche Felder für Blog-Uploads */
+.blog-options{margin-top:14px;padding:14px;border:1px solid #e4d9ec;border-radius:14px;background:#f8f3fb}
+.blog-options[hidden]{display:none}
+.blog-options label{margin:12px 0 7px}
+.blog-options label:first-child{margin-top:0}
+.blog-options select,.blog-options input{min-height:46px}
+.blog-options .gallery-note{margin:12px 0 0}
