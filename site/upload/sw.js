@@ -1,4 +1,4 @@
-const CACHE = "mila-upload-v7";
+const CACHE = "mila-upload-v8";
 const FILES = [
   "/upload/",
   "/upload/index.html",

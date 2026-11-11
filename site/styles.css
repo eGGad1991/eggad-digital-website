@@ -35,3 +35,7 @@
 .utility-links a{display:inline-flex;align-items:center;justify-content:center;min-height:42px;padding:9px 15px;border:1px solid #e6a2d155;border-radius:10px;background:#211c30;color:#f8f4f7;font-size:13px;font-weight:600}
 .utility-links a:hover{background:#382942;border-color:var(--pink)}
 @media(max-width:760px){.back-home-wrap{padding:14px 18px 0}.back-home-link{min-height:42px;font-size:14px}.utility-links{margin-bottom:14px}.utility-links a{flex:1 1 145px}}
+
+
+/* Admin navigation entry */
+nav a.admin-nav-link{color:var(--pink);font-weight:700;border:1px solid #d7a4ff66;border-radius:999px;padding:5px 10px}nav a.admin-nav-link:hover{color:#fff;background:#a66bd522}
