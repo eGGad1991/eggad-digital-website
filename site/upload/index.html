@@ -16,6 +16,26 @@
 <a href="/galerie/">Öffentliche Galerie ansehen</a>
 <a href="/mila-k7/">Privates Archiv öffnen</a>
 </nav>
+<section class="panel destination-panel" id="destination-panel" aria-labelledby="destination-heading" hidden>
+  <div class="eyebrow">UPLOAD-EINSTELLUNG</div>
+  <h1 id="destination-heading">In welche Galerie sollen die Bilder?</h1>
+  <p>Wähle hier den Speicherort. Die Auswahl gilt für den nächsten Upload.</p>
+  <div class="destination-choices" role="radiogroup" aria-label="Speicherort auswählen">
+    <label class="destination-choice">
+      <input type="radio" name="upload-destination" value="public" checked>
+      <span class="choice-content"><strong>Öffentliche Galerie</strong><small>Auf der normalen Website für Besucher sichtbar</small></span>
+    </label>
+    <label class="destination-choice">
+      <input type="radio" name="upload-destination" value="private">
+      <span class="choice-content"><strong>Private Galerie</strong><small>Nur für dein freigeschaltetes Admin-Konto sichtbar</small></span>
+    </label>
+    <label class="destination-choice">
+      <input type="radio" name="upload-destination" value="blog">
+      <span class="choice-content"><strong>Blog</strong><small>Bilder direkt einem Blogbeitrag zuordnen</small></span>
+    </label>
+  </div>
+  <p class="gallery-note" id="destination-note">Öffentliche Galerie: Die Bilder können nach dem Upload von allen Besuchern der Website angesehen werden.</p>
+</section>
 <section class="panel" id="login">
 <h1>Willkommen zurück</h1><p>Melde dich mit deinem freigeschalteten Administratorkonto an, um Bilder hochzuladen.</p>
 <form id="login-form">
@@ -31,14 +51,6 @@
 <a href="/galerie/">Öffentliche Galerie</a>
 <a href="/mila-k7/">Privates Archiv</a>
 </div>
-<div class="destination-box">
-<label for="destination">1. Speicherort auswählen</label>
-<select id="destination" name="destination" required>
-<option value="public">Öffentliche Galerie · für alle Besucher sichtbar</option>
-<option value="private">Privates Archiv · nur für Administratoren sichtbar</option>
-<option value="blog">Blog · einem Blogbeitrag zuordnen</option>
-</select>
-<p class="gallery-note" id="destination-note">Öffentliche Galerie: Die Bilder werden im öffentlichen Speicher abgelegt und können anschließend von allen Besuchern angesehen werden.</p>
 <div class="blog-options" id="blog-options" hidden>
 <label for="blog-post-select">Blogbeitrag auswählen</label>
 <select id="blog-post-select">
@@ -53,8 +65,7 @@
 <input id="blog-alt-text" maxlength="300" placeholder="Beschreibe kurz, was auf dem Bild zu sehen ist" type="text"/>
 <p class="gallery-note" id="blog-note">Blogbilder werden im Bucket „mila-blog-media“ beim ausgewählten Beitrag gespeichert. Jedes Bild benötigt einen eigenen Alt-Text.</p>
 </div>
-</div>
-<label class="drop" for="files"><span class="step-label">2. Bilder auswählen</span><span class="upload-icon">＋</span><strong>Bilder auswählen</strong><span id="file-selection-hint">Mehrere Bilder möglich · JPG, PNG, WebP, GIF · max. 50 MB pro Bild</span><input accept="image/jpeg,image/png,image/webp,image/gif" id="files" multiple="" type="file"/></label>
+<label class="drop" for="files"><span class="step-label">Bilder auswählen</span><span class="upload-icon">＋</span><strong>Bilder auswählen</strong><span id="file-selection-hint">Mehrere Bilder möglich · JPG, PNG, WebP, GIF · max. 50 MB pro Bild</span><input accept="image/jpeg,image/png,image/webp,image/gif" id="files" multiple="" type="file"/></label>
 <div class="preview" id="preview"></div>
 <button class="primary" disabled="" id="upload-button" type="button">Bilder in den ausgewählten Bereich hochladen</button>
 <p class="message" id="upload-message" role="status"></p>

@@ -5,13 +5,19 @@
   const cfg = window.MILA_SUPABASE_CONFIG || {};
   const loginPanel = document.getElementById("login");
   const uploaderPanel = document.getElementById("uploader");
+  const destinationPanel = document.getElementById("destination-panel");
   const loginForm = document.getElementById("login-form");
   const loginMessage = document.getElementById("login-message");
   const uploadMessage = document.getElementById("upload-message");
   const fileInput = document.getElementById("files");
   const preview = document.getElementById("preview");
   const uploadButton = document.getElementById("upload-button");
-  const destination = document.getElementById("destination");
+  const destinationChoices = Array.from(document.querySelectorAll('input[name="upload-destination"]'));
+  const destination = {
+    get value() {
+      return document.querySelector('input[name="upload-destination"]:checked')?.value || "public";
+    }
+  };
   const destinationNote = document.getElementById("destination-note");
   const blogOptions = document.getElementById("blog-options");
   const blogPostSelect = document.getElementById("blog-post-select");
@@ -42,6 +48,8 @@
     uploadButton.disabled = true;
   }
   function showLogin(text = "Bitte mit dem freigeschalteten Administratorkonto anmelden.", type = "") {
+    // Storage destination choices are admin-only and stay hidden until admin verification succeeds.
+    destinationPanel.hidden = true;
     loginPanel.hidden = false;
     uploaderPanel.hidden = true;
     message(loginMessage, text, type);
@@ -49,6 +57,7 @@
   function showUploader() {
     loginPanel.hidden = true;
     uploaderPanel.hidden = false;
+    destinationPanel.hidden = false;
     message(loginMessage, "");
   }
   function updateDestinationNote() {
@@ -61,7 +70,7 @@
       : "Mehrere Bilder möglich · JPG, PNG, WebP, GIF · max. 50 MB pro Bild";
 
     if (isBlog) {
-      destinationNote.textContent = "Blog: Upload in den öffentlichen Supabase-Speicher „mila-blog-media“. Wähle einen Beitrag, den Bildtyp und einen passenden Alt-Text. Das Bild wird direkt mit dem Beitrag verknüpft.";
+      destinationNote.textContent = "Blog: Nach der Admin-Anmeldung kannst du einen Beitrag, den Bildtyp und einen passenden Alt-Text auswählen. Das Bild wird im Speicher „mila-blog-media“ abgelegt und direkt mit dem Beitrag verknüpft.";
       uploadButton.textContent = "Bild dem Blogbeitrag hinzufügen";
       if (selectedFiles.length > 1) {
         clearSelection();
@@ -195,7 +204,7 @@
     showLogin("Du wurdest abgemeldet.");
   });
 
-  destination.addEventListener("change", updateDestinationNote);
+  destinationChoices.forEach((choice) => choice.addEventListener("change", updateDestinationNote));
   updateDestinationNote();
 
   fileInput.addEventListener("change", () => {

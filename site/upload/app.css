@@ -32,3 +32,20 @@
 .blog-options label:first-child{margin-top:0}
 .blog-options select,.blog-options input{min-height:46px}
 .blog-options .gallery-note{margin:12px 0 0}
+
+
+/* Speicherortwahl bleibt vor der Anmeldung sichtbar, wie in der bestehenden Upload-Oberfläche. */
+.destination-panel{margin-bottom:14px}
+.eyebrow{font-size:10px;letter-spacing:1.8px;font-weight:800;color:#a77ac7;margin-bottom:8px}
+.destination-panel h1{font-size:20px;margin:0 0 7px}
+.destination-panel>p:not(.gallery-note){margin:0 0 14px;font-size:13px}
+.destination-choices{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.destination-choice{display:flex;align-items:flex-start;gap:9px;min-height:68px;margin:0;padding:11px;border:2px solid #e3d7eb;border-radius:13px;background:#fcfaff;cursor:pointer;transition:border-color .15s,background .15s}
+.destination-choice:has(input:checked){border-color:#a477c8;background:#f5eefb}
+.destination-choice input{width:16px;height:16px;flex:0 0 16px;margin:3px 0 0;accent-color:#9462bd}
+.choice-content{display:flex;flex-direction:column;gap:4px;min-width:0}
+.choice-content strong{font-size:12px;color:#2b2433}
+.choice-content small{font-size:10px;line-height:1.35;color:#756981;font-weight:450}
+.destination-choice:focus-within{outline:3px solid #d7b9ef;outline-offset:2px}
+.destination-panel .gallery-note{margin:10px 0 0}
+@media(max-width:520px){.destination-choices{grid-template-columns:1fr}.destination-choice{min-height:58px}}
