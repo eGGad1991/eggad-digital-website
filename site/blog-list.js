@@ -63,6 +63,7 @@
       .from('blog_posts')
       .select('id,title,slug,excerpt,category,cover_image,published_at')
       .eq('status', 'published')
+      .neq('category', 'Rezepte')
       .order('published_at', { ascending: false, nullsFirst: false });
 
     loading.hidden = true;
