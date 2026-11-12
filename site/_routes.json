@@ -2,10 +2,13 @@
   "version": 1,
   "include": [
     "/ki-digital/*",
-    "/sitemap.xml"
+    "/sitemap.xml",
+    "/blog/*"
   ],
   "exclude": [
     "/ki-digital/",
-    "/ki-digital/index.html"
+    "/ki-digital/index.html",
+    "/blog/",
+    "/blog/index.html"
   ]
 }
