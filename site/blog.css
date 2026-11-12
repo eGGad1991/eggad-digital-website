@@ -54,3 +54,121 @@
 @media(max-width:900px){.blog-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.admin-layout{grid-template-columns:1fr}.admin-post-list{max-height:360px;grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:760px){.blog-intro{padding-top:32px}.blog-heading{display:block}.blog-count{margin-top:8px}.blog-grid{gap:13px}.blog-card-media,.blog-card-placeholder{height:185px}.blog-card-content{padding:14px}.blog-card h3{font-size:20px}.blog-article-shell{padding-top:15px}.blog-article h1{font-size:38px}.article-excerpt{font-size:16px}.article-body{font-size:16px}.article-body h2{font-size:27px}.article-gallery{grid-template-columns:repeat(2,minmax(0,1fr))}.article-gallery img{height:150px}.admin-wrap{padding-top:24px}.admin-title-row{align-items:flex-start;flex-direction:column}.admin-title-row h1{font-size:36px}.admin-editor-panel,.admin-list-panel{padding:16px}.admin-login{margin:25px auto;padding:24px}.editor-actions{display:grid;grid-template-columns:1fr}.editor-actions .btn,.danger-button{width:100%;text-align:center}.admin-post-list{grid-template-columns:1fr}}
 @media(max-width:480px){.blog-grid{grid-template-columns:1fr}.blog-card-media,.blog-card-placeholder{height:220px}.article-end{align-items:stretch;flex-direction:column}.article-end .btn,.share-button{width:100%;text-align:center}.media-actions{display:grid;grid-template-columns:1fr}.upload-control{width:100%}.editor-toolbar{gap:4px}.editor-toolbar button{font-size:10px;padding:7px}}
+
+
+/* Zurück-Navigation im freien linken Bereich des Artikel-Headers */
+.article-back-button {
+  position: absolute;
+  z-index: 2;
+  left: 24px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 38px;
+  padding: 8px 13px;
+  border: 1px solid #ffffff2b;
+  border-radius: 999px;
+  background: #211c30;
+  color: #f8f2f8;
+  font: 600 13px/1 Arial, sans-serif;
+  cursor: pointer;
+  transition: border-color .2s ease, background .2s ease;
+}
+.article-back-button:hover {
+  border-color: var(--pink);
+  background: #30283e;
+}
+.article-back-button > span:first-child {
+  color: var(--pink);
+  font-size: 18px;
+  line-height: 1;
+}
+
+/* Dynamische Empfehlungen unter Blogartikeln */
+.related-posts {
+  margin-top: 42px;
+  padding-top: 30px;
+  border-top: 1px solid #ffffff20;
+}
+.related-posts h2 {
+  margin: 7px 0 20px;
+  font: 600 clamp(24px, 3vw, 32px)/1.2 'Playfair Display', Georgia, serif;
+  color: #fff;
+}
+.related-posts-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 14px;
+}
+.related-post-card {
+  display: grid;
+  grid-template-columns: 116px minmax(0, 1fr);
+  min-height: 132px;
+  overflow: hidden;
+  border: 1px solid #ffffff20;
+  border-radius: 12px;
+  background: #211c30;
+  color: #f7f1f8;
+  text-decoration: none;
+  transition: border-color .2s ease, transform .2s ease;
+}
+.related-post-card:hover {
+  border-color: #e6a2d1aa;
+  transform: translateY(-2px);
+}
+.related-post-card > img {
+  width: 116px;
+  height: 100%;
+  min-height: 132px;
+  object-fit: cover;
+}
+.related-post-content {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 7px;
+  padding: 13px;
+  min-width: 0;
+}
+.related-post-category {
+  color: var(--pink);
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: .08em;
+}
+.related-post-content strong {
+  font: 600 17px/1.25 'Playfair Display', Georgia, serif;
+}
+.related-post-excerpt {
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.5;
+}
+.related-post-link {
+  margin-top: auto;
+  color: #f2b4d7;
+  font-size: 11px;
+  font-weight: 700;
+}
+@media (max-width: 760px) {
+  .article-back-button {
+    left: auto;
+    right: 66px;
+    width: 36px;
+    height: 36px;
+    min-height: 36px;
+    padding: 0;
+    justify-content: center;
+  }
+  .article-back-button .back-label { display: none; }
+  .related-posts { margin-top: 30px; padding-top: 24px; }
+  .related-posts-grid { grid-template-columns: 1fr; }
+}
+@media (max-width: 420px) {
+  .related-post-card { grid-template-columns: 92px minmax(0, 1fr); }
+  .related-post-card > img { width: 92px; }
+  .related-post-content { padding: 10px; }
+  .related-post-content strong { font-size: 15px; }
+}
