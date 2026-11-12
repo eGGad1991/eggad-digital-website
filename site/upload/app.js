@@ -26,6 +26,57 @@
   const fileSelectionHint = document.getElementById("file-selection-hint");
   const blogNote = document.getElementById("blog-note");
   const logoutButton = document.getElementById("logout");
+
+  const bolognesePostSlug = "einfache-bolognese-rezept";
+  const bologneseAltTexts = {
+    cover: "Mila steht in ihrer Küche mit einer Tomate in der Hand. Vor ihr liegen Hackfleisch, Karotten, Knoblauch, passierte Tomaten, Tomatenmark und Kräuter für ihre einfache Bolognese.",
+    inline: [
+      "Mila brät krümeliges Hackfleisch in einem großen Topf an. Daneben stehen vorbereitete Karottenwürfel, gehackter Knoblauch und passierte Tomaten.",
+      "Mila probiert die köchelnde Bolognese aus Hackfleisch, Karotten und Tomaten. Die Soße simmert im Topf und ist mit Kräutern gewürzt.",
+      "Mila serviert die fertige Bolognese mit Spaghetti, Parmesan und frischem Basilikum auf einem Teller."
+    ]
+  };
+
+  async function updateSuggestedBlogAltText() {
+    const post = blogPosts.find((item) => item.id === blogPostSelect.value);
+    if (!post) {
+      blogAltText.value = "";
+      return;
+    }
+
+    if (post.slug !== bolognesePostSlug) {
+      blogAltText.value = "";
+      blogNote.textContent = "Für diesen Beitrag bitte einen passenden Alt-Text zum ausgewählten Bild eintragen.";
+      return;
+    }
+
+    if (blogImageKind.value === "cover") {
+      blogAltText.value = bologneseAltTexts.cover;
+      blogNote.textContent = "Alt-Text für das Bolognese-Titelbild wurde automatisch eingesetzt. Du kannst ihn bei Bedarf bearbeiten.";
+      return;
+    }
+
+    const { data, error } = await client.from("blog_post_images")
+      .select("id")
+      .eq("post_id", post.id)
+      .eq("image_kind", "inline");
+
+    if (error) {
+      blogNote.textContent = "Der nächste Bildschritt konnte nicht erkannt werden. Bitte Alt-Text vor dem Upload prüfen.";
+      blogAltText.value = "";
+      return;
+    }
+
+    const index = (data || []).length;
+    if (index < bologneseAltTexts.inline.length) {
+      blogAltText.value = bologneseAltTexts.inline[index];
+      blogNote.textContent = "Alt-Text für Rezeptbild " + (index + 2) + " von 4 wurde automatisch eingesetzt. Bitte die Bilder in der vorgesehenen Reihenfolge hochladen.";
+    } else {
+      blogAltText.value = "";
+      blogNote.textContent = "Die vier vorgesehenen Rezeptbilder sind bereits zugeordnet. Für weitere Bilder bitte einen eigenen Alt-Text eintragen.";
+    }
+  }
+
   const maxFileSize = 50 * 1024 * 1024;
   const allowedTypes = new Set(["image/jpeg", "image/png", "image/webp", "image/gif"]);
   let selectedFiles = [];
@@ -93,7 +144,7 @@
     blogPostSelect.disabled = true;
     blogPostSelect.replaceChildren(new Option("Blogbeiträge werden geladen …", ""));
     const { data, error } = await client.from("blog_posts")
-      .select("id,title,slug,media_folder,status,updated_at")
+      .select("id,title,slug,category,media_folder,status,updated_at")
       .order("updated_at", { ascending: false });
     if (error) throw error;
     blogPosts = data || [];
@@ -105,12 +156,15 @@
       const status = post.status === "published" ? "veröffentlicht" : "Entwurf";
       blogPostSelect.add(new Option(`${post.title} · ${status}`, post.id));
     });
-    if (blogPosts.length === 1) blogPostSelect.value = blogPosts[0].id;
+    const recipePosts = blogPosts.filter((post) => post.category === "Rezepte");
+    if (recipePosts.length === 1) blogPostSelect.value = recipePosts[0].id;
+    else if (blogPosts.length === 1) blogPostSelect.value = blogPosts[0].id;
     blogPostSelect.disabled = blogPosts.length === 0;
     blogPostsLoaded = true;
     blogNote.textContent = blogPosts.length
-      ? "Blogbilder werden im Bucket „mila-blog-media“ im Medienordner des Beitrags gespeichert. Jeder Upload erhält einen eigenen Alt-Text."
+      ? "Blogbilder werden im Bucket „mila-blog-media“ im Medienordner des Beitrags gespeichert. Für Milas Bolognese werden die passenden Alt-Texte automatisch eingesetzt."
       : "Es gibt noch keine gespeicherten Blogbeiträge. Lege zuerst in der Blogverwaltung einen Entwurf an.";
+    await updateSuggestedBlogAltText();
   }
 
   function slugifyFilename(value) {
@@ -205,6 +259,12 @@
   });
 
   destinationChoices.forEach((choice) => choice.addEventListener("change", updateDestinationNote));
+  blogPostSelect.addEventListener("change", () => {
+    updateSuggestedBlogAltText().catch((error) => console.warn("Alt-Text konnte nicht vorgeschlagen werden:", error));
+  });
+  blogImageKind.addEventListener("change", () => {
+    updateSuggestedBlogAltText().catch((error) => console.warn("Alt-Text konnte nicht vorgeschlagen werden:", error));
+  });
   updateDestinationNote();
 
   fileInput.addEventListener("change", () => {
@@ -318,7 +378,8 @@
       }
 
       clearSelection();
-      blogAltText.value = "";
+      if (kind === "cover") blogImageKind.value = "inline";
+      await updateSuggestedBlogAltText();
       message(uploadMessage, kind === "cover"
         ? `Titelbild wurde „${post.title}“ zugeordnet und gespeichert.`
         : `Bild wurde „${post.title}“ als Beitragsbild zugeordnet. Es erscheint im Bereich „Weitere Bilder“ des Artikels.`, "success");
