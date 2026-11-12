@@ -1,6 +1,6 @@
 const SUPABASE_URL = "https://xspibbzwfwhmgvfowiye.supabase.co";
 const SUPABASE_PUBLISHABLE_KEY = "sb_publishable__BZ2_Uk1XlUGd1RLPOs7Cw_AyIuZj98";
-const PUBLIC_PATHS = ["/", "/ueber-mila/", "/gaming/", "/ki-digital/", "/lifestyle/", "/reisen/", "/galerie/", "/kontakt/"];
+const PUBLIC_PATHS = ["/", "/ueber-mila/", "/gaming/", "/blog/", "/lifestyle/", "/reisen/", "/galerie/", "/kontakt/"];
 const xml = (value) => String(value).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/\"/g,"&quot;").replace(/'/g,"&apos;");
 
 export async function onRequest({ request }) {
@@ -17,7 +17,7 @@ export async function onRequest({ request }) {
     for (const post of posts || []) {
       if (!/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(post.slug || "")) continue;
       entries.push({
-        loc: `${origin}/ki-digital/${encodeURIComponent(post.slug)}/`,
+        loc: `${origin}/blog/${encodeURIComponent(post.slug)}/`,
         lastmod: post.updated_at || post.published_at || "2026-11-11"
       });
     }
