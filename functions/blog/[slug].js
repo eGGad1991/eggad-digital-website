@@ -107,7 +107,45 @@ function imageSectionNumber(image) {
   return 0;
 }
 
-function placeInlineImages(bodyHtml, images) {
+function placeInlineImages(bodyHtml, images, post = {}) {
+  // Recipe photos belong next to the cooking step they illustrate, not in a gallery at the bottom.
+  if (post.slug === "einfache-bolognese-rezept") {
+    let body = String(bodyHtml || "");
+    const remaining = [];
+    const storagePrefix = `${SUPABASE_URL}/storage/v1/object/public/${BLOG_BUCKET}/`;
+    const list = (images || []).filter((item) => item?.public_url && !body.includes(item.public_url));
+
+    for (const item of list) {
+      let safeUrl = "";
+      try {
+        const parsed = new URL(item.public_url);
+        if (parsed.href.startsWith(storagePrefix)) safeUrl = parsed.href;
+      } catch (_) {}
+      if (!safeUrl) { remaining.push(item); continue; }
+
+      const identity = `${safeUrl} ${item.alt_text || ""}`.toLowerCase();
+      let stepPattern = null;
+      if (/hackfleisch[-_ ]anbraten|hackfleisch.*anbrat|anbrat.*hackfleisch/.test(identity)) {
+        stepPattern = /schritt\\s*2\\b/i;
+      } else if (/sosse[-_ ]koecheln|soße|sosse|köchel|koechel/.test(identity)) {
+        stepPattern = /schritt\\s*3\\b/i;
+      } else if (/fertige[-_ ]spaghetti|spaghetti|pasta|fertig.*gericht/.test(identity)) {
+        stepPattern = /schritt\\s*4\\b/i;
+      }
+
+      const headings = [...body.matchAll(/<h[23]\\b[^>]*>[\\s\\S]*?<\\/h[23]>/gi)];
+      const heading = stepPattern && headings.find((match) => stepPattern.test(plainText(match[0])));
+      if (!heading) { remaining.push(item); continue; }
+
+      // Place the photo after the complete step and before the next subheading.
+      const nextHeading = headings.find((match) => match.index > heading.index);
+      const insertion = nextHeading ? nextHeading.index : body.length;
+      const figure = `<figure class="article-inline-image"><img src="${esc(safeUrl)}" alt="${esc(item.alt_text || "Rezeptfoto")}" loading="lazy" decoding="async"></figure>`;
+      body = `${body.slice(0, insertion).replace(/\\s*$/, "")}\\n${figure}\\n${body.slice(insertion)}`;
+    }
+    return { body, remaining };
+  }
+
   let body = String(bodyHtml || '');
   const remaining = [];
   const storagePrefix = `${SUPABASE_URL}/storage/v1/object/public/${BLOG_BUCKET}/`;
@@ -217,7 +255,7 @@ function articleHtml(post, images, relatedPosts, origin) {
   const published = post.published_at || post.created_at;
   const modified = post.updated_at || published;
   const safeBody = safeArticleHtml(post.body, origin);
-  const placed = placeInlineImages(safeBody, images);
+  const placed = placeInlineImages(safeBody, images, post);
   const body = placed.body;
   const gallery = placed.remaining.map((x) =>
     `<figure><img src="${esc(x.public_url)}" alt="${esc(x.alt_text || "Bild aus dem Blogbeitrag")}" loading="lazy" decoding="async"></figure>`
