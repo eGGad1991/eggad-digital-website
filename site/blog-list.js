@@ -20,7 +20,7 @@
   function makeCard(post) {
     const card = document.createElement('a');
     card.className = 'blog-card';
-    card.href = `/ki-digital/${encodeURIComponent(post.slug)}/`;
+    card.href = `/blog/${encodeURIComponent(post.slug)}/`;
     card.setAttribute('aria-label', `${post.title} lesen`);
 
     if (post.cover_image) {
@@ -36,14 +36,14 @@
     } else {
       const placeholder = document.createElement('div');
       placeholder.className = 'blog-card-placeholder';
-      placeholder.innerHTML = '<span>mila♡</span><small>KI &amp; DIGITAL</small>';
+      placeholder.innerHTML = '<span>mila♡</span><small>BLOG</small>';
       card.appendChild(placeholder);
     }
 
     const content = document.createElement('div');
     content.className = 'blog-card-content';
     content.innerHTML = `
-      <div class="blog-card-meta"><span class="blog-category">${escapeHtml(post.category || 'KI & Digital')}</span><time datetime="${escapeHtml(post.published_at || "")}">${escapeHtml(formatDate(post.published_at))}</time></div>
+      <div class="blog-card-meta"><span class="blog-category">${escapeHtml(post.category || 'Blog')}</span><time datetime="${escapeHtml(post.published_at || "")}">${escapeHtml(formatDate(post.published_at))}</time></div>
       <h3>${escapeHtml(post.title || 'Ohne Titel')}</h3>
       <p>${escapeHtml(post.excerpt || '')}</p>
       <span class="blog-read-more">Beitrag lesen <span aria-hidden="true">↗</span></span>`;
