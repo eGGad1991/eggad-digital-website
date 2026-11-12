@@ -159,7 +159,56 @@ function placeInlineImages(bodyHtml, images) {
   return { body, remaining };
 }
 
-function articleHtml(post, images, origin) {
+
+function relatedPostsFor(currentPost, candidates) {
+  const currentTags = new Set(
+    (Array.isArray(currentPost.tags) ? currentPost.tags : []).map((tag) => String(tag).toLowerCase())
+  );
+  const currentCategory = String(currentPost.category || "").trim().toLowerCase();
+  const scored = (candidates || [])
+    .filter((candidate) => candidate && candidate.slug && candidate.slug !== currentPost.slug)
+    .map((candidate) => {
+      const tags = Array.isArray(candidate.tags) ? candidate.tags.map((tag) => String(tag).toLowerCase()) : [];
+      const sharedTags = tags.filter((tag) => currentTags.has(tag)).length;
+      const sameCategory = currentCategory && String(candidate.category || "").trim().toLowerCase() === currentCategory;
+      return { post: candidate, score: sharedTags * 2 + (sameCategory ? 3 : 0) };
+    });
+  const byDate = (a, b) =>
+    new Date(b.post.published_at || 0).getTime() - new Date(a.post.published_at || 0).getTime();
+  const relevant = scored.filter((item) => item.score > 0).sort((a, b) => b.score - a.score || byDate(a, b));
+  const fallback = [...scored].sort(byDate);
+  return (relevant.length ? relevant : fallback).slice(0, 3).map((item) => item.post);
+}
+
+function relatedPostsHtml(posts) {
+  if (!posts || !posts.length) return "";
+  const storagePrefix = SUPABASE_URL + "/storage/v1/object/public/" + BLOG_BUCKET + "/";
+  const cards = posts.map((post) => {
+    let image = "";
+    try {
+      const parsed = new URL(post.cover_image || "");
+      if (parsed.href.startsWith(storagePrefix)) image = parsed.href;
+    } catch (_) {}
+    const imageHtml = image
+      ? '<img src="' + esc(image) + '" alt="Titelbild: ' + esc(post.title) + '" loading="lazy" decoding="async">'
+      : "";
+    return '<a class="related-post-card" href="/blog/' + encodeURIComponent(post.slug) + '/" aria-label="' + esc(post.title) + ' lesen">' +
+      imageHtml +
+      '<span class="related-post-content">' +
+        '<span class="related-post-category">' + esc(post.category || "Blog") + '</span>' +
+        '<strong>' + esc(post.title || "Blogbeitrag") + '</strong>' +
+        (post.excerpt ? '<span class="related-post-excerpt">' + esc(post.excerpt) + '</span>' : '') +
+        '<span class="related-post-link">Beitrag lesen ↗</span>' +
+      '</span></a>';
+  }).join("");
+  return '<section class="related-posts" aria-labelledby="related-posts-title">' +
+    '<span class="eyebrow">WEITERLESEN</span>' +
+    '<h2 id="related-posts-title">Das könnte dich auch interessieren</h2>' +
+    '<div class="related-posts-grid">' + cards + '</div>' +
+    '</section>';
+}
+
+function articleHtml(post, images, relatedPosts, origin) {
   const canonical = `${origin}/blog/${encodeURIComponent(post.slug)}/`;
   const title = `${post.title} | Blog | Mila`;
   const description = metaDescription(post);
@@ -216,7 +265,7 @@ function articleHtml(post, images, origin) {
 <link rel="preconnect" href="${SUPABASE_URL}" crossorigin><link rel="stylesheet" href="/styles.css"><link rel="stylesheet" href="/blog.css">
 <script type="application/ld+json">${schemaText}</script>
 </head><body>
-<header><div class="bar"><a class="logo" href="/">mila<span>♡</span></a><button aria-label="Menü öffnen" class="mobile-toggle" onclick="document.querySelector('nav').classList.toggle('open')">☰</button><nav><a href="/">Start</a><a href="/ueber-mila/">Über Mila</a><a href="/gaming/">Gaming</a><a class="active" href="/blog/">KI &amp; Digital</a><a href="/lifestyle/">Lifestyle</a><a href="/reisen/">Reisen</a><a href="/galerie/">Galerie</a><a href="/kontakt/">Kontakt</a></nav></div></header>
+<header><button aria-label="Zur vorherigen Seite" class="article-back-button" id="article-back" title="Zur vorherigen Seite" type="button"><span aria-hidden="true">←</span><span class="back-label">Zurück</span></button><div class="bar"><a class="logo" href="/">mila<span>♡</span></a><button aria-label="Menü öffnen" class="mobile-toggle" onclick="document.querySelector('nav').classList.toggle('open')">☰</button><nav><a href="/">Start</a><a href="/ueber-mila/">Über Mila</a><a href="/gaming/">Gaming</a><a class="active" href="/blog/">Blog</a><a href="/lifestyle/">Lifestyle</a><a href="/reisen/">Reisen</a><a href="/galerie/">Galerie</a><a href="/kontakt/">Kontakt</a></nav></div></header>
 <div class="back-home-wrap"><a class="back-home-link" href="/blog/">← Zurück zum Blog</a></div>
 <main class="wrap blog-article-shell"><article class="blog-article">
 <div class="article-topline"><span class="blog-category">${esc(post.category || "Blog")}</span><time datetime="${esc(publishedIso)}">${esc(formatDate(published))}</time></div>
@@ -226,9 +275,10 @@ ${post.cover_image ? `<figure class="article-cover"><img src="${esc(post.cover_i
 ${gallery ? `<section class="article-gallery-wrap"><h2>Weitere Bilder</h2><div class="article-gallery">${gallery}</div></section>` : ""}
 <p class="article-byline">Beitrag von Mila · virtuelle Persönlichkeit</p>
 <div class="article-end"><a href="/blog/" class="btn">Weitere Beiträge entdecken ↗</a><button id="article-share" class="share-button" type="button">Beitrag teilen</button></div>
+${relatedPostsHtml(relatedPosts)}
 </article></main>
 <footer><a class="logo" href="/">mila<span>♡</span></a><div class="footerlinks"><a href="/impressum/">Impressum</a><a href="/datenschutz/">Datenschutz</a><a href="/kontakt/">Kontakt</a></div><p>Schön, dass du da bist. ♡</p><small>© 2026 Mila · Alle Rechte vorbehalten.</small><small class="disclosure">Mila ist eine virtuelle Persönlichkeit. Inhalte und Bilder werden mit KI gestaltet.</small></footer>
-<script>document.getElementById('article-share')?.addEventListener('click',async()=>{const data={title:${JSON.stringify(post.title)},url:location.href};try{if(navigator.share)await navigator.share(data);else if(navigator.clipboard?.writeText){await navigator.clipboard.writeText(data.url);document.getElementById('article-share').textContent='Link kopiert ✓';}else window.prompt('Kopiere den Link:',data.url);}catch(e){if(e?.name!=='AbortError')console.warn(e);}});</script>
+<script>document.getElementById('article-back')?.addEventListener('click',()=>{try{const previous=document.referrer?new URL(document.referrer):null;if(previous&&previous.origin===location.origin&&history.length>1)history.back();else location.assign('/blog/');}catch(_){location.assign('/blog/');}});document.getElementById('article-share')?.addEventListener('click',async()=>{const data={title:${JSON.stringify(post.title)},url:location.href};try{if(navigator.share)await navigator.share(data);else if(navigator.clipboard?.writeText){await navigator.clipboard.writeText(data.url);document.getElementById('article-share').textContent='Link kopiert ✓';}else window.prompt('Kopiere den Link:',data.url);}catch(e){if(e?.name!=='AbortError')console.warn(e);}});</script>
 <script defer src="/cookie-consent.js"></script></body></html>`;
 }
 
@@ -240,7 +290,7 @@ export async function onRequest(context) {
   }
   try {
     const rows = await fetchRows("blog_posts", {
-      select: "id,title,slug,excerpt,body,category,cover_image,status,published_at,created_at,updated_at",
+      select: "id,title,slug,excerpt,body,category,cover_image,status,published_at,created_at,updated_at,tags",
       slug: `eq.${slug}`, status: "eq.published", limit: "1"
     });
     const post = rows?.[0];
@@ -255,7 +305,19 @@ export async function onRequest(context) {
         select: "public_url,alt_text,image_kind", post_id: `eq.${post.id}`, image_kind: "eq.inline", order: "created_at.asc"
       });
     } catch (imageError) { console.warn("Blogbilder konnten nicht gelesen werden", imageError); }
-    const body = articleHtml(post, images, url.origin);
+    let relatedPosts = [];
+    try {
+      const candidates = await fetchRows("blog_posts", {
+        select: "id,title,slug,excerpt,category,cover_image,published_at,tags",
+        status: "eq.published",
+        order: "published_at.desc",
+        limit: "100"
+      });
+      relatedPosts = relatedPostsFor(post, candidates);
+    } catch (relatedError) {
+      console.warn("Verwandte Blogbeiträge konnten nicht geladen werden", relatedError);
+    }
+    const body = articleHtml(post, images, relatedPosts, url.origin);
     return new Response(body, {
       headers: {
         "Content-Type": "text/html; charset=utf-8",
