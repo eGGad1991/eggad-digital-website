@@ -126,14 +126,14 @@ function placeInlineImages(bodyHtml, images, post = {}) {
       const identity = `${safeUrl} ${item.alt_text || ""}`.toLowerCase();
       let stepPattern = null;
       if (/hackfleisch[-_ ]anbraten|hackfleisch.*anbrat|anbrat.*hackfleisch/.test(identity)) {
-        stepPattern = /schritt\\s*2\\b/i;
+        stepPattern = /schritt\s*2\b/i;
       } else if (/sosse[-_ ]koecheln|soße|sosse|köchel|koechel/.test(identity)) {
-        stepPattern = /schritt\\s*3\\b/i;
+        stepPattern = /schritt\s*3\b/i;
       } else if (/fertige[-_ ]spaghetti|spaghetti|pasta|fertig.*gericht/.test(identity)) {
-        stepPattern = /schritt\\s*4\\b/i;
+        stepPattern = /schritt\s*4\b/i;
       }
 
-      const headings = [...body.matchAll(/<h[23]\\b[^>]*>[\\s\\S]*?<\\/h[23]>/gi)];
+      const headings = [...body.matchAll(/<h[23]\b[^>]*>[\s\S]*?<\/h[23]>/gi)];
       const heading = stepPattern && headings.find((match) => stepPattern.test(plainText(match[0])));
       if (!heading) { remaining.push(item); continue; }
 
@@ -141,7 +141,7 @@ function placeInlineImages(bodyHtml, images, post = {}) {
       const nextHeading = headings.find((match) => match.index > heading.index);
       const insertion = nextHeading ? nextHeading.index : body.length;
       const figure = `<figure class="article-inline-image"><img src="${esc(safeUrl)}" alt="${esc(item.alt_text || "Rezeptfoto")}" loading="lazy" decoding="async"></figure>`;
-      body = `${body.slice(0, insertion).replace(/\\s*$/, "")}\\n${figure}\\n${body.slice(insertion)}`;
+      body = `${body.slice(0, insertion).replace(/\s*$/, "")}\n${figure}\n${body.slice(insertion)}`;
     }
     return { body, remaining };
   }
