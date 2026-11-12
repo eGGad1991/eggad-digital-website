@@ -2,4 +2,5 @@
 /reel     /?utm_source=instagram&utm_medium=organic_social&utm_campaign=organic&utm_content=reel     302
 /beitrag  /?utm_source=instagram&utm_medium=organic_social&utm_campaign=organic&utm_content=beitrag  302
 /ki-digital/        /blog/        301
-/ki-digital/:splat  /blog/:splat  301
+/ki-digital/*       /blog/:splat  301
+/ki-digital         /blog/        301
