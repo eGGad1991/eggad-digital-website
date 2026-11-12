@@ -45,21 +45,19 @@
     }
 
     if (post.slug !== bolognesePostSlug) {
+      fileInput.multiple = false;
+      blogImageKind.disabled = false;
       blogAltText.value = "";
-      blogNote.textContent = "Für diesen Beitrag bitte einen passenden Alt-Text zum ausgewählten Bild eintragen.";
+      blogNote.textContent = "Für diesen Beitrag bitte ein Bild auswählen und einen passenden Alt-Text eintragen.";
       return;
     }
 
-    if (blogImageKind.value === "cover") {
-      blogAltText.value = bologneseAltTexts.cover;
-      blogNote.textContent = "Alt-Text für das Bolognese-Titelbild wurde automatisch eingesetzt. Du kannst ihn bei Bedarf bearbeiten.";
-      return;
-    }
+    fileInput.multiple = true;
+    blogImageKind.disabled = true;
 
     const { data, error } = await client.from("blog_post_images")
-      .select("id")
-      .eq("post_id", post.id)
-      .eq("image_kind", "inline");
+      .select("image_kind")
+      .eq("post_id", post.id);
 
     if (error) {
       blogNote.textContent = "Der nächste Bildschritt konnte nicht erkannt werden. Bitte Alt-Text vor dem Upload prüfen.";
@@ -67,13 +65,22 @@
       return;
     }
 
-    const index = (data || []).length;
-    if (index < bologneseAltTexts.inline.length) {
-      blogAltText.value = bologneseAltTexts.inline[index];
-      blogNote.textContent = "Alt-Text für Rezeptbild " + (index + 2) + " von 4 wurde automatisch eingesetzt. Bitte die Bilder in der vorgesehenen Reihenfolge hochladen.";
+    const rows = data || [];
+    const hasCover = rows.some((row) => row.image_kind === "cover");
+    const inlineCount = rows.filter((row) => row.image_kind === "inline").length;
+
+    if (!hasCover) {
+      blogImageKind.value = "cover";
+      blogAltText.value = bologneseAltTexts.cover;
+      blogNote.textContent = "Du kannst alle 4 Bolognese-Bilder auf einmal auswählen. Reihenfolge: 1. Titelbild, 2. Hackfleisch anbraten, 3. Soße köcheln, 4. fertiges Gericht. Die Alt-Texte werden automatisch zugeordnet.";
+    } else if (inlineCount < bologneseAltTexts.inline.length) {
+      blogImageKind.value = "inline";
+      blogAltText.value = bologneseAltTexts.inline[inlineCount];
+      blogNote.textContent = "Mehrfachupload ist aktiv. Bitte die noch fehlenden Bilder in dieser Reihenfolge auswählen: Anbraten, Köcheln, fertige Pasta. Alt-Texte werden automatisch zugeordnet.";
     } else {
+      blogImageKind.value = "inline";
       blogAltText.value = "";
-      blogNote.textContent = "Die vier vorgesehenen Rezeptbilder sind bereits zugeordnet. Für weitere Bilder bitte einen eigenen Alt-Text eintragen.";
+      blogNote.textContent = "Alle vier vorgesehenen Bolognese-Bilder sind bereits zugeordnet.";
     }
   }
 
@@ -115,9 +122,9 @@
     const target = destination.value;
     const isBlog = target === "blog";
     blogOptions.hidden = !isBlog;
-    fileInput.multiple = !isBlog;
+    fileInput.multiple = true;
     fileSelectionHint.textContent = isBlog
-      ? "Ein Bild pro Upload · JPG, PNG, WebP, GIF · max. 50 MB"
+      ? "Für Bolognese bis zu 4 Bilder auf einmal · Reihenfolge beachten · max. 50 MB pro Bild"
       : "Mehrere Bilder möglich · JPG, PNG, WebP, GIF · max. 50 MB pro Bild";
 
     if (isBlog) {
@@ -313,8 +320,120 @@
         uploadButton.disabled = false;
         return;
       }
+      if (post.slug === bolognesePostSlug) {
+        const { data: existingRows, error: existingError } = await client.from("blog_post_images")
+          .select("image_kind")
+          .eq("post_id", post.id);
+        if (existingError) {
+          message(uploadMessage, "Der vorhandene Bildstand konnte nicht geprüft werden: " + existingError.message, "error");
+          uploadButton.disabled = false;
+          return;
+        }
+
+        const rows = existingRows || [];
+        let coverExists = rows.some((row) => row.image_kind === "cover");
+        let inlineCount = rows.filter((row) => row.image_kind === "inline").length;
+        const remaining = (coverExists ? 0 : 1) + Math.max(0, bologneseAltTexts.inline.length - inlineCount);
+
+        if (selectedFiles.length > remaining) {
+          message(uploadMessage, "Es sind nur noch " + remaining + " Bild(er) offen. Bitte wähle nur die fehlenden Rezeptbilder aus.", "error");
+          uploadButton.disabled = false;
+          return;
+        }
+        if (!remaining) {
+          message(uploadMessage, "Alle vier Bolognese-Bilder sind bereits zugeordnet.", "error");
+          uploadButton.disabled = false;
+          return;
+        }
+
+        const bucket = cfg.blogBucket || "mila-blog-media";
+        const mediaFolder = post.media_folder || "blog-posts/" + post.slug;
+        let uploadedCount = 0;
+
+        for (let index = 0; index < selectedFiles.length; index += 1) {
+          const originalFile = selectedFiles[index];
+          const file = await optimizeBlogImage(originalFile);
+          let kind;
+          let altTextForFile;
+
+          if (!coverExists) {
+            kind = "cover";
+            altTextForFile = bologneseAltTexts.cover;
+            coverExists = true;
+          } else {
+            kind = "inline";
+            altTextForFile = bologneseAltTexts.inline[inlineCount];
+            inlineCount += 1;
+          }
+
+          if (!altTextForFile) {
+            message(uploadMessage, "Für dieses Bild ist kein vorbereiteter Alt-Text mehr vorhanden. Bitte den Rest einzeln mit eigenem Alt-Text hochladen.", "error");
+            uploadButton.disabled = false;
+            return;
+          }
+
+          const extension = (file.name.split(".").pop() || "jpg").toLowerCase().replace(/[^a-z0-9]/g, "") || "jpg";
+          const baseName = slugifyFilename(file.name.replace(/\.[^.]+$/, ""));
+          const folder = kind === "cover" ? "cover" : "inline";
+          const storagePath = mediaFolder + "/" + folder + "/" + Date.now() + "-" + (index + 1) + "-" + baseName + "." + extension;
+
+          message(uploadMessage, "Lade Bolognese-Bild " + (uploadedCount + 1) + " von " + selectedFiles.length + " hoch …");
+          const { error: uploadError } = await client.storage.from(bucket).upload(storagePath, file, {
+            contentType: file.type, upsert: false, cacheControl: "31536000"
+          });
+          if (uploadError) {
+            message(uploadMessage, uploadedCount
+              ? uploadedCount + " Bild(er) wurden gespeichert. Das nächste Bild ist fehlgeschlagen: " + uploadError.message + ". Bitte nur die fehlenden Bilder erneut auswählen."
+              : "Bolognese-Upload fehlgeschlagen: " + uploadError.message, "error");
+            uploadButton.disabled = false;
+            return;
+          }
+
+          const { data: publicData } = client.storage.from(bucket).getPublicUrl(storagePath);
+          const publicUrl = publicData?.publicUrl;
+          if (!publicUrl) {
+            await client.storage.from(bucket).remove([storagePath]);
+            message(uploadMessage, "Die öffentliche Bildadresse konnte nicht erstellt werden. Bitte erneut versuchen.", "error");
+            uploadButton.disabled = false;
+            return;
+          }
+
+          const { data: imageRow, error: rowError } = await client.from("blog_post_images").insert({
+            post_id: post.id,
+            storage_path: storagePath,
+            public_url: publicUrl,
+            alt_text: altTextForFile,
+            image_kind: kind
+          }).select("id").single();
+          if (rowError) {
+            await client.storage.from(bucket).remove([storagePath]);
+            message(uploadMessage, "Bilddatei wurde hochgeladen, aber nicht dem Beitrag zugeordnet: " + rowError.message, "error");
+            uploadButton.disabled = false;
+            return;
+          }
+
+          if (kind === "cover") {
+            const { error: coverError } = await client.from("blog_posts")
+              .update({ cover_image: publicUrl }).eq("id", post.id);
+            if (coverError) {
+              await client.from("blog_post_images").delete().eq("id", imageRow.id);
+              await client.storage.from(bucket).remove([storagePath]);
+              message(uploadMessage, "Das Titelbild konnte nicht im Beitrag gesetzt werden: " + coverError.message, "error");
+              uploadButton.disabled = false;
+              return;
+            }
+          }
+          uploadedCount += 1;
+        }
+
+        clearSelection();
+        await updateSuggestedBlogAltText();
+        message(uploadMessage, uploadedCount + " Bolognese-Bild(er) wurden erfolgreich hochgeladen und automatisch zugeordnet.", "success");
+        return;
+      }
+
       if (selectedFiles.length !== 1) {
-        message(uploadMessage, "Für Blogbilder bitte genau ein Bild pro Upload auswählen.", "error");
+        message(uploadMessage, "Für andere Blogbeiträge bitte weiterhin ein Bild pro Upload auswählen.", "error");
         uploadButton.disabled = false;
         return;
       }
