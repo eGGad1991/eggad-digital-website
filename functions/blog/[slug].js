@@ -150,8 +150,8 @@ function placeInlineImages(bodyHtml, images, post = {}) {
   if (post.slug === "gebrannte-mandeln-airfryer") {
     let body = String(bodyHtml || "");
     const remaining = [];
-    const storagePrefix = `${SUPABASE_URL}/storage/v1/object/public/${BLOG_BUCKET}/`;
-    const list = (images || []).filter((item) => item?.public_url && !body.includes(item.public_url));
+    const storagePrefix = SUPABASE_URL + "/storage/v1/object/public/" + BLOG_BUCKET + "/";
+    const list = (images || []).filter((item) => item && item.public_url && !body.includes(item.public_url));
 
     for (const item of list) {
       let safeUrl = "";
@@ -164,8 +164,7 @@ function placeInlineImages(bodyHtml, images, post = {}) {
       const identity = String(item.alt_text || "").toLowerCase();
       let paragraphPattern = null;
 
-      // Check the more specific scenes first. All descriptions mention almonds/backpapier,
-      // so a generic check must never capture the later steps.
+      // Match each exact scene before the more general almond description.
       if (/gibt zucker zu den mandeln/.test(identity)) {
         paragraphPattern = /Verteile zuerst den Zucker/i;
       } else if (/gibt vanillezucker und wasser/.test(identity)) {
@@ -178,13 +177,15 @@ function placeInlineImages(bodyHtml, images, post = {}) {
         paragraphPattern = /Gib die 200 g ganzen Mandeln/i;
       }
 
-      const paragraphs = [...body.matchAll(/<p\\b[^>]*>[\\s\\S]*?<\\/p>/gi)];
+      const paragraphs = [...body.matchAll(/<p\b[^>]*>[\s\S]*?<\/p>/gi)];
       const paragraph = paragraphPattern && paragraphs.find((match) => paragraphPattern.test(plainText(match[0])));
       if (!paragraph) { remaining.push(item); continue; }
 
       const insertion = paragraph.index + paragraph[0].length;
-      const figure = `<figure class="article-inline-image"><img src="${esc(safeUrl)}" alt="${esc(item.alt_text || "Rezeptfoto")}" loading="lazy" decoding="async"></figure>`;
-      body = `${body.slice(0, insertion)}\\n${figure}\\n${body.slice(insertion)}`;
+      const figure = '<figure class="article-inline-image"><img src="' +
+        esc(safeUrl) + '" alt="' + esc(item.alt_text || "Rezeptfoto") +
+        '" loading="lazy" decoding="async"></figure>';
+      body = body.slice(0, insertion) + "\n" + figure + "\n" + body.slice(insertion);
     }
     return { body, remaining };
   }
