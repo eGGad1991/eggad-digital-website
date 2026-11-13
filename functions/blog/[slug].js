@@ -146,6 +146,48 @@ function placeInlineImages(bodyHtml, images, post = {}) {
     return { body, remaining };
   }
 
+  // Air-fryer candied almond photos are placed beside the exact preparation steps.
+  if (post.slug === "gebrannte-mandeln-airfryer") {
+    let body = String(bodyHtml || "");
+    const remaining = [];
+    const storagePrefix = `${SUPABASE_URL}/storage/v1/object/public/${BLOG_BUCKET}/`;
+    const list = (images || []).filter((item) => item?.public_url && !body.includes(item.public_url));
+
+    for (const item of list) {
+      let safeUrl = "";
+      try {
+        const parsed = new URL(item.public_url);
+        if (parsed.href.startsWith(storagePrefix)) safeUrl = parsed.href;
+      } catch (_) {}
+      if (!safeUrl) { remaining.push(item); continue; }
+
+      const identity = String(item.alt_text || "").toLowerCase();
+      let stepPattern = null;
+      if (/naturbelassene mandeln|mandeln.*backpapierschale/.test(identity)) {
+        stepPattern = /schritt\\s*2\\b/i;
+      } else if (/gibt zucker zu den mandeln/.test(identity)) {
+        stepPattern = /schritt\\s*3\\b/i;
+      } else if (/gibt vanillezucker und wasser/.test(identity)) {
+        stepPattern = /schritt\\s*3\\b/i;
+      } else if (/ruehrt ganze mandeln|rührt ganze mandeln/.test(identity)) {
+        stepPattern = /schritt\\s*4\\b/i;
+      } else if (/praesentiert eine schale|präsentiert eine schale/.test(identity)) {
+        stepPattern = /schritt\\s*5\\b/i;
+      }
+
+      const headings = [...body.matchAll(/<h3\\b[^>]*>[\\s\\S]*?<\\/h3>/gi)];
+      const heading = stepPattern && headings.find((match) => stepPattern.test(plainText(match[0])));
+      if (!heading) { remaining.push(item); continue; }
+
+      // Append each photo after its step; multiple photos for Step 3 retain database order.
+      const nextHeading = headings.find((match) => match.index > heading.index);
+      const insertion = nextHeading ? nextHeading.index : body.length;
+      const figure = `<figure class="article-inline-image"><img src="${esc(safeUrl)}" alt="${esc(item.alt_text || "Rezeptfoto")}" loading="lazy" decoding="async"></figure>`;
+      body = `${body.slice(0, insertion).replace(/\\s*$/, "")}\\n${figure}\\n${body.slice(insertion)}`;
+    }
+    return { body, remaining };
+  }
+
   let body = String(bodyHtml || '');
   const remaining = [];
   const storagePrefix = `${SUPABASE_URL}/storage/v1/object/public/${BLOG_BUCKET}/`;
