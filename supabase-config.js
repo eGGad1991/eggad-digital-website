@@ -4,5 +4,6 @@ window.MILA_SUPABASE_CONFIG = {
   url: "https://xspibbzwfwhmgvfowiye.supabase.co",
   anonKey: "sb_publishable__BZ2_Uk1XlUGd1RLPOs7Cw_AyIuZj98",
   bucket: "portfolio-media",
+  blogBucket: "mila-blog-media",
   privateBucket: "mila-private-vault"
 };
