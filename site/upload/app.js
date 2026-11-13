@@ -37,6 +37,46 @@
     ]
   };
 
+  function automaticAltText(file, post) {
+    const stem = String(file?.name || "").replace(/\.[^.]+$/, "");
+    const marker = stem.match(/--alt--(.+)$/i);
+    let description = "";
+
+    if (marker?.[1]) {
+      // Mila-generated files carry the exact, natural-language alt text after --alt--.
+      description = marker[1].replace(/[-_]+/g, " ").replace(/\s+/g, " ").trim();
+    } else {
+      // Fallback for older or externally named files: use the descriptive filename.
+      description = stem
+        .replace(/^\d{10,}(?:-\d+)?-/, "")
+        .replace(/--alt--.*$/i, "")
+        .replace(/[-_]+/g, " ")
+        .replace(/\b(?:titelbild|cover|inline|bild|foto|image|final|export|webp|jpg|jpeg|png)\b/gi, " ")
+        .replace(/\s+/g, " ")
+        .trim();
+    }
+
+    if (!description) return `Bild zum Beitrag „${post?.title || "Mila"}“.`;
+    // Preserve the exact casing of the alt-text marker; normalize fallback names gently.
+    if (!marker) {
+      const properNames = {
+        mila: "Mila", airfryer: "Airfryer", bolognese: "Bolognese",
+        spaghetti: "Spaghetti", parmesan: "Parmesan", basilikum: "Basilikum",
+        hackfleisch: "Hackfleisch", mandeln: "Mandeln", weihnachtsmarkt: "Weihnachtsmarkt",
+        vanille: "Vanille", vanillezucker: "Vanillezucker", tomaten: "Tomaten",
+        karotten: "Karotten", kueche: "Küche", küche: "Küche"
+      };
+      description = description.split(" ").map((word, index) => {
+        const lower = word.toLocaleLowerCase("de-DE");
+        if (properNames[lower]) return properNames[lower];
+        if (index === 0) return lower.charAt(0).toLocaleUpperCase("de-DE") + lower.slice(1);
+        return lower;
+      }).join(" ");
+    }
+    description = description.replace(/[.!?]+$/, "").trim();
+    return description ? description + "." : `Bild zum Beitrag „${post?.title || "Mila"}“.`;
+  }
+
   async function updateSuggestedBlogAltText() {
     const post = blogPosts.find((item) => item.id === blogPostSelect.value);
     if (!post) {
@@ -47,8 +87,11 @@
     if (post.slug !== bolognesePostSlug) {
       fileInput.multiple = false;
       blogImageKind.disabled = false;
-      blogAltText.value = "";
-      blogNote.textContent = "Für diesen Beitrag bitte ein Bild auswählen und einen passenden Alt-Text eintragen.";
+      const selectedFile = selectedFiles[0];
+      blogAltText.value = selectedFile ? automaticAltText(selectedFile, post) : "";
+      blogNote.textContent = selectedFile
+        ? "Alt-Text wurde automatisch aus dem Bilddateinamen übernommen. Du kannst ihn bei Bedarf anpassen."
+        : "Beim Auswählen eines Bildes wird der Alt-Text automatisch aus dem beschreibenden Dateinamen übernommen. Bei Mila-Bildern kommt die fertige Bildbeschreibung direkt von ChatGPT mit.";
       return;
     }
 
@@ -124,11 +167,11 @@
     blogOptions.hidden = !isBlog;
     fileInput.multiple = true;
     fileSelectionHint.textContent = isBlog
-      ? "Für Bolognese bis zu 4 Bilder auf einmal · Reihenfolge beachten · max. 50 MB pro Bild"
+      ? "Bolognese: bis zu 4 Bilder auf einmal · andere Beiträge: 1 Bild · Alt-Text automatisch"
       : "Mehrere Bilder möglich · JPG, PNG, WebP, GIF · max. 50 MB pro Bild";
 
     if (isBlog) {
-      destinationNote.textContent = "Blog: Nach der Admin-Anmeldung kannst du einen Beitrag, den Bildtyp und einen passenden Alt-Text auswählen. Das Bild wird im Speicher „mila-blog-media“ abgelegt und direkt mit dem Beitrag verknüpft.";
+      destinationNote.textContent = "Blog: Wähle einen Beitrag und ein Bild. Der Alt-Text wird automatisch aus der Bildbeschreibung im Dateinamen übernommen und mitgespeichert. Du kannst ihn vor dem Upload noch bearbeiten.";
       uploadButton.textContent = "Bild dem Blogbeitrag hinzufügen";
       if (selectedFiles.length > 1) {
         clearSelection();
@@ -169,7 +212,7 @@
     blogPostSelect.disabled = blogPosts.length === 0;
     blogPostsLoaded = true;
     blogNote.textContent = blogPosts.length
-      ? "Blogbilder werden im Bucket „mila-blog-media“ im Medienordner des Beitrags gespeichert. Für Milas Bolognese werden die passenden Alt-Texte automatisch eingesetzt."
+      ? "Blogbilder werden im Bucket „mila-blog-media“ gespeichert. Alt-Texte werden bei der Bildauswahl automatisch übernommen. Für Bolognese bleibt der vorbereitete Mehrfachupload aktiv."
       : "Es gibt noch keine gespeicherten Blogbeiträge. Lege zuerst in der Blogverwaltung einen Entwurf an.";
     await updateSuggestedBlogAltText();
   }
@@ -293,6 +336,13 @@
       preview.appendChild(img);
     });
     uploadButton.disabled = selectedFiles.length === 0;
+    if (destination.value === "blog" && selectedFiles.length === 1) {
+      const post = blogPosts.find((item) => item.id === blogPostSelect.value);
+      if (post && post.slug !== bolognesePostSlug) {
+        blogAltText.value = automaticAltText(selectedFiles[0], post);
+        blogNote.textContent = "Alt-Text automatisch aus dem Dateinamen übernommen. Bitte nur kurz prüfen, ob er das Bild treffend beschreibt.";
+      }
+    }
     message(uploadMessage, selectedFiles.length ? `${selectedFiles.length} Bild(er) ausgewählt.` : "Noch keine Bilder ausgewählt.");
   });
 
@@ -446,7 +496,7 @@
       const originalFile = selectedFiles[0];
       const file = await optimizeBlogImage(originalFile);
       const extension = (file.name.split(".").pop() || "jpg").toLowerCase().replace(/[^a-z0-9]/g, "") || "jpg";
-      const baseName = slugifyFilename(file.name.replace(/\.[^.]+$/, ""));
+      const baseName = slugifyFilename(file.name.replace(/\.[^.]+$/, "").split("--alt--")[0]);
       const mediaFolder = post.media_folder || `blog-posts/${post.slug}`;
       const folder = kind === "cover" ? "cover" : "inline";
       const storagePath = `${mediaFolder}/${folder}/${Date.now()}-${baseName}.${extension}`;
