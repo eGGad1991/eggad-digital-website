@@ -164,18 +164,18 @@ function placeInlineImages(bodyHtml, images, post = {}) {
       const identity = String(item.alt_text || "").toLowerCase();
       let stepPattern = null;
       if (/naturbelassene mandeln|mandeln.*backpapierschale/.test(identity)) {
-        stepPattern = /schritt\\s*2\\b/i;
+        stepPattern = /schritt\s*2\b/i;
       } else if (/gibt zucker zu den mandeln/.test(identity)) {
-        stepPattern = /schritt\\s*3\\b/i;
+        stepPattern = /schritt\s*3\b/i;
       } else if (/gibt vanillezucker und wasser/.test(identity)) {
-        stepPattern = /schritt\\s*3\\b/i;
+        stepPattern = /schritt\s*3\b/i;
       } else if (/ruehrt ganze mandeln|rührt ganze mandeln/.test(identity)) {
-        stepPattern = /schritt\\s*4\\b/i;
+        stepPattern = /schritt\s*4\b/i;
       } else if (/praesentiert eine schale|präsentiert eine schale/.test(identity)) {
-        stepPattern = /schritt\\s*5\\b/i;
+        stepPattern = /schritt\s*5\b/i;
       }
 
-      const headings = [...body.matchAll(/<h3\\b[^>]*>[\\s\\S]*?<\\/h3>/gi)];
+      const headings = [...body.matchAll(/<h3\b[^>]*>[\s\S]*?<\/h3>/gi)];
       const heading = stepPattern && headings.find((match) => stepPattern.test(plainText(match[0])));
       if (!heading) { remaining.push(item); continue; }
 
@@ -183,7 +183,7 @@ function placeInlineImages(bodyHtml, images, post = {}) {
       const nextHeading = headings.find((match) => match.index > heading.index);
       const insertion = nextHeading ? nextHeading.index : body.length;
       const figure = `<figure class="article-inline-image"><img src="${esc(safeUrl)}" alt="${esc(item.alt_text || "Rezeptfoto")}" loading="lazy" decoding="async"></figure>`;
-      body = `${body.slice(0, insertion).replace(/\\s*$/, "")}\\n${figure}\\n${body.slice(insertion)}`;
+      body = `${body.slice(0, insertion).replace(/\s*$/, "")}\n${figure}\n${body.slice(insertion)}`;
     }
     return { body, remaining };
   }
