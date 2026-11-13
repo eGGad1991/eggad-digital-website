@@ -1,6 +1,6 @@
 const SUPABASE_URL = "https://xspibbzwfwhmgvfowiye.supabase.co";
 const SUPABASE_PUBLISHABLE_KEY = "sb_publishable__BZ2_Uk1XlUGd1RLPOs7Cw_AyIuZj98";
-const PUBLIC_PATHS = ["/", "/ueber-mila/", "/gaming/", "/blog/", "/lifestyle/", "/rezepte/", "/reisen/", "/galerie/", "/kontakt/"];
+const PUBLIC_PATHS = ["/", "/ueber-mila/", "/gaming/", "/blog/", "/lifestyle/", "/rezepte/", "/reisen/", "/galerie/", "/kontakt/", "/downloads/"];
 const xml = (value) => String(value).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/\"/g,"&quot;").replace(/'/g,"&apos;");
 
 export async function onRequest({ request }) {
