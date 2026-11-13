@@ -73,20 +73,38 @@
 
     // Inner join + Statusfilter: Nur Bilder, deren zugehöriger Blogbeitrag
     // veröffentlicht ist. Der private Bucket wird hier ausdrücklich nicht abgefragt.
-    const { data, error } = await client
-      .from("blog_post_images")
-      .select("id, storage_path, alt_text, image_kind, created_at, blog_posts!inner(title, slug, status, published_at)")
-      .eq("blog_posts.status", "published")
-      .order("created_at", { ascending: false })
-      .limit(200);
+    const all = [];
+    const pageSize = 500;
+    let offset = 0;
+    let queryError = null;
 
-    if (error) {
-      console.warn("Mila Blog-Galerie:", error.message);
+    // Seitenweise laden, damit auch bei vielen Beiträgen kein Bild wegen
+    // eines festen Ergebnislimits aus der Galerie verschwindet.
+    while (true) {
+      const { data: page, error } = await client
+        .from("blog_post_images")
+        .select("id, storage_path, alt_text, image_kind, created_at, blog_posts!inner(title, slug, status, published_at)")
+        .eq("blog_posts.status", "published")
+        .order("created_at", { ascending: false })
+        .range(offset, offset + pageSize - 1);
+
+      if (error) {
+        queryError = error;
+        break;
+      }
+
+      all.push(...(page || []));
+      if (!page || page.length < pageSize) break;
+      offset += pageSize;
+    }
+
+    if (queryError) {
+      console.warn("Mila Blog-Galerie:", queryError.message);
       return;
     }
 
     const seen = new Set();
-    (data || []).forEach(item => {
+    all.forEach(item => {
       if (!item.storage_path || seen.has(item.storage_path)) return;
       seen.add(item.storage_path);
 
