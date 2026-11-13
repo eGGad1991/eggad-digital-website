@@ -175,13 +175,13 @@ function placeInlineImages(bodyHtml, images, post = {}) {
         paragraphPattern = /Lass die Mandeln vollständig auskühlen/i;
       }
 
-      const paragraphs = [...body.matchAll(/<p\\b[^>]*>[\\s\\S]*?<\\/p>/gi)];
+      const paragraphs = [...body.matchAll(/<p\b[^>]*>[\s\S]*?<\/p>/gi)];
       const paragraph = paragraphPattern && paragraphs.find((match) => paragraphPattern.test(plainText(match[0])));
       if (!paragraph) { remaining.push(item); continue; }
 
       const insertion = paragraph.index + paragraph[0].length;
       const figure = `<figure class="article-inline-image"><img src="${esc(safeUrl)}" alt="${esc(item.alt_text || "Rezeptfoto")}" loading="lazy" decoding="async"></figure>`;
-      body = `${body.slice(0, insertion)}\\n${figure}\\n${body.slice(insertion)}`;
+      body = `${body.slice(0, insertion)}\n${figure}\n${body.slice(insertion)}`;
     }
     return { body, remaining };
   }
