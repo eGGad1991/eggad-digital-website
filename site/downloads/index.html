@@ -37,10 +37,11 @@
 </div>
 <article class="download-card">
 <span class="eyebrow">ÖFFENTLICHER DOWNLOAD</span>
-<h2>Die Datei wird vorbereitet</h2>
-<p>Der Downloadbereich ist eingerichtet. Die Datei mit ungefähr 200 MB wird hier ergänzt, sobald sie im separaten Cloud-Speicher bereitliegt.</p>
-<div class="download-meta"><span>Geplante Dateigröße: ca. 200 MB</span><span>Kein Login erforderlich</span></div>
-<div class="download-state" role="status"><strong>Download noch nicht verfügbar</strong>Die Datei wurde noch nicht hochgeladen. Sobald sie bereitsteht, erscheint hier der direkte Download-Button.</div>
+<h2>Valheim-Welt-Backup</h2>
+<p>Das bereinigte Backup der Valheim-Welt inklusive der enthaltenen Sicherungen. Der Download ist öffentlich und benötigt keine Anmeldung.</p>
+<div class="download-meta"><span>ZIP · ca. 192 MB</span><span>Kein Login erforderlich</span></div>
+<div class="download-state" id="download-state" role="status"><strong>Download wird geprüft …</strong>Der öffentliche Dateispeicher wird abgefragt.</div>
+<a class="btn" id="download-button" href="/downloads/Valheim-Welt-Backup-oeffentlich.zip" hidden download>Valheim-Backup herunterladen ↓</a>
 </article>
 </section>
 </main>
@@ -51,6 +52,25 @@
 <small>© 2026 Mila · Alle Rechte vorbehalten.</small>
 <small class="disclosure">Mila ist eine virtuelle Persönlichkeit. Inhalte und Bilder werden mit KI gestaltet.</small>
 </footer>
+<script>
+(async () => {
+  const state = document.getElementById("download-state");
+  const button = document.getElementById("download-button");
+  try {
+    const response = await fetch("/downloads/Valheim-Welt-Backup-oeffentlich.zip", { method: "HEAD", cache: "no-store" });
+    if (response.ok) {
+      state.hidden = true;
+      button.hidden = false;
+    } else if (response.status === 404) {
+      state.innerHTML = "<strong>Download wird eingerichtet</strong>Die Datei ist noch nicht im öffentlichen Speicher abgelegt.";
+    } else {
+      state.innerHTML = "<strong>Speicher wird verbunden</strong>Der öffentliche Dateispeicher ist noch nicht vollständig eingerichtet.";
+    }
+  } catch (_) {
+    state.innerHTML = "<strong>Download gerade nicht erreichbar</strong>Bitte versuche es später erneut.";
+  }
+})();
+</script>
 <script defer src="/cookie-consent.js"></script>
 </body>
 </html>
