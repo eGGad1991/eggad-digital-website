@@ -73,7 +73,7 @@
         return lower;
       }).join(" ");
     }
-    description = description.replace(/[.!?]+$/, "").trim();
+    description = description.replace(/[.!?]+$/, "").trim().slice(0, 298);
     return description ? description + "." : `Bild zum Beitrag „${post?.title || "Mila"}“.`;
   }
 
@@ -177,9 +177,13 @@
         clearSelection();
         message(uploadMessage, "Für Blogbilder bitte jeweils ein Bild auswählen, damit jeder Alt-Text einzeln gespeichert wird.", "error");
       }
-      if (!blogPostsLoaded) loadBlogPosts().catch((error) => {
-        blogNote.textContent = `Blogbeiträge konnten nicht geladen werden: ${error.message || "Bitte erneut anmelden."}`;
-      });
+      if (!blogPostsLoaded) {
+        loadBlogPosts().catch((error) => {
+          blogNote.textContent = `Blogbeiträge konnten nicht geladen werden: ${error.message || "Bitte erneut anmelden."}`;
+        });
+      } else {
+        updateSuggestedBlogAltText().catch((error) => console.warn("Alt-Text konnte nicht vorgeschlagen werden:", error));
+      }
     } else if (target === "private") {
       destinationNote.textContent = "Privates Archiv: Upload in den geschützten Supabase-Speicher „mila-private-vault“. Die Bilder sind nur nach Admin-Anmeldung unter /mila-k7/ sichtbar.";
       uploadButton.textContent = "Bilder privat speichern";
@@ -423,7 +427,7 @@
           }
 
           const extension = (file.name.split(".").pop() || "jpg").toLowerCase().replace(/[^a-z0-9]/g, "") || "jpg";
-          const baseName = slugifyFilename(file.name.replace(/\.[^.]+$/, ""));
+          const baseName = slugifyFilename(file.name.replace(/\.[^.]+$/, "").split("--alt--")[0]);
           const folder = kind === "cover" ? "cover" : "inline";
           const storagePath = mediaFolder + "/" + folder + "/" + Date.now() + "-" + (index + 1) + "-" + baseName + "." + extension;
 
