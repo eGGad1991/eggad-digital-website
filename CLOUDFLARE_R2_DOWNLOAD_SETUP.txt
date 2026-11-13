@@ -8,8 +8,8 @@ Datei:
 1. Cloudflare Dashboard öffnen und R2 Object Storage auswählen.
 2. Bucket mit dem Namen "mila-downloads" erstellen.
 3. Die ZIP-Datei Valheim-Welt-Backup-oeffentlich.zip in diesen Bucket hochladen.
-4. Cloudflare Dashboard > Workers & Pages > mila-einfach > Settings > Functions öffnen.
-5. Unter R2 bucket bindings eine Bindung anlegen:
+4. Cloudflare Dashboard > Workers & Pages > mila-einfach > Settings > Bindings > Add > R2 bucket öffnen.
+5. Die R2-Bucket-Bindung anlegen:
      Variable name: MILA_DOWNLOADS
      R2 bucket: mila-downloads
 6. Eine neue Pages-Bereitstellung aus dem aktuellen main-Branch auslösen, damit die Bindung aktiv wird.
