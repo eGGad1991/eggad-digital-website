@@ -3,8 +3,7 @@
   "include": [
     "/ki-digital/*",
     "/sitemap.xml",
-    "/blog/*",
-    "/downloads/*"
+    "/blog/*"
   ],
   "exclude": [
     "/ki-digital/",
