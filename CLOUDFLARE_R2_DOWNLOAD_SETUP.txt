@@ -1,0 +1,22 @@
+MILA – ÖFFENTLICHER DOWNLOAD ÜBER CLOUDFLARE R2
+
+Datei:
+  Valheim-Welt-Backup-oeffentlich.zip
+  Größe: ca. 192 MB
+  R2-Objektschlüssel: Valheim-Welt-Backup-oeffentlich.zip
+
+1. Cloudflare Dashboard öffnen und R2 Object Storage auswählen.
+2. Bucket mit dem Namen "mila-downloads" erstellen.
+3. Die ZIP-Datei Valheim-Welt-Backup-oeffentlich.zip in diesen Bucket hochladen.
+4. Cloudflare Dashboard > Workers & Pages > mila-einfach > Settings > Functions öffnen.
+5. Unter R2 bucket bindings eine Bindung anlegen:
+     Variable name: MILA_DOWNLOADS
+     R2 bucket: mila-downloads
+6. Eine neue Pages-Bereitstellung aus dem aktuellen main-Branch auslösen, damit die Bindung aktiv wird.
+
+Wichtig:
+- Kein öffentliches r2.dev-Domainziel erforderlich. Die Datei wird über eine Pages Function aus R2 ausgeliefert.
+- Der Endpunkt ist öffentlich: /downloads/Valheim-Welt-Backup-oeffentlich.zip
+- Die Downloadseite prüft per HEAD, ob die Datei vorhanden ist, und zeigt den Button erst dann an.
+- Der bestehende private Archiv-Bucket und der öffentliche Galerie-Bucket bleiben unangetastet.
+- Keine API-Tokens oder Secret Keys im Website-Code hinterlegen.
