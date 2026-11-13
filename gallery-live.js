@@ -71,26 +71,24 @@
     const heading = document.getElementById("mila-blog-gallery-heading");
     if (!grid || !heading) return;
 
-    // Inner join + Statusfilter: Nur Bilder, deren zugehöriger Blogbeitrag
-    // veröffentlicht ist. Der private Bucket wird hier ausdrücklich nicht abgefragt.
+    // Die RLS-Regel in Supabase gibt anonymen Besuchern ausschließlich
+    // Bilder aus veröffentlichten Blogbeiträgen frei.
+    // Der private Speicher wird nie abgefragt.
     const all = [];
     const pageSize = 500;
     let offset = 0;
-    let queryError = null;
 
-    // Seitenweise laden, damit auch bei vielen Beiträgen kein Bild wegen
-    // eines festen Ergebnislimits aus der Galerie verschwindet.
     while (true) {
       const { data: page, error } = await client
         .from("blog_post_images")
-        .select("id, storage_path, alt_text, image_kind, created_at, blog_posts!inner(title, slug, status, published_at)")
-        .eq("blog_posts.status", "published")
+        .select("id, public_url, alt_text, image_kind, created_at")
+        .like("public_url", "%/mila-blog-media/%")
         .order("created_at", { ascending: false })
         .range(offset, offset + pageSize - 1);
 
       if (error) {
-        queryError = error;
-        break;
+        console.error("Mila Blog-Galerie konnte nicht geladen werden:", error.message);
+        return;
       }
 
       all.push(...(page || []));
@@ -98,38 +96,24 @@
       offset += pageSize;
     }
 
-    if (queryError) {
-      console.warn("Mila Blog-Galerie:", queryError.message);
-      return;
-    }
-
     const seen = new Set();
     all.forEach(item => {
-      if (!item.storage_path || seen.has(item.storage_path)) return;
-      seen.add(item.storage_path);
+      const src = (item.public_url || "").trim();
+      if (!src || seen.has(src)) return;
+      seen.add(src);
 
-      const { data: publicData } = client.storage.from(blogBucket).getPublicUrl(item.storage_path);
-      if (!publicData || !publicData.publicUrl) return;
-
-      const post = item.blog_posts || {};
-      const fallbackAlt = post.title
-        ? "Bild aus dem Blogbeitrag: " + post.title
-        : "Bild aus Milas Blog";
       appendImage(
         grid,
-        publicData.publicUrl,
-        (item.alt_text || "").trim() || fallbackAlt,
+        src,
+        (item.alt_text || "").trim() || "Bild aus Milas Blog",
         {
           gallerySource: "blog",
-          blogSlug: post.slug || "",
           imageKind: item.image_kind || ""
         }
       );
     });
 
-    if (grid.children.length > 0) {
-      heading.hidden = false;
-    }
+    heading.hidden = grid.children.length === 0;
   }
 
   async function load() {
