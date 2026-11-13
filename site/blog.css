@@ -172,3 +172,25 @@
   .related-post-content { padding: 10px; }
   .related-post-content strong { font-size: 15px; }
 }
+
+/* Recipe inline images: keep a clear rhythm between text and each cooking scene */
+.article-body figure.article-inline-image {
+  max-width: 760px;
+  margin: 38px auto 46px;
+  padding: 0;
+}
+.article-body figure.article-inline-image img {
+  width: 100%;
+  max-height: 520px;
+  object-fit: contain;
+  border: 1px solid #ffffff18;
+  box-shadow: 0 14px 34px #0003;
+}
+@media (max-width: 760px) {
+  .article-body figure.article-inline-image {
+    margin: 28px auto 34px;
+  }
+  .article-body figure.article-inline-image img {
+    border-radius: 10px;
+  }
+}
