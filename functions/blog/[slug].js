@@ -162,28 +162,26 @@ function placeInlineImages(bodyHtml, images, post = {}) {
       if (!safeUrl) { remaining.push(item); continue; }
 
       const identity = String(item.alt_text || "").toLowerCase();
-      let stepPattern = null;
+      let paragraphPattern = null;
       if (/naturbelassene mandeln|mandeln.*backpapierschale/.test(identity)) {
-        stepPattern = /schritt\s*2\b/i;
+        paragraphPattern = /Gib die 200 g ganzen Mandeln/i;
       } else if (/gibt zucker zu den mandeln/.test(identity)) {
-        stepPattern = /schritt\s*3\b/i;
+        paragraphPattern = /Verteile den Zucker/i;
       } else if (/gibt vanillezucker und wasser/.test(identity)) {
-        stepPattern = /schritt\s*3\b/i;
+        paragraphPattern = /Gib anschließend die 30 ml Wasser/i;
       } else if (/ruehrt ganze mandeln|rührt ganze mandeln/.test(identity)) {
-        stepPattern = /schritt\s*4\b/i;
+        paragraphPattern = /Rühre die Mandeln/i;
       } else if (/praesentiert eine schale|präsentiert eine schale/.test(identity)) {
-        stepPattern = /schritt\s*5\b/i;
+        paragraphPattern = /Lass die Mandeln vollständig auskühlen/i;
       }
 
-      const headings = [...body.matchAll(/<h3\b[^>]*>[\s\S]*?<\/h3>/gi)];
-      const heading = stepPattern && headings.find((match) => stepPattern.test(plainText(match[0])));
-      if (!heading) { remaining.push(item); continue; }
+      const paragraphs = [...body.matchAll(/<p\\b[^>]*>[\\s\\S]*?<\\/p>/gi)];
+      const paragraph = paragraphPattern && paragraphs.find((match) => paragraphPattern.test(plainText(match[0])));
+      if (!paragraph) { remaining.push(item); continue; }
 
-      // Append each photo after its step; multiple photos for Step 3 retain database order.
-      const nextHeading = headings.find((match) => match.index > heading.index);
-      const insertion = nextHeading ? nextHeading.index : body.length;
+      const insertion = paragraph.index + paragraph[0].length;
       const figure = `<figure class="article-inline-image"><img src="${esc(safeUrl)}" alt="${esc(item.alt_text || "Rezeptfoto")}" loading="lazy" decoding="async"></figure>`;
-      body = `${body.slice(0, insertion).replace(/\s*$/, "")}\n${figure}\n${body.slice(insertion)}`;
+      body = `${body.slice(0, insertion)}\\n${figure}\\n${body.slice(insertion)}`;
     }
     return { body, remaining };
   }
