@@ -163,25 +163,28 @@ function placeInlineImages(bodyHtml, images, post = {}) {
 
       const identity = String(item.alt_text || "").toLowerCase();
       let paragraphPattern = null;
-      if (/naturbelassene mandeln|mandeln.*backpapierschale/.test(identity)) {
-        paragraphPattern = /Gib die 200 g ganzen Mandeln/i;
-      } else if (/gibt zucker zu den mandeln/.test(identity)) {
-        paragraphPattern = /Verteile den Zucker/i;
+
+      // Check the more specific scenes first. All descriptions mention almonds/backpapier,
+      // so a generic check must never capture the later steps.
+      if (/gibt zucker zu den mandeln/.test(identity)) {
+        paragraphPattern = /Verteile zuerst den Zucker/i;
       } else if (/gibt vanillezucker und wasser/.test(identity)) {
-        paragraphPattern = /Gib anschließend die 30 ml Wasser/i;
+        paragraphPattern = /Gib danach die beiden Päckchen Vanillezucker/i;
       } else if (/ruehrt ganze mandeln|rührt ganze mandeln/.test(identity)) {
         paragraphPattern = /Rühre die Mandeln/i;
       } else if (/praesentiert eine schale|präsentiert eine schale/.test(identity)) {
         paragraphPattern = /Lass die Mandeln vollständig auskühlen/i;
+      } else if (/naturbelassene mandeln|fuellt.*mandeln|füllt.*mandeln/.test(identity)) {
+        paragraphPattern = /Gib die 200 g ganzen Mandeln/i;
       }
 
-      const paragraphs = [...body.matchAll(/<p\b[^>]*>[\s\S]*?<\/p>/gi)];
+      const paragraphs = [...body.matchAll(/<p\\b[^>]*>[\\s\\S]*?<\\/p>/gi)];
       const paragraph = paragraphPattern && paragraphs.find((match) => paragraphPattern.test(plainText(match[0])));
       if (!paragraph) { remaining.push(item); continue; }
 
       const insertion = paragraph.index + paragraph[0].length;
       const figure = `<figure class="article-inline-image"><img src="${esc(safeUrl)}" alt="${esc(item.alt_text || "Rezeptfoto")}" loading="lazy" decoding="async"></figure>`;
-      body = `${body.slice(0, insertion)}\n${figure}\n${body.slice(insertion)}`;
+      body = `${body.slice(0, insertion)}\\n${figure}\\n${body.slice(insertion)}`;
     }
     return { body, remaining };
   }
