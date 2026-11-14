@@ -138,6 +138,17 @@
 
     const footerLinks = document.querySelectorAll("footer .footerlinks");
     footerLinks.forEach(function (container) {
+
+      if (!container.querySelector('[data-mila-instagram-link]')) {
+        const link = document.createElement("a");
+        link.href = "https://www.instagram.com/mila.einfach/";
+        link.target = "_blank";
+        link.rel = "noopener noreferrer";
+        link.textContent = "Instagram ↗";
+        link.setAttribute("aria-label", "Mila auf Instagram");
+        link.setAttribute("data-mila-instagram-link", "true");
+        container.appendChild(link);
+      }
       if (!container.querySelector('[data-mila-cookie-open]')) {
         const button = document.createElement("button");
         button.type = "button";
