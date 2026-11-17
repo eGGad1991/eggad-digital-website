@@ -1,10 +1,13 @@
 (() => {
   const cfg = window.MILA_SUPABASE_CONFIG || {};
-  const grid = document.getElementById('blog-post-grid');
-  const loading = document.getElementById('blog-loading');
-  const empty = document.getElementById('blog-empty');
-  const errorEl = document.getElementById('blog-error');
-  const countEl = document.getElementById('blog-post-count');
+  const digitalGrid = document.getElementById('digital-post-grid');
+  const everydayGrid = document.getElementById('everyday-post-grid');
+  const digitalLoading = document.getElementById('digital-loading');
+  const everydayLoading = document.getElementById('everyday-loading');
+  const digitalEmpty = document.getElementById('digital-empty');
+  const everydayEmpty = document.getElementById('everyday-empty');
+  const digitalCount = document.getElementById('digital-post-count');
+  const everydayCount = document.getElementById('everyday-post-count');
 
   const escapeHtml = (value = '') => String(value).replace(/[&<>"']/g, (char) => ({
     '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
@@ -43,7 +46,7 @@
     const content = document.createElement('div');
     content.className = 'blog-card-content';
     content.innerHTML = `
-      <div class="blog-card-meta"><span class="blog-category">${escapeHtml(post.category || 'Blog')}</span><time datetime="${escapeHtml(post.published_at || "")}">${escapeHtml(formatDate(post.published_at))}</time></div>
+      <div class="blog-card-meta"><span class="blog-category">${escapeHtml(post.category || 'Blog')}</span><time datetime="${escapeHtml(post.published_at || '')}">${escapeHtml(formatDate(post.published_at))}</time></div>
       <h3>${escapeHtml(post.title || 'Ohne Titel')}</h3>
       <p>${escapeHtml(post.excerpt || '')}</p>
       <span class="blog-read-more">Beitrag lesen <span aria-hidden="true">↗</span></span>`;
@@ -51,42 +54,67 @@
     return card;
   }
 
+  const digitalCategories = new Set([
+    'seo', 'datenschutz', 'digitales marketing', 'website', 'webseite',
+    'ki', 'ki & digital', 'ki-tools', 'ki tools', 'social media', 'automation',
+    'automatisierung', 'online marketing', 'technologie'
+  ]);
+
+  function isDigitalPost(post) {
+    const category = String(post.category || '').trim().toLocaleLowerCase('de-DE');
+    return digitalCategories.has(category);
+  }
+
   async function loadPosts() {
-    if (!window.supabase || !cfg.url || !cfg.anonKey || !cfg.blogBucket) {
-      loading.hidden = true;
-      errorEl.hidden = false;
+    if (!window.supabase || !cfg.url || !cfg.anonKey || !digitalGrid || !everydayGrid) {
+      digitalLoading.hidden = true;
+      everydayLoading.hidden = true;
+      digitalEmpty.hidden = false;
+      everydayEmpty.hidden = false;
       console.error('Blog-Konfiguration fehlt.');
       return;
     }
+
     const client = window.supabase.createClient(cfg.url, cfg.anonKey);
     const { data, error } = await client
       .from('blog_posts')
       .select('id,title,slug,excerpt,category,cover_image,published_at')
       .eq('status', 'published')
-      .neq('category', 'Rezepte')
       .order('published_at', { ascending: false, nullsFirst: false });
 
-    loading.hidden = true;
+    digitalLoading.hidden = true;
+    everydayLoading.hidden = true;
     if (error) {
       console.error('Blog konnte nicht geladen werden:', error);
-      errorEl.hidden = false;
+      digitalEmpty.hidden = true;
+      everydayEmpty.hidden = true;
       return;
     }
 
     const posts = data || [];
-    countEl.textContent = posts.length ? `${posts.length} ${posts.length === 1 ? 'Beitrag' : 'Beiträge'}` : '';
-    if (!posts.length) {
-      empty.hidden = false;
-      return;
-    }
-    const fragment = document.createDocumentFragment();
-    posts.forEach((post) => fragment.appendChild(makeCard(post)));
-    grid.appendChild(fragment);
+    const digitalPosts = posts.filter(isDigitalPost);
+    const everydayPosts = posts.filter((post) => !isDigitalPost(post));
+
+    digitalCount.textContent = digitalPosts.length ? `${digitalPosts.length} ${digitalPosts.length === 1 ? 'Beitrag' : 'Beiträge'}` : '';
+    everydayCount.textContent = everydayPosts.length ? `${everydayPosts.length} ${everydayPosts.length === 1 ? 'Beitrag' : 'Beiträge'}` : '';
+
+    digitalEmpty.hidden = digitalPosts.length > 0;
+    everydayEmpty.hidden = everydayPosts.length > 0;
+
+    const digitalFragment = document.createDocumentFragment();
+    digitalPosts.forEach((post) => digitalFragment.appendChild(makeCard(post)));
+    digitalGrid.appendChild(digitalFragment);
+
+    const everydayFragment = document.createDocumentFragment();
+    everydayPosts.forEach((post) => everydayFragment.appendChild(makeCard(post)));
+    everydayGrid.appendChild(everydayFragment);
   }
 
   loadPosts().catch((error) => {
     console.error(error);
-    loading.hidden = true;
-    errorEl.hidden = false;
+    digitalLoading.hidden = true;
+    everydayLoading.hidden = true;
+    digitalEmpty.hidden = false;
+    everydayEmpty.hidden = false;
   });
 })();
