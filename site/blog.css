@@ -194,3 +194,12 @@
     border-radius: 10px;
   }
 }
+
+
+/* Topic navigation: the SEO tile leads to its dedicated content hub */
+.blog-topic-link{display:block;color:inherit;text-decoration:none;transition:transform .2s ease,border-color .2s ease,box-shadow .2s ease}
+.blog-topic-link:hover{transform:translateY(-4px);border-color:#e6a2d1aa;box-shadow:0 15px 35px #0006}
+.blog-topic-link:focus-visible{outline:2px solid var(--pink);outline-offset:4px}
+.blog-topic-link h3{color:var(--text)}
+.blog-topic-link .topic-link-label{display:inline-block;margin-top:5px;color:var(--pink);font-size:12px;font-weight:700}
+.blog-inline-link{color:#efb5df;text-decoration:underline;text-underline-offset:3px}
