@@ -2,10 +2,16 @@
   const cfg = window.MILA_SUPABASE_CONFIG || {};
   const digitalGrid = document.getElementById('digital-post-grid');
   const everydayGrid = document.getElementById('everyday-post-grid');
+
+  // The blog landing page is a topic chooser. Only pillar pages render feeds.
+  if (!digitalGrid && !everydayGrid) return;
+
   const digitalLoading = document.getElementById('digital-loading');
   const everydayLoading = document.getElementById('everyday-loading');
   const digitalEmpty = document.getElementById('digital-empty');
   const everydayEmpty = document.getElementById('everyday-empty');
+  const digitalError = document.getElementById('digital-error');
+  const everydayError = document.getElementById('everyday-error');
   const digitalCount = document.getElementById('digital-post-count');
   const everydayCount = document.getElementById('everyday-post-count');
 
@@ -24,7 +30,7 @@
     const card = document.createElement('a');
     card.className = 'blog-card';
     card.href = `/blog/${encodeURIComponent(post.slug)}/`;
-    card.setAttribute('aria-label', `${post.title} lesen`);
+    card.setAttribute('aria-label', `${post.title || 'Beitrag'} lesen`);
 
     if (post.cover_image) {
       const media = document.createElement('div');
@@ -56,8 +62,9 @@
 
   const digitalCategories = new Set([
     'seo', 'datenschutz', 'digitales marketing', 'website', 'webseite',
-    'ki', 'ki & digital', 'ki-tools', 'ki tools', 'social media', 'automation',
-    'automatisierung', 'online marketing', 'technologie'
+    'ki', 'ki & digital', 'ki-tools', 'ki tools', 'social media',
+    'automation', 'automatisierung', 'online marketing', 'technologie',
+    'digital', 'digitale tools', 'online-marketing'
   ]);
 
   function isDigitalPost(post) {
@@ -65,12 +72,20 @@
     return digitalCategories.has(category);
   }
 
+  function finishLoading() {
+    if (digitalLoading) digitalLoading.hidden = true;
+    if (everydayLoading) everydayLoading.hidden = true;
+  }
+
   async function loadPosts() {
-    if (!window.supabase || !cfg.url || !cfg.anonKey || !digitalGrid || !everydayGrid) {
-      digitalLoading.hidden = true;
-      everydayLoading.hidden = true;
-      digitalEmpty.hidden = false;
-      everydayEmpty.hidden = false;
+    const targets = [
+      { grid: digitalGrid, empty: digitalEmpty, error: digitalError, count: digitalCount, predicate: isDigitalPost },
+      { grid: everydayGrid, empty: everydayEmpty, error: everydayError, count: everydayCount, predicate: (post) => !isDigitalPost(post) }
+    ].filter((target) => target.grid);
+
+    if (!window.supabase || !cfg.url || !cfg.anonKey) {
+      finishLoading();
+      targets.forEach((target) => { if (target.error) target.error.hidden = false; });
       console.error('Blog-Konfiguration fehlt.');
       return;
     }
@@ -82,39 +97,32 @@
       .eq('status', 'published')
       .order('published_at', { ascending: false, nullsFirst: false });
 
-    digitalLoading.hidden = true;
-    everydayLoading.hidden = true;
+    finishLoading();
     if (error) {
       console.error('Blog konnte nicht geladen werden:', error);
-      digitalEmpty.hidden = true;
-      everydayEmpty.hidden = true;
+      targets.forEach((target) => { if (target.error) target.error.hidden = false; });
       return;
     }
 
     const posts = data || [];
-    const digitalPosts = posts.filter(isDigitalPost);
-    const everydayPosts = posts.filter((post) => !isDigitalPost(post));
-
-    digitalCount.textContent = digitalPosts.length ? `${digitalPosts.length} ${digitalPosts.length === 1 ? 'Beitrag' : 'Beiträge'}` : '';
-    everydayCount.textContent = everydayPosts.length ? `${everydayPosts.length} ${everydayPosts.length === 1 ? 'Beitrag' : 'Beiträge'}` : '';
-
-    digitalEmpty.hidden = digitalPosts.length > 0;
-    everydayEmpty.hidden = everydayPosts.length > 0;
-
-    const digitalFragment = document.createDocumentFragment();
-    digitalPosts.forEach((post) => digitalFragment.appendChild(makeCard(post)));
-    digitalGrid.appendChild(digitalFragment);
-
-    const everydayFragment = document.createDocumentFragment();
-    everydayPosts.forEach((post) => everydayFragment.appendChild(makeCard(post)));
-    everydayGrid.appendChild(everydayFragment);
+    targets.forEach((target) => {
+      const filtered = posts.filter(target.predicate);
+      if (target.count) {
+        target.count.textContent = filtered.length
+          ? `${filtered.length} ${filtered.length === 1 ? 'Beitrag' : 'Beiträge'}`
+          : '';
+      }
+      if (target.empty) target.empty.hidden = filtered.length > 0;
+      const fragment = document.createDocumentFragment();
+      filtered.forEach((post) => fragment.appendChild(makeCard(post)));
+      target.grid.appendChild(fragment);
+    });
   }
 
   loadPosts().catch((error) => {
     console.error(error);
-    digitalLoading.hidden = true;
-    everydayLoading.hidden = true;
-    digitalEmpty.hidden = false;
-    everydayEmpty.hidden = false;
+    finishLoading();
+    if (digitalError && digitalGrid) digitalError.hidden = false;
+    if (everydayError && everydayGrid) everydayError.hidden = false;
   });
 })();
