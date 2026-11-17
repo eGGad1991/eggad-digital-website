@@ -51,6 +51,20 @@
 .seo-guide .guide-faq{border-top:1px solid #ffffff20;padding:16px 0}
 .seo-guide .guide-faq h3{margin:0 0 6px}
 @media(max-width:600px){.guide-steps{grid-template-columns:1fr}.seo-guide{padding-top:22px}.guide-box{padding:18px}}
+
+/* Compact, accessible expandable FAQ */
+.seo-faq-section{margin-top:44px}
+.seo-faq-intro{font-size:14px;margin-top:-4px;color:var(--muted)}
+.seo-faq-list{margin-top:14px;border-bottom:1px solid #ffffff20}
+.seo-guide .guide-faq{padding:0;border-top:1px solid #ffffff20}
+.seo-guide .guide-faq summary{position:relative;display:flex;align-items:center;justify-content:space-between;gap:16px;list-style:none;cursor:pointer;padding:15px 42px 15px 2px;color:#f8f4f7;font:600 17px/1.35 'Playfair Display',Georgia,serif}
+.seo-guide .guide-faq summary::-webkit-details-marker{display:none}
+.seo-guide .guide-faq summary::after{content:'+';position:absolute;right:7px;top:50%;transform:translateY(-50%);display:grid;place-items:center;width:25px;height:25px;border:1px solid #bd8bff66;border-radius:50%;color:var(--pink);font:400 19px/1 Arial,sans-serif;transition:transform .2s,background .2s}
+.seo-guide .guide-faq[open] summary::after{content:'−';background:#bd8bff18}
+.seo-guide .guide-faq summary:hover{color:var(--pink)}
+.seo-guide .guide-faq summary:focus-visible{outline:2px solid var(--pink);outline-offset:3px;border-radius:5px}
+.seo-guide .guide-faq p{font-size:14px;line-height:1.7;margin:0;padding:0 42px 16px 2px;max-width:780px}
+
 </style>
 <script type="application/ld+json">
 {
@@ -161,12 +175,15 @@
 <a class="guide-article" href="/blog/geo-marketing-vs-geo/"><small>Lokale Sichtbarkeit · GEO</small><strong>Geo-Marketing, GEO oder Local SEO?</strong><span>Die Begriffe unterscheiden und ihre Bedeutung verstehen. ↗</span></a>
 </div>
 </section>
-<section>
+<section class="seo-faq-section">
 <h2>Häufige Fragen zu <em>SEO</em></h2>
-<div class="guide-faq"><h3>Wie lange dauert SEO?</h3><p>SEO ist keine Sofortmaßnahme. Bis Änderungen messbare Auswirkungen zeigen, können Wochen oder Monate vergehen. Das hängt unter anderem von Wettbewerb, Website und Thema ab.</p></div>
-<div class="guide-faq"><h3>Muss ich für SEO bezahlen?</h3><p>Die Grundlagen kannst du selbst umsetzen. Kostenpflichtige Tools können bei Analysen helfen, sind für den Einstieg aber nicht zwingend notwendig.</p></div>
-<div class="guide-faq"><h3>Ist ein gutes Ranking garantiert?</h3><p>Nein. Niemand kann eine bestimmte Position bei Google seriös garantieren. Du kannst die Qualität und Verständlichkeit deiner Website verbessern, aber die Platzierung hängt von vielen Faktoren ab.</p></div>
-<div class="guide-faq"><h3>Was sollte ich zuerst lernen?</h3><p>Beginne mit der Keyword-Recherche und der Suchintention. Danach kannst du deine Inhalte mit On-Page SEO verbessern und passende Beiträge miteinander verknüpfen.</p></div>
+<p class="seo-faq-intro">Kurze Antworten auf die wichtigsten Fragen. Tippe auf eine Frage, wenn du mehr wissen möchtest.</p>
+<div class="seo-faq-list">
+<details class="guide-faq"><summary>Wie lange dauert SEO?</summary><p>SEO ist keine Sofortmaßnahme. Bis Änderungen messbare Auswirkungen zeigen, können Wochen oder Monate vergehen. Das hängt unter anderem von Wettbewerb, Website und Thema ab.</p></details>
+<details class="guide-faq"><summary>Muss ich für SEO bezahlen?</summary><p>Die Grundlagen kannst du selbst umsetzen. Kostenpflichtige Tools können bei Analysen helfen, sind für den Einstieg aber nicht zwingend notwendig.</p></details>
+<details class="guide-faq"><summary>Ist ein gutes Ranking garantiert?</summary><p>Nein. Niemand kann eine bestimmte Position bei Google seriös garantieren. Du kannst die Qualität und Verständlichkeit deiner Website verbessern, aber die Platzierung hängt von vielen Faktoren ab.</p></details>
+<details class="guide-faq"><summary>Was sollte ich zuerst lernen?</summary><p>Beginne mit der Keyword-Recherche und der Suchintention. Danach kannst du deine Inhalte mit On-Page SEO verbessern und passende Beiträge miteinander verknüpfen.</p></details>
+</div>
 </section>
 <div class="guide-box"><strong>Mein Tipp zum Schluss</strong><p>Du musst SEO nicht an einem Tag verstehen. Fang mit einer Seite und einer konkreten Frage an. Wenn du die Grundlagen Schritt für Schritt umsetzt, wird aus einzelnen Maßnahmen nach und nach eine klare Strategie.</p><a class="btn" href="/blog/">Weitere Beiträge im Blog entdecken ↗</a></div>
 </main>
