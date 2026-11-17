@@ -355,12 +355,45 @@ function articleHtml(post, images, relatedPosts, origin) {
 ${post.cover_image ? `<figure class="article-cover"><img src="${esc(post.cover_image)}" alt="Titelbild: ${esc(post.title)}" fetchpriority="high"></figure>` : ""}
 <div class="article-body">${body}</div>
 ${gallery ? `<section class="article-gallery-wrap"><h2>Weitere Bilder</h2><div class="article-gallery">${gallery}</div></section>` : ""}
+<section class="blog-review-panel" id="blog-review-widget" data-post-id="${esc(post.id)}">
+<div class="eyebrow">DEINE MEINUNG ZÄHLT</div>
+<h2>Wie hat dir dieser Beitrag gefallen?</h2>
+<p class="blog-review-intro">Bewerte den Artikel mit bis zu fünf Sternen und erzähle kurz, was dir geholfen hat. Deine Rückmeldung erscheint nach einer kurzen Prüfung.</p>
+<div class="review-summary">
+<strong class="review-average" id="review-average">Noch keine Bewertungen</strong>
+<div class="review-summary-stars" id="review-summary-stars" aria-label="Noch keine Bewertungen"></div>
+<span class="review-count" id="review-count">0 freigegebene Bewertungen</span>
+</div>
+<form id="blog-review-form" class="review-form-grid">
+<fieldset class="review-rating-fieldset">
+<legend>Deine Sternebewertung</legend>
+<div class="review-star-picker" id="review-star-picker" role="group" aria-label="Bewertung von einem halben bis fünf Sternen"></div>
+<p class="review-rating-note" id="review-rating-note">Wähle zwischen einem halben und fünf Sternen.</p>
+</fieldset>
+<label for="reviewer-name">Dein Name (optional)</label>
+<input id="reviewer-name" type="text" maxlength="60" autocomplete="nickname" placeholder="Wie sollen wir dich nennen?">
+<label for="review-comment">Dein Kommentar</label>
+<textarea id="review-comment" maxlength="1500" minlength="5" required placeholder="Was hat dir gefallen oder was könnten wir verbessern?"></textarea>
+<div class="review-honeypot" aria-hidden="true"><label for="review-website">Website</label><input id="review-website" name="website" type="text" tabindex="-1" autocomplete="off"></div>
+<label class="review-consent" for="review-consent">
+<input id="review-consent" type="checkbox" required>
+<span>Ich bin einverstanden, dass meine Bewertung und mein Kommentar nach Prüfung öffentlich unter diesem Beitrag angezeigt werden. Weitere Informationen stehen in der <a href="/datenschutz/">Datenschutzerklärung</a>.</span>
+</label>
+<button class="review-submit" id="review-submit" type="submit">Bewertung senden</button>
+<p class="review-form-message" id="review-form-message" role="alert" hidden></p>
+</form>
+<p class="review-success" id="review-success" role="status" hidden></p>
+<div class="review-list" id="review-list" aria-live="polite"><p class="review-empty">Bewertungen werden geladen …</p></div>
+</section>
 <p class="article-byline">Beitrag von Mila · virtuelle Persönlichkeit</p>
 <div class="article-end"><a href="/blog/" class="btn">Weitere Beiträge entdecken ↗</a><button id="article-share" class="share-button" type="button">Beitrag teilen</button></div>
 ${relatedPostsHtml(relatedPosts)}
 </article></main>
 <footer><a class="logo" href="/" aria-label="Zur Mila-Startseite" title="Zur Mila-Startseite">mila<span>♡</span><span class="visually-hidden">Zur Mila-Startseite</span></a><div class="footerlinks"><a href="/impressum/">Impressum</a><a href="/datenschutz/">Datenschutz</a><a href="/kontakt/">Kontakt</a></div><p>Schön, dass du da bist. ♡</p><small>© 2026 Mila · Alle Rechte vorbehalten.</small><small class="disclosure">Mila ist eine virtuelle Persönlichkeit. Inhalte und Bilder werden mit KI gestaltet.</small></footer>
 <script>document.getElementById('article-back')?.addEventListener('click',()=>{try{const previous=document.referrer?new URL(document.referrer):null;if(previous&&previous.origin===location.origin&&history.length>1)history.back();else location.assign('/blog/');}catch(_){location.assign('/blog/');}});document.getElementById('article-share')?.addEventListener('click',async()=>{const data={title:${JSON.stringify(post.title)},url:location.href};try{if(navigator.share)await navigator.share(data);else if(navigator.clipboard?.writeText){await navigator.clipboard.writeText(data.url);document.getElementById('article-share').textContent='Link kopiert ✓';}else window.prompt('Kopiere den Link:',data.url);}catch(e){if(e?.name!=='AbortError')console.warn(e);}});</script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.119.0"></script>
+<script src="/supabase-config.js"></script>
+<script defer src="/blog-reviews.js"></script>
 <script defer src="/cookie-consent.js"></script></body></html>`;
 }
 

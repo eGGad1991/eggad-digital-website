@@ -151,6 +151,100 @@
     for (const post of allPosts) ensureMediaFolder(post).catch((error) => console.warn(error));
   }
 
+  function reviewDate(value) {
+    if (!value) return '';
+    const date = new Date(value);
+    if (Number.isNaN(date.getTime())) return '';
+    return new Intl.DateTimeFormat('de-DE', { day: '2-digit', month: 'long', year: 'numeric' }).format(date);
+  }
+
+  async function loadPendingReviews() {
+    const list = $('review-pending-list');
+    if (!list) return;
+    list.replaceChildren();
+    const { data, error } = await client.from('blog_post_reviews')
+      .select('id,post_id,rating,display_name,comment,created_at,blog_posts(title,slug)')
+      .eq('status', 'pending')
+      .order('created_at', { ascending: true });
+    if (error) {
+      const message = document.createElement('p');
+      message.className = 'form-hint';
+      message.textContent = 'Bewertungen konnten nicht geladen werden: ' + error.message;
+      list.appendChild(message);
+      return;
+    }
+
+    const reviews = data || [];
+    $('review-pending-count').textContent = String(reviews.length);
+    if (!reviews.length) {
+      const empty = document.createElement('p');
+      empty.className = 'form-hint';
+      empty.textContent = 'Keine neuen Bewertungen. Alles ist geprüft.';
+      list.appendChild(empty);
+      return;
+    }
+
+    reviews.forEach((review) => {
+      const card = document.createElement('article');
+      card.className = 'review-moderation-item';
+
+      const head = document.createElement('div');
+      head.className = 'review-moderation-head';
+      const title = document.createElement('h3');
+      title.textContent = review.blog_posts?.title || 'Blogbeitrag';
+      const date = document.createElement('time');
+      date.textContent = reviewDate(review.created_at);
+      head.append(title, date);
+
+      const details = document.createElement('p');
+      details.className = 'review-moderation-details';
+      details.textContent = (review.display_name || 'Gast') + ' · ' + String(review.rating).replace('.', ',') + ' von 5 Sternen';
+
+      const comment = document.createElement('p');
+      comment.className = 'review-moderation-comment';
+      comment.textContent = review.comment;
+
+      const actions = document.createElement('div');
+      actions.className = 'review-moderation-actions';
+      const approve = document.createElement('button');
+      approve.type = 'button';
+      approve.className = 'btn review-approve-button';
+      approve.textContent = 'Freigeben';
+      const reject = document.createElement('button');
+      reject.type = 'button';
+      reject.className = 'danger-button review-reject-button';
+      reject.textContent = 'Ablehnen';
+
+      approve.addEventListener('click', () => updateReviewStatus(review.id, 'approved', approve, reject));
+      reject.addEventListener('click', () => updateReviewStatus(review.id, 'rejected', approve, reject));
+
+      actions.append(approve, reject);
+      card.append(head, details, comment, actions);
+      list.appendChild(card);
+    });
+  }
+
+  async function updateReviewStatus(reviewId, status, approveButton, rejectButton) {
+    approveButton.disabled = true;
+    rejectButton.disabled = true;
+    const update = {
+      status,
+      approved_at: status === 'approved' ? new Date().toISOString() : null
+    };
+    const { error } = await client.from('blog_post_reviews').update(update).eq('id', reviewId);
+    if (error) {
+      approveButton.disabled = false;
+      rejectButton.disabled = false;
+      const list = $('review-pending-list');
+      const message = document.createElement('p');
+      message.className = 'form-hint';
+      message.textContent = 'Die Bewertung konnte nicht aktualisiert werden: ' + error.message;
+      list.prepend(message);
+      return;
+    }
+    await loadPendingReviews();
+  }
+
   async function loadImages(postId) {
     const list = $('post-media-list');
     list.replaceChildren();
@@ -410,6 +504,7 @@
     adminApp.hidden = false;
     $('logout-button').hidden = false;
     await loadPosts();
+    await loadPendingReviews();
   }
 
   async function verifyAdmin() {
