@@ -414,3 +414,23 @@
 .review-entry-comment{font-size:13px;line-height:1.7;color:#ded4e2;margin:0;white-space:pre-wrap;overflow-wrap:anywhere}
 @media(max-width:520px){.blog-review-panel{margin:38px -5px 28px;padding:19px 15px}.review-summary{gap:8px 12px}.review-average{font-size:20px}.review-star{flex-basis:31px;width:31px}.review-star-base,.review-star-fill{font-size:31px}.review-submit{width:100%}.review-entry-top{display:grid;gap:2px}}
 
+
+
+/* Related articles: balanced editorial cards instead of narrow, full-height image columns */
+.related-posts-grid{grid-template-columns:repeat(3,minmax(0,1fr));align-items:stretch;gap:16px}
+.related-post-card{display:flex;flex-direction:column;min-height:0;height:100%}
+.related-post-card>img{display:block;width:100%;height:158px;min-height:0;flex:0 0 158px;object-fit:cover}
+.related-post-content{flex:1;padding:15px 16px 16px;gap:8px}
+.related-post-content strong{font-size:18px;line-height:1.28}
+.related-post-excerpt{display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:4;overflow:hidden}
+.related-post-link{padding-top:5px}
+@media(max-width:760px){
+  .related-posts-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .related-post-card>img{height:145px;flex-basis:145px}
+}
+@media(max-width:520px){
+  .related-posts-grid{grid-template-columns:1fr}
+  .related-post-card{display:grid;grid-template-columns:112px minmax(0,1fr)}
+  .related-post-card>img{width:112px;height:100%;min-height:170px;flex:initial}
+  .related-post-content{padding:12px}
+}
