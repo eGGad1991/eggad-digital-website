@@ -25,6 +25,9 @@
   const darkRomancePosition = document.getElementById("dark-romance-position");
   const darkRomanceTitle = document.getElementById("dark-romance-title");
   const darkRomanceAlt = document.getElementById("dark-romance-alt");
+  const darkRomanceContent = document.getElementById("dark-romance-content");
+  const darkRomanceSaveContent = document.getElementById("dark-romance-save-content");
+  const darkRomanceContentMessage = document.getElementById("dark-romance-content-message");
   const darkRomanceNewNumber = document.getElementById("dark-romance-new-number");
   const darkRomanceNewTitle = document.getElementById("dark-romance-new-title");
   const darkRomanceNewExcerpt = document.getElementById("dark-romance-new-excerpt");
@@ -236,6 +239,27 @@
     updateDarkRomanceTitle();
   }
 
+  async function loadDarkRomanceChapter() {
+    const day = darkRomanceDays.find(item => item.id === darkRomanceDay.value);
+    if (!day) {
+      darkRomanceContent.value = "";
+      darkRomanceContentMessage.textContent = "";
+      return;
+    }
+    const { data, error } = await client.from("dark_romance_days")
+      .select("content")
+      .eq("id", day.id)
+      .single();
+    if (error) {
+      darkRomanceContentMessage.textContent = "Kapiteltext konnte nicht geladen werden: " + error.message;
+      return;
+    }
+    darkRomanceContent.value = data?.content || "";
+    darkRomanceContentMessage.textContent = darkRomanceContent.value
+      ? "Kapiteltext geladen (" + darkRomanceContent.value.length.toLocaleString("de-DE") + " Zeichen)."
+      : "Für diesen Tag ist noch kein Kapiteltext gespeichert.";
+  }
+
   function updateDarkRomanceTitle() {
     const day = darkRomanceDays.find(item => item.id === darkRomanceDay.value);
     if (day && darkRomancePosition.value === "cover") darkRomanceTitle.value = "Titelbild – Tag " + day.day_number;
@@ -365,6 +389,26 @@
 
   destinationChoices.forEach((choice) => choice.addEventListener("change", updateDestinationNote));
   darkRomanceDay.addEventListener("change", updateDarkRomanceTitle);
+  darkRomanceDay.addEventListener("change", () => {
+    loadDarkRomanceChapter().catch(error => {
+      darkRomanceContentMessage.textContent = "Kapiteltext konnte nicht geladen werden: " + error.message;
+    });
+  });
+  darkRomanceSaveContent.addEventListener("click", async () => {
+    const day = darkRomanceDays.find(item => item.id === darkRomanceDay.value);
+    if (!day) {
+      darkRomanceContentMessage.textContent = "Bitte zuerst einen Tag auswählen.";
+      return;
+    }
+    darkRomanceSaveContent.disabled = true;
+    const { error } = await client.from("dark_romance_days")
+      .update({ content: darkRomanceContent.value, content_format: "plain", updated_at: new Date().toISOString() })
+      .eq("id", day.id);
+    darkRomanceSaveContent.disabled = false;
+    darkRomanceContentMessage.textContent = error
+      ? "Speichern fehlgeschlagen: " + error.message
+      : "Kapiteltext für Tag " + day.day_number + " wurde gespeichert.";
+  });
   darkRomancePosition.addEventListener("change", () => {
     const selected = darkRomancePosition.options[darkRomancePosition.selectedIndex];
     darkRomanceTitle.value = selected.text.replace(/^Szene \\d+ – /, "").replace(/^Titelbild für den Tag$/, "Titelbild – Tag " + darkRomanceDay.value);
