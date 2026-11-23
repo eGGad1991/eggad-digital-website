@@ -237,6 +237,7 @@
     const firstDraft = darkRomanceDays.find(day => day.status === "draft");
     if (firstDraft) darkRomanceDay.value = firstDraft.id;
     updateDarkRomanceTitle();
+    await loadDarkRomanceChapter();
   }
 
   async function loadDarkRomanceChapter() {
