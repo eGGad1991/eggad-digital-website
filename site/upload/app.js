@@ -418,7 +418,7 @@
     if (!selectedFiles.length || uploadButton.disabled) return;
     uploadButton.disabled = true;
     const target = destination.value;
-    if (!["public", "private", "blog"].includes(target)) {
+    if (!["public", "private", "blog", "dark-romance"].includes(target)) {
       message(uploadMessage, "Bitte zuerst einen gültigen Speicherort auswählen.", "error");
       uploadButton.disabled = false;
       return;
