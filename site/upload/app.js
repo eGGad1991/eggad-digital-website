@@ -184,6 +184,9 @@
       } else {
         updateSuggestedBlogAltText().catch((error) => console.warn("Alt-Text konnte nicht vorgeschlagen werden:", error));
       }
+    } else if (target === "dark-romance") {
+      destinationNote.textContent = "Dark Romance: Die Bilder werden im Blog-Medien-Speicher unter „dark-romance/“ abgelegt. Anschließend können sie direkt in die passende Tagesgeschichte eingebunden werden.";
+      uploadButton.textContent = "Bilder für Dark Romance hochladen";
     } else if (target === "private") {
       destinationNote.textContent = "Privates Archiv: Upload in den geschützten Supabase-Speicher „mila-private-vault“. Die Bilder sind nur nach Admin-Anmeldung unter /mila-k7/ sichtbar.";
       uploadButton.textContent = "Bilder privat speichern";
@@ -556,6 +559,31 @@
       message(uploadMessage, kind === "cover"
         ? `Titelbild wurde „${post.title}“ zugeordnet und gespeichert.`
         : `Bild wurde „${post.title}“ als Beitragsbild zugeordnet. Es erscheint im Bereich „Weitere Bilder“ des Artikels.`, "success");
+      return;
+    }
+
+    if (target === "dark-romance") {
+      const bucket = cfg.blogBucket || "mila-blog-media";
+      const uploadedUrls = [];
+      for (const file of selectedFiles) {
+        const safeName = slugifyFilename(file.name.replace(/\\.[^.]+$/, ""));
+        const optimized = await optimizeBlogImage(file);
+        const extension = (optimized.name.split(".").pop() || "webp").toLowerCase().replace(/[^a-z0-9]/g, "") || "webp";
+        const storagePath = "dark-romance/" + Date.now() + "-" + crypto.randomUUID() + "-" + safeName + "." + extension;
+        message(uploadMessage, "Lade Dark-Romance-Bild hoch (" + (uploadedUrls.length + 1) + "/" + selectedFiles.length + ") …");
+        const { error } = await client.storage.from(bucket).upload(storagePath, optimized, {
+          contentType: optimized.type, upsert: false, cacheControl: "31536000"
+        });
+        if (error) {
+          message(uploadMessage, "Dark-Romance-Upload fehlgeschlagen: " + error.message, "error");
+          uploadButton.disabled = false;
+          return;
+        }
+        const { data } = client.storage.from(bucket).getPublicUrl(storagePath);
+        if (data?.publicUrl) uploadedUrls.push(data.publicUrl);
+      }
+      clearSelection();
+      message(uploadMessage, uploadedUrls.length + " Bild(er) wurden für Dark Romance gespeichert. Bildadressen: " + uploadedUrls.join(" | "), "success");
       return;
     }
 
