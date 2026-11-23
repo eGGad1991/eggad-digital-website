@@ -25,6 +25,13 @@
   const darkRomancePosition = document.getElementById("dark-romance-position");
   const darkRomanceTitle = document.getElementById("dark-romance-title");
   const darkRomanceAlt = document.getElementById("dark-romance-alt");
+  const darkRomanceNewNumber = document.getElementById("dark-romance-new-number");
+  const darkRomanceNewTitle = document.getElementById("dark-romance-new-title");
+  const darkRomanceNewExcerpt = document.getElementById("dark-romance-new-excerpt");
+  const darkRomanceCreateButton = document.getElementById("dark-romance-create-day");
+  const darkRomanceCreateMessage = document.getElementById("dark-romance-create-message");
+  let darkRomanceDays = [];
+  let darkRomanceDaysLoaded = false;
   const darkRomanceNote = document.getElementById("dark-romance-note");
   const blogPostSelect = document.getElementById("blog-post-select");
   const blogImageKind = document.getElementById("blog-image-kind");
@@ -193,7 +200,7 @@
         updateSuggestedBlogAltText().catch((error) => console.warn("Alt-Text konnte nicht vorgeschlagen werden:", error));
       }
     } else if (target === "dark-romance") {
-      destinationNote.textContent = "Dark Romance: Wähle Tag, Bildposition und Alt-Text. Das Bild wird gespeichert und direkt dem gewählten Abschnitt zugeordnet.";
+      destinationNote.textContent = "Dark Romance: Lege neue Tages-Einträge an oder wähle einen vorhandenen Tag. Danach ordnest du Titelbilder und Szenen zu.";
       uploadButton.textContent = "Bild für Dark Romance hochladen";
       fileInput.multiple = false;
       if (selectedFiles.length > 1) clearSelection();
@@ -204,6 +211,71 @@
       destinationNote.textContent = "Öffentliche Galerie: Upload in den öffentlichen Supabase-Speicher „portfolio-media/galerie“. Die Bilder erscheinen anschließend auf /galerie/ und sind für alle Besucher sichtbar.";
       uploadButton.textContent = "Bilder in die öffentliche Galerie hochladen";
     }
+  }
+
+  async function loadDarkRomanceDays() {
+    darkRomanceDay.disabled = true;
+    darkRomanceDay.replaceChildren(new Option("Tage werden geladen …", ""));
+    const { data, error } = await client.from("dark_romance_days")
+      .select("id,day_number,title,excerpt,status")
+      .order("day_number", { ascending: true });
+    if (error) throw error;
+    darkRomanceDays = data || [];
+    darkRomanceDay.replaceChildren(new Option(
+      darkRomanceDays.length ? "Bitte Tag auswählen" : "Noch keine Tage angelegt",
+      ""
+    ));
+    darkRomanceDays.forEach(day => {
+      const state = day.status === "published" ? "veröffentlicht" : "Entwurf";
+      darkRomanceDay.add(new Option("Tag " + day.day_number + " – " + day.title + " · " + state, day.id));
+    });
+    darkRomanceDay.disabled = darkRomanceDays.length === 0;
+    darkRomanceDaysLoaded = true;
+    const firstDraft = darkRomanceDays.find(day => day.status === "draft");
+    if (firstDraft) darkRomanceDay.value = firstDraft.id;
+    updateDarkRomanceTitle();
+  }
+
+  function updateDarkRomanceTitle() {
+    const day = darkRomanceDays.find(item => item.id === darkRomanceDay.value);
+    if (day && darkRomancePosition.value === "cover") darkRomanceTitle.value = "Titelbild – Tag " + day.day_number;
+  }
+
+  async function createDarkRomanceDay() {
+    const dayNumber = Number(darkRomanceNewNumber.value);
+    const title = darkRomanceNewTitle.value.trim();
+    const excerpt = darkRomanceNewExcerpt.value.trim();
+    if (!Number.isInteger(dayNumber) || dayNumber < 1 || dayNumber > 365 || !title) {
+      message(darkRomanceCreateMessage, "Bitte eine gültige Tagesnummer und einen Titel eintragen.", "error");
+      return;
+    }
+    darkRomanceCreateButton.disabled = true;
+    message(darkRomanceCreateMessage, "Neuer Tag wird angelegt …");
+    const { data, error } = await client.from("dark_romance_days")
+      .insert({ day_number: dayNumber, title, excerpt, status: "draft" })
+      .select("id,day_number,title,excerpt,status").single();
+    if (error) {
+      message(darkRomanceCreateMessage, error.code === "23505"
+        ? "Diese Tagesnummer gibt es bereits. Wähle den vorhandenen Eintrag aus."
+        : "Der Tag konnte nicht angelegt werden: " + error.message, "error");
+      darkRomanceCreateButton.disabled = false;
+      return;
+    }
+    darkRomanceDays.push(data);
+    darkRomanceDays.sort((a,b) => a.day_number - b.day_number);
+    darkRomanceDay.replaceChildren(new Option("Bitte Tag auswählen", ""));
+    darkRomanceDays.forEach(day => {
+      const state = day.status === "published" ? "veröffentlicht" : "Entwurf";
+      darkRomanceDay.add(new Option("Tag " + day.day_number + " – " + day.title + " · " + state, day.id));
+    });
+    darkRomanceDay.value = data.id;
+    darkRomanceDay.disabled = false;
+    darkRomanceNewNumber.value = String(dayNumber + 1);
+    darkRomanceNewTitle.value = "";
+    darkRomanceNewExcerpt.value = "";
+    updateDarkRomanceTitle();
+    message(darkRomanceCreateMessage, "Tag " + dayNumber + " wurde angelegt und ist jetzt auswählbar.", "success");
+    darkRomanceCreateButton.disabled = false;
   }
 
   async function loadBlogPosts() {
@@ -291,6 +363,9 @@
       return;
     }
     showUploader();
+    loadDarkRomanceDays().catch((loadError) => {
+      message(darkRomanceCreateMessage, "Tage konnten nicht geladen werden: " + loadError.message, "error");
+    });
     loadBlogPosts().catch((loadError) => {
       blogNote.textContent = `Blogbeiträge konnten nicht geladen werden: ${loadError.message || "Bitte erneut versuchen."}`;
     });
@@ -326,6 +401,10 @@
   });
 
   destinationChoices.forEach((choice) => choice.addEventListener("change", updateDestinationNote));
+  darkRomanceCreateButton.addEventListener("click", () => {
+    createDarkRomanceDay().catch(error => message(darkRomanceCreateMessage, error.message, "error"));
+  });
+  darkRomanceDay.addEventListener("change", updateDarkRomanceTitle);
   darkRomancePosition.addEventListener("change", () => {
     const selected = darkRomancePosition.options[darkRomancePosition.selectedIndex];
     darkRomanceTitle.value = selected.text.replace(/^Szene \\d+ – /, "").replace(/^Titelbild für den Tag$/, "Titelbild – Tag " + darkRomanceDay.value);
@@ -590,11 +669,13 @@
         uploadButton.disabled = false;
         return;
       }
-      const dayNumber = Number(darkRomanceDay.value);
+      const selectedDay = darkRomanceDays.find(day => day.id === darkRomanceDay.value);
+      const dayNumber = selectedDay ? selectedDay.day_number : 0;
+      const dayId = selectedDay ? selectedDay.id : null;
       const sceneKey = darkRomancePosition.value;
       const title = darkRomanceTitle.value.trim();
       const altText = darkRomanceAlt.value.trim();
-      if (!Number.isInteger(dayNumber) || dayNumber < 1 || !sceneKey || !title || !altText) {
+      if (!selectedDay || !Number.isInteger(dayNumber) || dayNumber < 1 || !sceneKey || !title || !altText) {
         message(uploadMessage, "Bitte Tag, Bildposition, Bildtitel und Alt-Text vollständig ausfüllen.", "error");
         uploadButton.disabled = false;
         return;
@@ -624,6 +705,7 @@
           return;
         }
         const { error: rowError } = await client.from("dark_romance_images").insert({
+          day_id: dayId,
           day_number: dayNumber,
           image_position: sceneKey === "cover" ? "cover" : "scene",
           scene_key: sceneKey,
