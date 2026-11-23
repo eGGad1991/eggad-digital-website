@@ -86,6 +86,12 @@
 <label for="dark-romance-alt">Alt-Text für SEO und Barrierefreiheit</label>
 <input id="dark-romance-alt" maxlength="300" placeholder="Wird beim Auswählen des Bildes vorgeschlagen" type="text">
 <p class="gallery-note" id="dark-romance-note">Wähle Tag und Bildposition. Nach dem Upload wird das Bild mit diesen Angaben gespeichert und kann auf der Dark-Romance-Seite angezeigt werden.</p>
+<div class="chapter-editor">
+  <label for="dark-romance-content">Kapiteltext (Entwurf bearbeiten)</label>
+  <textarea id="dark-romance-content" rows="14" placeholder="Kapiteltext des ausgewählten Tages …"></textarea>
+  <button class="quiet" id="dark-romance-save-content" type="button">Kapiteltext speichern</button>
+  <p class="message" id="dark-romance-content-message" role="status"></p>
+</div>
 </div>
 <label class="drop" for="files"><span class="step-label">Bilder auswählen</span><span class="upload-icon">＋</span><strong>Bilder auswählen</strong><span id="file-selection-hint">Mehrere Bilder möglich · JPG, PNG, WebP, GIF · max. 50 MB pro Bild</span><input accept="image/jpeg,image/png,image/webp,image/gif" id="files" multiple="" type="file"/></label>
 <div class="preview" id="preview"></div>
