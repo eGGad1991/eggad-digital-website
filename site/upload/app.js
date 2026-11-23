@@ -20,6 +20,12 @@
   };
   const destinationNote = document.getElementById("destination-note");
   const blogOptions = document.getElementById("blog-options");
+  const darkRomanceOptions = document.getElementById("dark-romance-options");
+  const darkRomanceDay = document.getElementById("dark-romance-day");
+  const darkRomancePosition = document.getElementById("dark-romance-position");
+  const darkRomanceTitle = document.getElementById("dark-romance-title");
+  const darkRomanceAlt = document.getElementById("dark-romance-alt");
+  const darkRomanceNote = document.getElementById("dark-romance-note");
   const blogPostSelect = document.getElementById("blog-post-select");
   const blogImageKind = document.getElementById("blog-image-kind");
   const blogAltText = document.getElementById("blog-alt-text");
@@ -164,7 +170,9 @@
   function updateDestinationNote() {
     const target = destination.value;
     const isBlog = target === "blog";
+    const isDarkRomance = target === "dark-romance";
     blogOptions.hidden = !isBlog;
+    darkRomanceOptions.hidden = !isDarkRomance;
     fileInput.multiple = true;
     fileSelectionHint.textContent = isBlog
       ? "Bolognese: bis zu 4 Bilder auf einmal · andere Beiträge: 1 Bild · Alt-Text automatisch"
@@ -185,8 +193,10 @@
         updateSuggestedBlogAltText().catch((error) => console.warn("Alt-Text konnte nicht vorgeschlagen werden:", error));
       }
     } else if (target === "dark-romance") {
-      destinationNote.textContent = "Dark Romance: Die Bilder werden im Blog-Medien-Speicher unter „dark-romance/“ abgelegt. Anschließend können sie direkt in die passende Tagesgeschichte eingebunden werden.";
-      uploadButton.textContent = "Bilder für Dark Romance hochladen";
+      destinationNote.textContent = "Dark Romance: Wähle Tag, Bildposition und Alt-Text. Das Bild wird gespeichert und direkt dem gewählten Abschnitt zugeordnet.";
+      uploadButton.textContent = "Bild für Dark Romance hochladen";
+      fileInput.multiple = false;
+      if (selectedFiles.length > 1) clearSelection();
     } else if (target === "private") {
       destinationNote.textContent = "Privates Archiv: Upload in den geschützten Supabase-Speicher „mila-private-vault“. Die Bilder sind nur nach Admin-Anmeldung unter /mila-k7/ sichtbar.";
       uploadButton.textContent = "Bilder privat speichern";
@@ -316,6 +326,14 @@
   });
 
   destinationChoices.forEach((choice) => choice.addEventListener("change", updateDestinationNote));
+  darkRomancePosition.addEventListener("change", () => {
+    const selected = darkRomancePosition.options[darkRomancePosition.selectedIndex];
+    darkRomanceTitle.value = selected.text.replace(/^Szene \\d+ – /, "").replace(/^Titelbild für den Tag$/, "Titelbild – Tag " + darkRomanceDay.value);
+    darkRomanceAlt.value = "";
+  });
+  darkRomanceDay.addEventListener("change", () => {
+    if (darkRomancePosition.value === "cover") darkRomanceTitle.value = "Titelbild – Tag " + darkRomanceDay.value;
+  });
   blogPostSelect.addEventListener("change", () => {
     updateSuggestedBlogAltText().catch((error) => console.warn("Alt-Text konnte nicht vorgeschlagen werden:", error));
   });
@@ -343,6 +361,10 @@
       preview.appendChild(img);
     });
     uploadButton.disabled = selectedFiles.length === 0;
+    if (destination.value === "dark-romance" && selectedFiles.length === 1) {
+      const base = selectedFiles[0].name.replace(/\\.[^.]+$/, "").replace(/[-_]+/g, " ").trim();
+      if (!darkRomanceAlt.value) darkRomanceAlt.value = base ? "Szene aus Dark Romance: " + base + "." : "Szene aus Milas Dark-Romance-Geschichte.";
+    }
     if (destination.value === "blog" && selectedFiles.length === 1) {
       const post = blogPosts.find((item) => item.id === blogPostSelect.value);
       if (post && post.slug !== bolognesePostSlug) {
@@ -563,6 +585,20 @@
     }
 
     if (target === "dark-romance") {
+      if (selectedFiles.length !== 1) {
+        message(uploadMessage, "Bitte für Dark Romance jeweils ein Bild auswählen.", "error");
+        uploadButton.disabled = false;
+        return;
+      }
+      const dayNumber = Number(darkRomanceDay.value);
+      const sceneKey = darkRomancePosition.value;
+      const title = darkRomanceTitle.value.trim();
+      const altText = darkRomanceAlt.value.trim();
+      if (!Number.isInteger(dayNumber) || dayNumber < 1 || !sceneKey || !title || !altText) {
+        message(uploadMessage, "Bitte Tag, Bildposition, Bildtitel und Alt-Text vollständig ausfüllen.", "error");
+        uploadButton.disabled = false;
+        return;
+      }
       const bucket = cfg.blogBucket || "mila-blog-media";
       const uploadedUrls = [];
       for (const file of selectedFiles) {
@@ -580,10 +616,33 @@
           return;
         }
         const { data } = client.storage.from(bucket).getPublicUrl(storagePath);
-        if (data?.publicUrl) uploadedUrls.push(data.publicUrl);
+        const publicUrl = data?.publicUrl;
+        if (!publicUrl) {
+          await client.storage.from(bucket).remove([storagePath]);
+          message(uploadMessage, "Die Bildadresse konnte nicht erstellt werden.", "error");
+          uploadButton.disabled = false;
+          return;
+        }
+        const { error: rowError } = await client.from("dark_romance_images").insert({
+          day_number: dayNumber,
+          image_position: sceneKey === "cover" ? "cover" : "scene",
+          scene_key: sceneKey,
+          title,
+          storage_path: storagePath,
+          public_url: publicUrl,
+          alt_text: altText,
+          sort_order: sceneKey === "cover" ? 0 : Number(sceneKey.replace("scene-", "")) || 0
+        });
+        if (rowError) {
+          await client.storage.from(bucket).remove([storagePath]);
+          message(uploadMessage, "Bild hochgeladen, aber die Zuordnung ist fehlgeschlagen: " + rowError.message, "error");
+          uploadButton.disabled = false;
+          return;
+        }
+        uploadedUrls.push(publicUrl);
       }
       clearSelection();
-      message(uploadMessage, uploadedUrls.length + " Bild(er) wurden für Dark Romance gespeichert. Bildadressen: " + uploadedUrls.join(" | "), "success");
+      message(uploadMessage, "Bild wurde erfolgreich hochgeladen und Tag " + dayNumber + " · " + title + " zugeordnet. Bildadresse: " + uploadedUrls[0], "success");
       return;
     }
 
