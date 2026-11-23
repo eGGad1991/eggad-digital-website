@@ -14,6 +14,8 @@
 <main class="wrap"><div class="draft-note">ENTWURF · NICHT VERÖFFENTLICHT · Nur zur internen Prüfung</div>
 <article class="story-article"><a href="/dark-romance/">← Zurück zur Übersicht</a><h1 class="story-title">Tag 2 – Zwischen einem Lächeln und der Wirklichkeit</h1><div class="story-copy" id="story-copy"></div><div class="story-end">Ende von Tag 2 · Entwurf</div></article></main>
 <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="/supabase-config.js"></script>
 <script>
 (async()=>{const r=await fetch('./tag-2.md');const md=await r.text();const root=document.getElementById('story-copy');root.innerHTML=marked.parse(md);
 const slots=[
@@ -21,6 +23,19 @@ const slots=[
 {needle:'Das Café lag in einer Seitenstraße',title:'Ein Abend zu zweit im Café',desc:'Mila sitzt mit ihrem Kaffee am Fenster; Änni ihr gegenüber.',caption:'Für einen Moment wirkt alles leicht und unbeschwert.'},
 {needle:'Mila schloss auf und hielt die Tür offen',title:'Der Abschied an der Hotelzimmertür',desc:'Ein letzter Kuss im warm beleuchteten Hotelflur.',caption:'Ein Abschied, der mehr offenlässt als er beantwortet.'}
 ];
-for(const s of slots){const p=[...root.querySelectorAll('p')].find(x=>x.textContent.includes(s.needle));if(!p)continue;const f=document.createElement('figure');f.className='story-image-slot';f.innerHTML='<div class="image-placeholder"><strong>'+s.title+'</strong><span>'+s.desc+'</span></div><figcaption>'+s.caption+'</figcaption>';p.after(f);}
+for(const s of slots){const p=[...root.querySelectorAll('p')].find(x=>x.textContent.includes(s.needle));if(!p)continue;const f=document.createElement('figure');f.className='story-image-slot';f.dataset.scene=s.title;f.innerHTML='<div class="image-placeholder"><strong>'+s.title+'</strong><span>'+s.desc+'</span></div><figcaption>'+s.caption+'</figcaption>';p.after(f);}
+try {
+ const cfg=window.MILA_SUPABASE_CONFIG||{};
+ if(window.supabase&&cfg.url&&cfg.anonKey){
+  const client=window.supabase.createClient(cfg.url,cfg.anonKey);
+  const {data,error}=await client.from('dark_romance_images').select('scene_key,title,public_url,alt_text,sort_order').eq('day_number',2).eq('image_position','scene').order('sort_order',{ascending:true});
+  if(!error&&data) data.forEach(item=>{
+   const slot=root.querySelectorAll('.story-image-slot')[Number(item.scene_key.replace('scene-',''))-1];
+   if(!slot)return;
+   const img=document.createElement('img');img.src=item.public_url;img.alt=item.alt_text||item.title;img.loading='lazy';img.decoding='async';img.style.cssText='display:block;width:100%;height:auto;max-height:620px;object-fit:cover;border-radius:15px';
+   slot.replaceChildren(img,slot.querySelector('figcaption'));
+  });
+ }
+} catch(e){console.warn('Tag-2-Bilder konnten nicht geladen werden.',e);}
 })();
 </script></body></html>
