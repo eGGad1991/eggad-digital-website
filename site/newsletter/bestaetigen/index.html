@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="theme-color" content="#8055a5">
+  <title>Newsletter | Mila Einfach</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --mila-purple: #8055a5;
+      --mila-purple-dark: #68418d;
+      --mila-bg: #f7f4fa;
+      --mila-text: #30283a;
+      --mila-muted: #6d6575;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0; min-height: 100vh; padding: 24px;
+      display: grid; place-items: center;
+      background: var(--mila-bg); color: var(--mila-text);
+      font-family: Arial, Helvetica, sans-serif;
+    }
+    main {
+      width: 100%; max-width: 520px; padding: 38px 30px;
+      border-radius: 18px; background: #fff; text-align: center;
+      box-shadow: 0 12px 36px rgba(48, 36, 60, .08);
+    }
+    .symbol { margin-bottom: 12px; font-size: 34px; }
+    h1 { margin: 0 0 18px; color: var(--mila-purple); font-size: 29px; }
+    #message {
+      margin: 0 auto 20px; max-width: 390px; color: var(--mila-muted);
+      font-size: 16px; line-height: 1.7;
+    }
+    .loader {
+      width: 28px; height: 28px; margin: 22px auto;
+      border: 3px solid #eadff2; border-top-color: var(--mila-purple);
+      border-radius: 50%; animation: spin .8s linear infinite;
+    }
+    .button {
+      display: inline-block; margin-top: 8px; padding: 12px 20px;
+      border-radius: 9px; background: var(--mila-purple);
+      color: #fff; font-weight: 700; text-decoration: none;
+    }
+    .button:hover { background: var(--mila-purple-dark); }
+    .small { margin-top: 22px; color: #91899a; font-size: 12px; line-height: 1.5; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    @media (prefers-reduced-motion: reduce) { .loader { animation: none; } }
+  </style>
+</head>
+<body>
+  <main>
+    <div class="symbol" aria-hidden="true">💜</div>
+    <h1>Mila Einfach</h1>
+    <p id="message" role="status" aria-live="polite">Einen Moment bitte. Deine Anfrage wird sicher verarbeitet.</p>
+    <div class="loader" id="loader" aria-hidden="true"></div>
+    <a class="button" id="continue" href="https://mila-einfach.pages.dev/blog/" hidden>Zum Mila-Blog</a>
+    <p class="small">Falls die Weiterleitung nicht automatisch startet, kannst du den angezeigten Link öffnen.</p>
+  </main>
+  <script>
+    (() => {
+      "use strict";
+      const API = "https://script.google.com/macros/s/AKfycbyrNaA7YIQdaPNIU5jlIAqhzkMnR8HDMhmCs43EMEG8MyqRAGHYQjeDON_fVfiTMkBHyw/exec";
+      const BLOG_URL = "https://mila-einfach.pages.dev/blog/";
+      const params = new URLSearchParams(window.location.search);
+      const token = (params.get("token") || "").trim();
+      const action = (params.get("action") || "confirm").trim();
+      const message = document.getElementById("message");
+      const loader = document.getElementById("loader");
+      const continueLink = document.getElementById("continue");
+      continueLink.href = BLOG_URL;
+
+      if (!token) {
+        message.textContent = "Der Link ist unvollständig. Bitte verwende den vollständigen Link aus deiner E-Mail.";
+        loader.hidden = true;
+        continueLink.hidden = false;
+        return;
+      }
+      if (!["confirm", "unsubscribe"].includes(action)) {
+        message.textContent = "Dieser Link ist nicht gültig. Bitte verwende den Link aus deiner E-Mail.";
+        loader.hidden = true;
+        continueLink.hidden = false;
+        return;
+      }
+
+      const target = new URL(API);
+      target.searchParams.set("action", action);
+      target.searchParams.set("token", token);
+      message.textContent = action === "unsubscribe"
+        ? "Deine Abmeldung wird verarbeitet …"
+        : "Deine Anmeldung wird bestätigt …";
+
+      // Normale Navigation statt fetch(): vermeidet browserseitige CORS-Probleme.
+      continueLink.href = target.toString();
+      continueLink.textContent = "Falls nichts passiert: hier klicken";
+      continueLink.hidden = false;
+      window.location.replace(target.toString());
+    })();
+  </script>
+</body>
+</html>
