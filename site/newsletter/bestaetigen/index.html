@@ -25,11 +25,6 @@
       margin: 0 auto 20px; max-width: 390px; color: #6d6575;
       font-size: 16px; line-height: 1.7;
     }
-    .loader {
-      width: 28px; height: 28px; margin: 22px auto;
-      border: 3px solid #eadff2; border-top-color: #8055a5;
-      border-radius: 50%; animation: spin .8s linear infinite;
-    }
     .button {
       display: inline-block; margin-top: 8px; padding: 12px 20px;
       border-radius: 9px; background: #8055a5; color: #fff;
@@ -37,76 +32,42 @@
     }
     .button:hover { background: #68418d; }
     .small { margin-top: 22px; color: #91899a; font-size: 12px; line-height: 1.5; }
-    @keyframes spin { to { transform: rotate(360deg); } }
-    @media (prefers-reduced-motion: reduce) { .loader { animation: none; } }
   </style>
 </head>
 <body>
   <main>
     <div class="symbol" aria-hidden="true">💜</div>
     <h1>Mila Einfach</h1>
-    <p id="message" role="status" aria-live="polite">Einen Moment bitte. Deine Anfrage wird verarbeitet …</p>
-    <div class="loader" id="loader" aria-hidden="true"></div>
-    <a class="button" id="continue" href="https://mila-einfach.pages.dev/blog/" hidden>Zum Mila-Blog</a>
-    <p class="small">Du kannst diese Seite geöffnet lassen, während deine Anfrage bearbeitet wird.</p>
+    <p id="message" role="status" aria-live="polite">Deine Anfrage wird geöffnet …</p>
+    <a class="button" id="continue" href="https://mila-einfach.pages.dev/blog/">Zum Mila-Blog</a>
+    <p class="small">Du wirst direkt zum Bestätigungsdienst weitergeleitet.</p>
   </main>
   <script>
     (() => {
       "use strict";
       const API = "https://script.google.com/macros/s/AKfycbyrNaA7YIQdaPNIU5jlIAqhzkMnR8HDMhmCs43EMEG8MyqRAGHYQjeDON_fVfiTMkBHyw/exec";
-      const BLOG_URL = "https://mila-einfach.pages.dev/blog/";
       const params = new URLSearchParams(window.location.search);
       const token = (params.get("token") || "").trim();
       const action = (params.get("action") || "confirm").trim();
       const message = document.getElementById("message");
-      const loader = document.getElementById("loader");
-      const continueLink = document.getElementById("continue");
+      const link = document.getElementById("continue");
 
-      continueLink.href = BLOG_URL;
-
-      if (!token) {
-        message.textContent = "Der Link ist unvollständig. Bitte verwende den vollständigen Link aus deiner E-Mail.";
-        loader.hidden = true;
-        continueLink.hidden = false;
-        return;
-      }
-      if (!["confirm", "unsubscribe"].includes(action)) {
-        message.textContent = "Dieser Link ist nicht gültig. Bitte verwende den Link aus deiner E-Mail.";
-        loader.hidden = true;
-        continueLink.hidden = false;
+      if (!token || !["confirm", "unsubscribe"].includes(action)) {
+        message.textContent = "Der Link ist unvollständig oder ungültig. Bitte verwende den vollständigen Link aus deiner E-Mail.";
         return;
       }
 
-      const url = new URL(API, window.location.origin);
-      url.searchParams.set("action", action);
-      url.searchParams.set("token", token);
+      const target = new URL(API);
+      target.searchParams.set("action", action);
+      target.searchParams.set("token", token);
+      link.href = target.toString();
+      link.textContent = action === "unsubscribe"
+        ? "Abmeldelink direkt öffnen"
+        : "Bestätigungslink direkt öffnen";
 
-      message.textContent = action === "unsubscribe"
-        ? "Deine Abmeldung wird verarbeitet …"
-        : "Deine Anmeldung wird bestätigt …";
-
-      fetch(url.toString(), { method: "GET", redirect: "follow" })
-        .then(response => {
-          if (!response.ok) throw new Error("HTTP " + response.status);
-          return response.json();
-        })
-        .then(result => {
-          loader.hidden = true;
-          message.textContent = result && result.message
-            ? result.message
-            : "Die Anfrage wurde verarbeitet.";
-          continueLink.hidden = false;
-        })
-        .catch(error => {
-          loader.hidden = true;
-          message.textContent =
-            "Die Verbindung zum Bestätigungsdienst konnte nicht hergestellt werden. " +
-            "Bitte öffne den Bestätigungslink direkt in einem neuen Tab oder versuche es im Inkognito-Fenster erneut.";
-          continueLink.href = url.toString();
-          continueLink.textContent = "Bestätigungslink direkt öffnen";
-          continueLink.hidden = false;
-          console.error("Mila Newsletter:", error);
-        });
+      // Normale Navigation statt fetch(): Google Apps Script darf die Anfrage
+      // selbst beantworten und wird nicht durch die Browser-CORS-Regel blockiert.
+      window.location.replace(target.toString());
     })();
   </script>
 </body>
