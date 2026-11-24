@@ -68,26 +68,6 @@
 <p id="mila-newsletter-status" role="status" aria-live="polite" style="display:none;margin:14px 0 0;padding:12px 14px;border-radius:9px;background:#eee5f5;color:#4d3262;font-size:14px;line-height:1.5;"></p>
 </form>
 <p style="font-size:12px;color:#766b7d;margin:18px 0 0;">Nach deiner Anmeldung erhältst du eine E-Mail. Erst wenn du den Bestätigungslink anklickst, bist du angemeldet.</p>
-<script>
-(function () {
-  const form = document.getElementById('mila-newsletter-form');
-  if (!form) return;
-  form.addEventListener('submit', function (event) {
-    if (!form.reportValidity()) {
-      event.preventDefault();
-      return;
-    }
-    const button = document.getElementById('mila-newsletter-submit');
-    const status = document.getElementById('mila-newsletter-status');
-    button.disabled = true;
-    button.textContent = 'Wird gesendet …';
-    button.style.opacity = '0.75';
-    button.style.cursor = 'wait';
-    status.style.display = 'block';
-    status.textContent = 'Du wirst zur sicheren Anmeldung weitergeleitet. Bitte warte auf die Antwort von Mila.';
-  });
-})();
-</script>
 </div>
 </section>
 </main>
