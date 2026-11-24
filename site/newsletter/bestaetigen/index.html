@@ -53,7 +53,7 @@
   <script>
     (() => {
       "use strict";
-      const API = "/api/newsletter-confirm";
+      const API = "https://script.google.com/macros/s/AKfycbyrNaA7YIQdaPNIU5jlIAqhzkMnR8HDMhmCs43EMEG8MyqRAGHYQjeDON_fVfiTMkBHyw/exec";
       const BLOG_URL = "https://mila-einfach.pages.dev/blog/";
       const params = new URLSearchParams(window.location.search);
       const token = (params.get("token") || "").trim();
@@ -102,8 +102,8 @@
           message.textContent =
             "Die Verbindung zum Bestätigungsdienst konnte nicht hergestellt werden. " +
             "Bitte öffne den Bestätigungslink direkt in einem neuen Tab oder versuche es im Inkognito-Fenster erneut.";
-          continueLink.href = BLOG_URL;
-          continueLink.textContent = "Zurück zum Mila-Blog";
+          continueLink.href = url.toString();
+          continueLink.textContent = "Bestätigungslink direkt öffnen";
           continueLink.hidden = false;
           console.error("Mila Newsletter:", error);
         });
