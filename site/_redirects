@@ -4,3 +4,5 @@
 /ki-digital/        /blog/        301
 /ki-digital/*       /blog/:splat  301
 /ki-digital         /blog/        301
+/lifestyle/         /aus-meinem-alltag/  301
+/lifestyle          /aus-meinem-alltag/  301
