@@ -36,3 +36,10 @@
 
 /upload/sw.js
   Cache-Control: no-cache, no-store, must-revalidate
+
+/kontakt/*
+  X-Robots-Tag: noindex, follow
+
+/ads.txt
+  Content-Type: text/plain; charset=utf-8
+  Cache-Control: public, max-age=3600
