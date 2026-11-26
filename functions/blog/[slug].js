@@ -3,6 +3,14 @@ const SUPABASE_PUBLISHABLE_KEY = "sb_publishable__BZ2_Uk1XlUGd1RLPOs7Cw_AyIuZj98
 const BLOG_BUCKET = "mila-blog-media";
 const SITE_NAME = "Mila";
 
+const SECURITY_HEADERS = {
+  "X-Content-Type-Options": "nosniff",
+  "Referrer-Policy": "strict-origin-when-cross-origin",
+  "X-Frame-Options": "DENY",
+  "Strict-Transport-Security": "max-age=31536000",
+  "Content-Security-Policy": "default-src 'self'; base-uri 'self'; object-src 'none'; frame-ancestors 'none'; form-action 'self' https://script.google.com https://script.googleusercontent.com https://*.hsforms.com https://*.hubspot.com; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://*.hsforms.net https://js-eu1.hsforms.net https://js.hsforms.net https://www.googletagmanager.com https://www.google.com https://www.gstatic.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https://xspibbzwfwhmgvfowiye.supabase.co https://*.hsforms.com https://*.hsforms.net https://*.hubspot.com https://www.google-analytics.com https://www.google.com https://www.gstatic.com; font-src 'self' data:; connect-src 'self' https://xspibbzwfwhmgvfowiye.supabase.co https://*.hsforms.net https://www.google-analytics.com https://region1.google-analytics.com https://analytics.google.com https://*.hsforms.com https://*.hubspot.com https://*.hubapi.com; frame-src https://*.hsforms.com https://*.hsforms.net https://*.hubspot.com https://www.google.com https://www.gstatic.com https://recaptcha.net; manifest-src 'self'; upgrade-insecure-requests"
+};
+
 const esc = (value = "") => String(value).replace(/[&<>"']/g, (c) => ({
   "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;"
 }[c]));
@@ -15,7 +23,7 @@ function plainText(value = "") {
 }
 
 function metaDescription(post) {
-  const text = plainText(post.excerpt || post.body || post.title);
+  const text = plainText(post.meta_description || post.excerpt || post.body || post.title);
   if (text.length <= 155) return text;
   return text.slice(0, 152).replace(/\s+\S*$/, "") + "…";
 }
@@ -243,20 +251,33 @@ function placeInlineImages(bodyHtml, images, post = {}) {
 
 
 function relatedPostsFor(currentPost, candidates) {
-  const currentTags = new Set(
-    (Array.isArray(currentPost.tags) ? currentPost.tags : []).map((tag) => String(tag).toLowerCase())
-  );
+  // Redaktionell festgelegte Verknüpfungen halten die wichtigsten Themencluster zusammen.
+  // Nicht gelistete Beiträge nutzen weiterhin die tag- und kategoriebasierte Auswahl.
+  const clusters = {
+    "a-b-testing-einfach-erklaert": ["landing-pages-optimieren-besucher-kunden", "landing-page-erstellen-conversion", "utm-parameter-einfach-erklaert"],
+    "landing-pages-optimieren-besucher-kunden": ["landing-page-erstellen-conversion", "a-b-testing-einfach-erklaert", "utm-parameter-einfach-erklaert"],
+    "landing-page-erstellen-conversion": ["landing-pages-optimieren-besucher-kunden", "a-b-testing-einfach-erklaert", "utm-parameter-einfach-erklaert"],
+    "utm-parameter-einfach-erklaert": ["a-b-testing-einfach-erklaert", "landing-pages-optimieren-besucher-kunden", "landing-page-erstellen-conversion"],
+    "keyword-recherche-einfach-erklaert": ["on-page-seo-einfach-erklaert", "seo-wettbewerbsanalyse-content-gap", "geo-marketing-vs-geo"],
+    "on-page-seo-einfach-erklaert": ["keyword-recherche-einfach-erklaert", "seo-wettbewerbsanalyse-content-gap", "vertrauen-online-marketing-eeat-backlinks-bewertungen"],
+    "seo-wettbewerbsanalyse-content-gap": ["keyword-recherche-einfach-erklaert", "on-page-seo-einfach-erklaert", "vertrauen-online-marketing-eeat-backlinks-bewertungen"],
+    "vertrauen-online-marketing-eeat-backlinks-bewertungen": ["seo-wettbewerbsanalyse-content-gap", "on-page-seo-einfach-erklaert", "keyword-recherche-einfach-erklaert"],
+    "geo-marketing-vs-geo": ["keyword-recherche-einfach-erklaert", "vertrauen-online-marketing-eeat-backlinks-bewertungen", "seo-wettbewerbsanalyse-content-gap"]
+  };
+  const available = new Map((candidates || []).filter((post) => post && post.slug && post.slug !== currentPost.slug).map((post) => [post.slug, post]));
+  const preferred = clusters[currentPost.slug] || [];
+  const curated = preferred.map((slug) => available.get(slug)).filter(Boolean);
+  if (curated.length) return curated.slice(0, 3);
+
+  const currentTags = new Set((Array.isArray(currentPost.tags) ? currentPost.tags : []).map((tag) => String(tag).trim().toLowerCase()));
   const currentCategory = String(currentPost.category || "").trim().toLowerCase();
-  const scored = (candidates || [])
-    .filter((candidate) => candidate && candidate.slug && candidate.slug !== currentPost.slug)
-    .map((candidate) => {
-      const tags = Array.isArray(candidate.tags) ? candidate.tags.map((tag) => String(tag).toLowerCase()) : [];
-      const sharedTags = tags.filter((tag) => currentTags.has(tag)).length;
-      const sameCategory = currentCategory && String(candidate.category || "").trim().toLowerCase() === currentCategory;
-      return { post: candidate, score: sharedTags * 2 + (sameCategory ? 3 : 0) };
-    });
-  const byDate = (a, b) =>
-    new Date(b.post.published_at || 0).getTime() - new Date(a.post.published_at || 0).getTime();
+  const scored = [...available.values()].map((candidate) => {
+    const tags = Array.isArray(candidate.tags) ? candidate.tags.map((tag) => String(tag).trim().toLowerCase()) : [];
+    const sharedTags = tags.filter((tag) => currentTags.has(tag)).length;
+    const sameCategory = currentCategory && String(candidate.category || "").trim().toLowerCase() === currentCategory;
+    return { post: candidate, score: sharedTags * 2 + (sameCategory ? 3 : 0) };
+  });
+  const byDate = (a, b) => new Date(b.post.published_at || 0).getTime() - new Date(a.post.published_at || 0).getTime();
   const relevant = scored.filter((item) => item.score > 0).sort((a, b) => b.score - a.score || byDate(a, b));
   const fallback = [...scored].sort(byDate);
   return (relevant.length ? relevant : fallback).slice(0, 3).map((item) => item.post);
@@ -292,7 +313,7 @@ function relatedPostsHtml(posts) {
 
 function articleHtml(post, images, relatedPosts, origin) {
   const canonical = `${origin}/blog/${encodeURIComponent(post.slug)}/`;
-  const title = `${post.title} | Blog | Mila`;
+  const title = plainText(post.seo_title || `${post.title} | Mila`);
   const description = metaDescription(post);
   const fallbackImage = `${origin}/assets/ki.webp`;
   const image = post.cover_image || fallbackImage;
@@ -347,7 +368,7 @@ function articleHtml(post, images, relatedPosts, origin) {
 <link rel="preconnect" href="${SUPABASE_URL}" crossorigin><link rel="stylesheet" href="/styles.css"><link rel="stylesheet" href="/blog.css">
 <script type="application/ld+json">${schemaText}</script>
 </head><body>
-<header><button aria-label="Zur vorherigen Seite" class="article-back-button" id="article-back" title="Zur vorherigen Seite" type="button"><span aria-hidden="true">←</span><span class="back-label">Zurück</span></button><div class="bar"><a class="logo" href="/" aria-label="Zur Mila-Startseite" title="Zur Mila-Startseite">mila<span>♡</span><span class="visually-hidden">Zur Mila-Startseite</span></a><button aria-label="Menü öffnen" class="mobile-toggle" onclick="document.querySelector('nav').classList.toggle('open')">☰</button><nav><a href="/">Startseite</a><a href="/ueber-mila/">Über Mila</a><a href="/gaming/">Gaming</a><a class="active" href="/blog/">Blog</a><a href="/lifestyle/">Lifestyle</a><a href="/galerie/">Galerie</a><a href="/kontakt/">Kontakt</a></nav></div></header>
+<header><button aria-label="Zur vorherigen Seite" class="article-back-button" id="article-back" title="Zur vorherigen Seite" type="button"><span aria-hidden="true">←</span><span class="back-label">Zurück</span></button><div class="bar"><a class="logo" href="/" aria-label="Zur Mila-Startseite" title="Zur Mila-Startseite">mila<span>♡</span><span class="visually-hidden">Zur Mila-Startseite</span></a><button aria-label="Menü öffnen" class="mobile-toggle" onclick="document.querySelector('nav').classList.toggle('open')">☰</button><nav><a href="/">Startseite</a><a href="/ueber-mila/">Über Mila</a><a href="/gaming/">Gaming</a><a class="active" href="/blog/">Blog</a><a href="/digitales-marketing/">Digitales Marketing</a><a href="/aus-meinem-alltag/">Aus meinem Alltag</a><a href="/galerie/">Galerie</a><a href="/kontakt/">Kontakt</a></nav></div></header>
 <div class="back-home-wrap"><a class="back-home-link" href="/blog/">← Zurück zum Blog</a></div>
 <main class="wrap blog-article-shell"><article class="blog-article">
 <div class="article-topline"><span class="blog-category">${esc(post.category || "Blog")}</span><time datetime="${esc(publishedIso)}">${esc(formatDate(published))}</time></div>
@@ -405,13 +426,13 @@ export async function onRequest(context) {
   }
   try {
     const rows = await fetchRows("blog_posts", {
-      select: "id,title,slug,excerpt,body,category,cover_image,status,published_at,created_at,updated_at,tags",
+      select: "id,title,slug,excerpt,body,category,cover_image,status,published_at,created_at,updated_at,tags,seo_title,meta_description",
       slug: `eq.${slug}`, status: "eq.published", limit: "1"
     });
     const post = rows?.[0];
     if (!post) {
       return new Response(`<!doctype html><html lang="de"><head><meta charset="utf-8"><meta name="robots" content="noindex,follow"><title>Beitrag nicht gefunden | Mila</title><link rel="stylesheet" href="/styles.css"></head><body><main class="wrap section"><h1>Dieser Beitrag ist gerade nicht verfügbar.</h1><p>Vielleicht wurde er verschoben oder noch nicht veröffentlicht.</p><a class="btn" href="/blog/">Zur Blogübersicht</a></main></body></html>`, {
-        status: 404, headers: { "Content-Type": "text/html; charset=utf-8", "Cache-Control": "no-store", "X-Robots-Tag": "noindex,follow" }
+        status: 404, headers: { ...SECURITY_HEADERS, "Content-Type": "text/html; charset=utf-8", "Cache-Control": "no-store", "X-Robots-Tag": "noindex,follow" }
       });
     }
     let images = [];
@@ -435,17 +456,16 @@ export async function onRequest(context) {
     const body = articleHtml(post, images, relatedPosts, url.origin);
     return new Response(body, {
       headers: {
+        ...SECURITY_HEADERS,
         "Content-Type": "text/html; charset=utf-8",
-        "Cache-Control": "public, max-age=0, s-maxage=300, stale-while-revalidate=1800",
-        "X-Content-Type-Options": "nosniff",
-        "Referrer-Policy": "strict-origin-when-cross-origin"
+        "Cache-Control": "public, max-age=0, s-maxage=300, stale-while-revalidate=1800"
       }
     });
   } catch (error) {
     console.error("Blogartikel konnte nicht gerendert werden", error);
     return new Response("Der Blogbeitrag ist vorübergehend nicht verfügbar.", {
       status: 503,
-      headers: { "Content-Type": "text/plain; charset=utf-8", "Cache-Control": "no-store", "Retry-After": "60", "X-Robots-Tag": "noindex,follow" }
+      headers: { ...SECURITY_HEADERS, "Content-Type": "text/plain; charset=utf-8", "Cache-Control": "no-store", "Retry-After": "60", "X-Robots-Tag": "noindex,follow" }
     });
   }
 }

@@ -1,4 +1,10 @@
 /* Mila Blog */
+/* Crawlbarer Fallback für Bloglisten, wird nach erfolgreichem Datenbank-Laden entfernt. */
+.blog-crawl-fallback{display:flex;flex-wrap:wrap;gap:9px 18px;list-style:none;padding:0;margin:0 0 24px}
+.blog-crawl-fallback li{margin:0}
+.blog-crawl-fallback a{color:#efb5df;text-decoration:underline;text-underline-offset:3px;font-size:13px}
+.blog-crawl-fallback a:hover{color:#fff}
+
 .blog-intro h1{font-size:clamp(38px,5vw,62px);line-height:1.12;margin:14px 0 20px;letter-spacing:-1.5px}
 .blog-intro h1 em{font-style:italic;color:var(--pink);font-family:'Playfair Display',Georgia,serif}
 .blog-intro p{max-width:620px;font-size:17px;line-height:1.75}
