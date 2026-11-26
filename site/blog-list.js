@@ -105,6 +105,10 @@
     }
 
     const posts = data || [];
+    // Die statischen HTML-Links dienen Suchmaschinen und Besuchern ohne JavaScript
+    // als Fallback. Nach erfolgreichem Laden übernehmen die aktuellen Datenbankkarten.
+    document.getElementById('digital-post-fallback')?.remove();
+    document.getElementById('everyday-post-fallback')?.remove();
     targets.forEach((target) => {
       const filtered = posts.filter(target.predicate);
       if (target.count) {
