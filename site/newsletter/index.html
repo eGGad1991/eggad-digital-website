@@ -224,5 +224,49 @@ filter:blur(.3px);transform:rotate(-18deg)}
 </main>
 <footer class="nl-footer"><div class="nl-footer-links"><a href="/impressum/">Impressum</a><a href="/datenschutz/">Datenschutz</a></div><small>© 2026 Mila · Mila ist eine virtuelle Persönlichkeit.</small></footer>
 <script defer src="/cookie-consent.js"></script>
+
+<style>
+/* Cursorblüten: dezente Spur, die zu den Anmelde-CTAs schwebt */
+.nl-cursor-flower{position:fixed;left:0;top:0;z-index:50;pointer-events:none;font-family:Georgia,serif;font-size:17px;line-height:1;color:var(--flower-color,#efb2d2);text-shadow:0 0 10px currentColor,0 0 20px #d9a4ff88;will-change:transform,opacity;animation:nl-flower-flight var(--flower-duration,1.15s) cubic-bezier(.18,.68,.25,1) forwards}
+@keyframes nl-flower-flight{0%{opacity:0;transform:translate3d(var(--start-x),var(--start-y),0) rotate(0) scale(.45)}12%{opacity:.95}72%{opacity:.9}100%{opacity:0;transform:translate3d(var(--end-x),var(--end-y),0) rotate(var(--flower-rotation,150deg)) scale(.2)}}
+@media(hover:none),(pointer:coarse){.nl-cursor-flower{display:none}}
+@media(prefers-reduced-motion:reduce){.nl-cursor-flower{display:none}}
+</style>
+<script>
+(()=>{
+  const finePointer=window.matchMedia('(hover:hover) and (pointer:fine)').matches;
+  const reduceMotion=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if(!finePointer||reduceMotion)return;
+  const symbols=['✿','❀','✾','✽'];
+  const colors=['#f4bfd9','#d8b8f2','#f6d5e5','#c9a4ef'];
+  const targets=()=>Array.from(document.querySelectorAll('.nl-primary,.nl-submit')).filter(el=>el.getClientRects().length);
+  let last=0,active=0;
+  document.addEventListener('pointermove',event=>{
+    const now=performance.now();
+    if(now-last<95||active>=22)return;
+    last=now;active++;
+    const buttons=targets();
+    if(!buttons.length){active--;return;}
+    const target=buttons.reduce((best,el)=>{
+      const r=el.getBoundingClientRect(),x=r.left+r.width/2,y=r.top+r.height/2;
+      const d=(x-event.clientX)**2+(y-event.clientY)**2;
+      return !best||d<best.d?{el,x,y,d}:best;
+    },null);
+    const flower=document.createElement('span');
+    flower.className='nl-cursor-flower';
+    flower.textContent=symbols[Math.floor(Math.random()*symbols.length)];
+    const sx=event.clientX+(Math.random()*18-9),sy=event.clientY+(Math.random()*18-9);
+    flower.style.setProperty('--start-x',sx+'px');
+    flower.style.setProperty('--start-y',sy+'px');
+    flower.style.setProperty('--end-x',(target.x-sx)+'px');
+    flower.style.setProperty('--end-y',(target.y-sy)+'px');
+    flower.style.setProperty('--flower-color',colors[Math.floor(Math.random()*colors.length)]);
+    flower.style.setProperty('--flower-rotation',(90+Math.random()*240)+'deg');
+    flower.style.setProperty('--flower-duration',(0.9+Math.random()*.55)+'s');
+    document.body.appendChild(flower);
+    flower.addEventListener('animationend',()=>{flower.remove();active=Math.max(0,active-1)},{once:true});
+  },{passive:true});
+})();
+</script>
 </body>
 </html>
