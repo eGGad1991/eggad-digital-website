@@ -245,15 +245,20 @@ filter:blur(.3px);transform:rotate(-18deg)}
  const reduceMotion=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
  if(!finePointer||reduceMotion)return;
  let last=0,active=0;
- const signupButton=document.querySelector('.nl-submit');
- if(!signupButton)return;
+ const getCtaTargets=()=>Array.from(document.querySelectorAll('.nl-primary,.nl-submit')).filter(el=>el.getClientRects().length);
  document.addEventListener('pointermove',event=>{
   const now=performance.now();
   if(now-last<150||active>=34)return;
   last=now;
-  const rect=signupButton.getBoundingClientRect();
+  const targets=getCtaTargets();
+  if(!targets.length)return;
   const sx=event.clientX,sy=event.clientY;
-  const tx=rect.left+rect.width/2,ty=rect.top+rect.height/2;
+  /* Je nach Mausposition zum jeweils näheren CTA oben oder unten fliegen */
+  const target=targets.map(el=>{
+   const rect=el.getBoundingClientRect();
+   return {x:rect.left+rect.width/2,y:rect.top+rect.height/2,d:(rect.left+rect.width/2-sx)**2+(rect.top+rect.height/2-sy)**2};
+  }).sort((a,b)=>a.d-b.d)[0];
+  const tx=target.x,ty=target.y;
   const dx=tx-sx,dy=ty-sy;
   const flower=document.createElement('span');
   flower.className='nl-cursor-flower';
