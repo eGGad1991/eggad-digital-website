@@ -251,20 +251,33 @@ function placeInlineImages(bodyHtml, images, post = {}) {
 
 
 function relatedPostsFor(currentPost, candidates) {
-  const currentTags = new Set(
-    (Array.isArray(currentPost.tags) ? currentPost.tags : []).map((tag) => String(tag).toLowerCase())
-  );
+  // Redaktionell festgelegte Verknüpfungen halten die wichtigsten Themencluster zusammen.
+  // Nicht gelistete Beiträge nutzen weiterhin die tag- und kategoriebasierte Auswahl.
+  const clusters = {
+    "a-b-testing-einfach-erklaert": ["landing-pages-optimieren-besucher-kunden", "landing-page-erstellen-conversion", "utm-parameter-einfach-erklaert"],
+    "landing-pages-optimieren-besucher-kunden": ["landing-page-erstellen-conversion", "a-b-testing-einfach-erklaert", "utm-parameter-einfach-erklaert"],
+    "landing-page-erstellen-conversion": ["landing-pages-optimieren-besucher-kunden", "a-b-testing-einfach-erklaert", "utm-parameter-einfach-erklaert"],
+    "utm-parameter-einfach-erklaert": ["a-b-testing-einfach-erklaert", "landing-pages-optimieren-besucher-kunden", "landing-page-erstellen-conversion"],
+    "keyword-recherche-einfach-erklaert": ["on-page-seo-einfach-erklaert", "seo-wettbewerbsanalyse-content-gap", "geo-marketing-vs-geo"],
+    "on-page-seo-einfach-erklaert": ["keyword-recherche-einfach-erklaert", "seo-wettbewerbsanalyse-content-gap", "vertrauen-online-marketing-eeat-backlinks-bewertungen"],
+    "seo-wettbewerbsanalyse-content-gap": ["keyword-recherche-einfach-erklaert", "on-page-seo-einfach-erklaert", "vertrauen-online-marketing-eeat-backlinks-bewertungen"],
+    "vertrauen-online-marketing-eeat-backlinks-bewertungen": ["seo-wettbewerbsanalyse-content-gap", "on-page-seo-einfach-erklaert", "keyword-recherche-einfach-erklaert"],
+    "geo-marketing-vs-geo": ["keyword-recherche-einfach-erklaert", "vertrauen-online-marketing-eeat-backlinks-bewertungen", "seo-wettbewerbsanalyse-content-gap"]
+  };
+  const available = new Map((candidates || []).filter((post) => post && post.slug && post.slug !== currentPost.slug).map((post) => [post.slug, post]));
+  const preferred = clusters[currentPost.slug] || [];
+  const curated = preferred.map((slug) => available.get(slug)).filter(Boolean);
+  if (curated.length) return curated.slice(0, 3);
+
+  const currentTags = new Set((Array.isArray(currentPost.tags) ? currentPost.tags : []).map((tag) => String(tag).trim().toLowerCase()));
   const currentCategory = String(currentPost.category || "").trim().toLowerCase();
-  const scored = (candidates || [])
-    .filter((candidate) => candidate && candidate.slug && candidate.slug !== currentPost.slug)
-    .map((candidate) => {
-      const tags = Array.isArray(candidate.tags) ? candidate.tags.map((tag) => String(tag).toLowerCase()) : [];
-      const sharedTags = tags.filter((tag) => currentTags.has(tag)).length;
-      const sameCategory = currentCategory && String(candidate.category || "").trim().toLowerCase() === currentCategory;
-      return { post: candidate, score: sharedTags * 2 + (sameCategory ? 3 : 0) };
-    });
-  const byDate = (a, b) =>
-    new Date(b.post.published_at || 0).getTime() - new Date(a.post.published_at || 0).getTime();
+  const scored = [...available.values()].map((candidate) => {
+    const tags = Array.isArray(candidate.tags) ? candidate.tags.map((tag) => String(tag).trim().toLowerCase()) : [];
+    const sharedTags = tags.filter((tag) => currentTags.has(tag)).length;
+    const sameCategory = currentCategory && String(candidate.category || "").trim().toLowerCase() === currentCategory;
+    return { post: candidate, score: sharedTags * 2 + (sameCategory ? 3 : 0) };
+  });
+  const byDate = (a, b) => new Date(b.post.published_at || 0).getTime() - new Date(a.post.published_at || 0).getTime();
   const relevant = scored.filter((item) => item.score > 0).sort((a, b) => b.score - a.score || byDate(a, b));
   const fallback = [...scored].sort(byDate);
   return (relevant.length ? relevant : fallback).slice(0, 3).map((item) => item.post);
@@ -355,7 +368,7 @@ function articleHtml(post, images, relatedPosts, origin) {
 <link rel="preconnect" href="${SUPABASE_URL}" crossorigin><link rel="stylesheet" href="/styles.css"><link rel="stylesheet" href="/blog.css">
 <script type="application/ld+json">${schemaText}</script>
 </head><body>
-<header><button aria-label="Zur vorherigen Seite" class="article-back-button" id="article-back" title="Zur vorherigen Seite" type="button"><span aria-hidden="true">←</span><span class="back-label">Zurück</span></button><div class="bar"><a class="logo" href="/" aria-label="Zur Mila-Startseite" title="Zur Mila-Startseite">mila<span>♡</span><span class="visually-hidden">Zur Mila-Startseite</span></a><button aria-label="Menü öffnen" class="mobile-toggle" onclick="document.querySelector('nav').classList.toggle('open')">☰</button><nav><a href="/">Startseite</a><a href="/ueber-mila/">Über Mila</a><a href="/gaming/">Gaming</a><a class="active" href="/blog/">Blog</a><a href="/lifestyle/">Lifestyle</a><a href="/galerie/">Galerie</a><a href="/kontakt/">Kontakt</a></nav></div></header>
+<header><button aria-label="Zur vorherigen Seite" class="article-back-button" id="article-back" title="Zur vorherigen Seite" type="button"><span aria-hidden="true">←</span><span class="back-label">Zurück</span></button><div class="bar"><a class="logo" href="/" aria-label="Zur Mila-Startseite" title="Zur Mila-Startseite">mila<span>♡</span><span class="visually-hidden">Zur Mila-Startseite</span></a><button aria-label="Menü öffnen" class="mobile-toggle" onclick="document.querySelector('nav').classList.toggle('open')">☰</button><nav><a href="/">Startseite</a><a href="/ueber-mila/">Über Mila</a><a href="/gaming/">Gaming</a><a class="active" href="/blog/">Blog</a><a href="/digitales-marketing/">Digitales Marketing</a><a href="/aus-meinem-alltag/">Aus meinem Alltag</a><a href="/galerie/">Galerie</a><a href="/kontakt/">Kontakt</a></nav></div></header>
 <div class="back-home-wrap"><a class="back-home-link" href="/blog/">← Zurück zum Blog</a></div>
 <main class="wrap blog-article-shell"><article class="blog-article">
 <div class="article-topline"><span class="blog-category">${esc(post.category || "Blog")}</span><time datetime="${esc(publishedIso)}">${esc(formatDate(published))}</time></div>
