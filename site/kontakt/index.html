@@ -11,9 +11,27 @@
 <style>
 .contact-intro{max-width:760px}
 .contact-card{max-width:760px;margin-top:28px}
-.hs-form-frame{width:100%;min-height:420px}
+.contact-form{display:grid;gap:18px;margin-top:26px}
+.contact-form .field{display:grid;gap:7px}
+.contact-form label{color:#f8f4f7;font-size:13px;font-weight:600}
+.contact-form input,.contact-form select,.contact-form textarea{width:100%;min-height:48px;padding:13px 15px;border:1px solid #ffffff35;border-radius:9px;background:#171321;color:#f8f4f7;font:inherit;outline:none;transition:border-color .18s ease,box-shadow .18s ease}
+.contact-form textarea{min-height:160px;resize:vertical}
+.contact-form input::placeholder,.contact-form textarea::placeholder{color:#9e95aa}
+.contact-form input:focus,.contact-form select:focus,.contact-form textarea:focus{border-color:#bd8bff;box-shadow:0 0 0 3px #bd8bff22}
+.contact-form select{color-scheme:dark}
+.contact-form .consent{display:flex;align-items:flex-start;gap:11px;color:#c9c1d1;font-size:12px;line-height:1.55}
+.contact-form .consent input{width:18px;min-height:18px;height:18px;flex:0 0 18px;margin:2px 0 0;accent-color:#bd8bff}
+.contact-form .consent label{font-size:12px;font-weight:400;color:#c9c1d1}
+.contact-form .consent a,.contact-note a{color:#e6a2d1;text-decoration:underline;text-underline-offset:3px}
+.contact-submit{min-height:50px;padding:12px 22px;border:0;border-radius:9px;background:linear-gradient(120deg,#d6a6ff,#edadd5);color:#24162d;font:700 14px 'DM Sans',Arial,sans-serif;cursor:pointer;transition:transform .18s ease,filter .18s ease}
+.contact-submit:hover{transform:translateY(-1px);filter:brightness(1.06)}
+.contact-submit:disabled{opacity:.65;cursor:wait;transform:none}
+.contact-status{min-height:24px;margin:0;font-size:13px}
+.contact-status.success{color:#a9e6c0}
+.contact-status.error{color:#ffb3c0}
 .contact-note{font-size:12px;line-height:1.6;margin-top:18px}
-.contact-note a{color:var(--pink);text-decoration:underline;text-underline-offset:3px}
+.contact-honeypot{position:absolute!important;left:-10000px!important;width:1px!important;height:1px!important;overflow:hidden!important}
+@media(max-width:600px){.contact-card{padding:20px}.contact-form{gap:15px}}
 </style>
 <meta content="Du hast eine Frage oder möchtest eine Kooperation besprechen? Über das Kontaktformular kannst du eine Nachricht an das Mila-Website-Team senden." name="description"/><meta content="index,follow,max-image-preview:large" name="robots"/><meta content="Mila" name="author"/><meta content="website" property="og:type"/><meta content="de_DE" property="og:locale"/><meta content="Mila" property="og:site_name"/><meta content="Kontakt zu Mila: Nachrichten und Kooperationen" property="og:title"/><meta content="Du hast eine Frage oder möchtest eine Kooperation besprechen? Über das Kontaktformular kannst du eine Nachricht an das Mila-Website-Team senden." property="og:description"/><meta content="https://mila-einfach.pages.dev/kontakt/" property="og:url"/><meta content="https://mila-einfach.pages.dev/assets/hero.webp" property="og:image"/><meta content="Kontakt zu Mila: Nachrichten und Kooperationen" property="og:image:alt"/><meta content="summary_large_image" name="twitter:card"/><meta content="Kontakt zu Mila: Nachrichten und Kooperationen" name="twitter:title"/><meta content="Du hast eine Frage oder möchtest eine Kooperation besprechen? Über das Kontaktformular kannst du eine Nachricht an das Mila-Website-Team senden." name="twitter:description"/><meta content="https://mila-einfach.pages.dev/assets/hero.webp" name="twitter:image"/><link href="https://mila-einfach.pages.dev/kontakt/" rel="canonical"/><meta content="#100e19" name="theme-color"/><link as_="image" fetchpriority="high" href="/assets/hero.webp" rel="preload"/><script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"Organization","@id":"https://mila-einfach.pages.dev/#organization","name":"Mila","url":"https://mila-einfach.pages.dev/","description":"Mila ist eine virtuelle Persönlichkeit. Inhalte und Bilder werden mit KI gestaltet.","image":{"@type":"ImageObject","url":"https://mila-einfach.pages.dev/assets/hero.webp"}},{"@type":"WebSite","@id":"https://mila-einfach.pages.dev/#website","url":"https://mila-einfach.pages.dev/","name":"Mila","inLanguage":"de-DE","publisher":{"@id":"https://mila-einfach.pages.dev/#organization"}},{"@type":"ContactPage","@id":"https://mila-einfach.pages.dev/kontakt/#webpage","url":"https://mila-einfach.pages.dev/kontakt/","name":"Kontakt zu Mila: Nachrichten und Kooperationen","description":"Du hast eine Frage oder möchtest eine Kooperation besprechen? Über das Kontaktformular kannst du eine Nachricht an das Mila-Website-Team senden.","inLanguage":"de-DE","isPartOf":{"@id":"https://mila-einfach.pages.dev/#website"},"primaryImageOfPage":{"@type":"ImageObject","url":"https://mila-einfach.pages.dev/assets/hero.webp"}},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Start","item":"https://mila-einfach.pages.dev/"},{"@type":"ListItem","position":2,"name":"Kontakt","item":"https://mila-einfach.pages.dev/kontakt/"}]}]}</script></head>
 <body>
@@ -29,8 +47,66 @@
 <h2>Schreib mir eine Nachricht</h2>
 <p>Fülle die Felder aus und sende deine Nachricht direkt ab. Du kannst Fragen zur Website stellen, Feedback geben oder eine Idee für eine mögliche Zusammenarbeit teilen.</p>
 <p>Beschreibe dein Anliegen am besten kurz und konkret, damit wir es richtig einordnen können. Bitte sende über das Formular keine Passwörter oder vertraulichen Zahlungsdaten. Für eine Antwort brauchen wir eine erreichbare E-Mail-Adresse. Das Formular ist für allgemeine Nachrichten gedacht und soll den Kontakt möglichst unkompliziert machen. Du kannst auch einen Link zu einer öffentlichen Website oder einem Projekt teilen, wenn er für deine Anfrage wichtig ist.</p><p>Bei einer Kooperationsanfrage helfen ein paar kurze Angaben zum Projekt, zur gewünschten Zusammenarbeit und zum passenden Zeitraum. Bei Feedback zur Website kannst du gern die betroffene Seite nennen und beschreiben, was dir aufgefallen ist. So lässt sich deine Nachricht besser zuordnen. Die Daten werden zur Bearbeitung der Anfrage verwendet; weitere Informationen dazu findest du in den Datenschutzhinweisen.</p>
-<script defer="" src="https://js-eu1.hsforms.net/forms/embed/149632333.js"></script>
-<div class="hs-form-frame" data-form-id="12dbabcf-cb07-4733-90f7-de150151b4ac" data-portal-id="149632333" data-region="eu1"></div>
+<form class="contact-form" id="mila-contact-form" novalidate>
+<div class="field"><label for="contact-name">Dein Name</label><input id="contact-name" name="name" type="text" autocomplete="name" maxlength="100" placeholder="Wie dürfen wir dich nennen?" required></div>
+<div class="field"><label for="contact-email">Deine E-Mail-Adresse</label><input id="contact-email" name="email" type="email" autocomplete="email" maxlength="254" placeholder="name@beispiel.de" required></div>
+<div class="field"><label for="contact-subject">Worum geht es?</label><select id="contact-subject" name="subject" required><option value="" selected disabled>Bitte auswählen</option><option value="Allgemeine Anfrage">Allgemeine Anfrage</option><option value="Feedback zur Website">Feedback zur Website</option><option value="Kooperation">Kooperation</option><option value="Sonstiges">Sonstiges</option></select></div>
+<div class="field"><label for="contact-message">Deine Nachricht</label><textarea id="contact-message" name="message" maxlength="5000" placeholder="Schreib deine Nachricht hier ..." required></textarea></div>
+<div class="contact-honeypot" aria-hidden="true"><label for="contact-website">Website</label><input id="contact-website" name="website" type="text" tabindex="-1" autocomplete="off"></div>
+<div class="consent"><input id="contact-consent" name="consent" type="checkbox" required><label for="contact-consent">Ich habe die <a href="/datenschutz/" target="_blank" rel="noopener">Datenschutzhinweise</a> gelesen und stimme zu, dass meine Angaben zur Bearbeitung meiner Anfrage verarbeitet und an HubSpot übermittelt werden.</label></div>
+<button class="contact-submit" id="contact-submit" type="submit">Nachricht senden <span aria-hidden="true">♡</span></button>
+<p class="contact-status" id="contact-status" role="status" aria-live="polite"></p>
+</form>
+<script>
+(function(){
+ const form=document.getElementById('mila-contact-form');
+ if(!form)return;
+ const button=document.getElementById('contact-submit');
+ const status=document.getElementById('contact-status');
+ const started=Date.now();
+ const endpoint='https://api.hsforms.com/submissions/v3/integration/submit/149632333/12dbabcf-cb07-4733-90f7-de150151b4ac';
+ const say=(message,type)=>{status.textContent=message;status.className='contact-status '+(type||'');};
+ form.addEventListener('submit',async function(event){
+  event.preventDefault();
+  if(!form.reportValidity())return;
+  const data=new FormData(form);
+  if(data.get('website'))return;
+  if(Date.now()-started<1800){say('Bitte prüfe deine Angaben und versuche es noch einmal.','error');return;}
+  const name=String(data.get('name')||'').trim();
+  const email=String(data.get('email')||'').trim();
+  const subject=String(data.get('subject')||'').trim();
+  const message=String(data.get('message')||'').trim();
+  if(!name||!email||!subject||!message||!document.getElementById('contact-consent').checked)return;
+  button.disabled=true;
+  button.textContent='Nachricht wird gesendet …';
+  say('Einen kleinen Moment bitte …');
+  const payload={
+   fields:[
+    {name:'firstname',value:name},
+    {name:'email',value:email},
+    {name:'message',value:'Betreff: '+subject+'\n\n'+message}
+   ],
+   context:{pageUri:window.location.href,pageName:'Kontakt zu Mila'}
+  };
+  try{
+   const response=await fetch(endpoint,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});
+   if(!response.ok){
+    let detail='';
+    try{const result=await response.json();detail=(result.message||'')+' '+(result.errors||[]).map(item=>item.message||'').join(' ');}catch(_){}
+    throw new Error(detail||'Die Übermittlung wurde von HubSpot nicht bestätigt.');
+   }
+   form.reset();
+   say('Danke für deine Nachricht! Sie wurde erfolgreich übermittelt. ♡','success');
+  }catch(error){
+   console.error('Mila contact form:',error);
+   say('Deine Nachricht konnte gerade nicht gesendet werden. Bitte versuche es später erneut oder nutze eine andere Kontaktmöglichkeit.','error');
+  }finally{
+   button.disabled=false;
+   button.innerHTML='Nachricht senden <span aria-hidden="true">♡</span>';
+  }
+ });
+})();
+</script>
 <p class="contact-note">Deine Angaben werden zur Bearbeitung deiner Nachricht über HubSpot verarbeitet. Eine optionale Einwilligung für weitere Informationen oder Marketing ist freiwillig und keine Voraussetzung für deine Kontaktanfrage. Mehr dazu steht in den <a href="/datenschutz/">Datenschutzhinweisen</a>.</p>
 </div>
 </section>
