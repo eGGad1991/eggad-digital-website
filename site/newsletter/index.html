@@ -14,7 +14,7 @@
 <meta property="og:title" content="Mila Digital-Update – Neue Blogbeiträge direkt per E-Mail">
 <meta property="og:description" content="KI, SEO, Websites und digitales Marketing einfach erklärt. Kostenlos anmelden.">
 <meta property="og:url" content="https://mila-einfach.pages.dev/newsletter/">
-<meta property="og:image" content="https://mila-einfach.pages.devhttps://xspibbzwfwhmgvfowiye.supabase.co/storage/v1/object/public/portfolio-media/galerie/1795683444371-997a9149-0cea-4842-9bb8-edbc73c585cf-Rothaarige-Streamerin-am-Tech-Arbeitsplatz.png">
+<meta property="og:image" content="https://xspibbzwfwhmgvfowiye.supabase.co/storage/v1/object/public/portfolio-media/galerie/1795683444371-997a9149-0cea-4842-9bb8-edbc73c585cf-Rothaarige-Streamerin-am-Tech-Arbeitsplatz.png">
 <link rel="stylesheet" href="/styles.css">
 <style>
 :root{--nl-card:#211c30;--nl-border:#ffffff20}
@@ -69,23 +69,69 @@ body{background:#100e19}
 .nl-footer small{display:block;color:#81788a;font-size:10px;margin-top:12px}
 @media(max-width:760px){.nl-hero{grid-template-columns:1fr;gap:27px;padding-top:39px;padding-bottom:48px}.nl-hero-image{height:270px;grid-row:1}.nl-hero h1{font-size:clamp(40px,11vw,54px)}.nl-lead{font-size:17px}.nl-benefits{grid-template-columns:1fr}.nl-section{padding:49px 20px}.nl-form-card{padding:28px 20px}.nl-header-inner{padding:14px 20px}}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.nl-primary{transition:none}}
+
+/* Editorial polish: soft violet light, depth and clear visual hierarchy */
+body{overflow-x:hidden;background:radial-gradient(ellipse at 78% 12%,#39244b55 0,transparent 34%),#100e19}
+.nl-header{background:#100e19d9;backdrop-filter:blur(16px)}
+.nl-hero{position:relative;isolation:isolate;min-height:590px;padding-top:76px;padding-bottom:84px}
+.nl-hero:before{content:"";position:absolute;z-index:-1;width:560px;height:560px;border-radius:50%;right:-190px;top:-130px;background:radial-gradient(circle,#b66bd52b 0,transparent 68%);pointer-events:none}
+.nl-hero-copy{position:relative;z-index:2}
+.nl-kicker{padding:9px 13px;border:1px solid #e4a9e94a;border-radius:99px;background:#d9a2ff0d}
+.nl-kicker:before{width:6px;height:6px;border-radius:50%;box-shadow:0 0 12px var(--pink)}
+.nl-hero h1{font-size:clamp(46px,5.6vw,72px);line-height:1.02;text-wrap:balance}
+.nl-hero h1 em{background:linear-gradient(110deg,#f2c4ed,#c99aff 65%,#efaed0);background-clip:text;-webkit-background-clip:text;color:transparent}
+.nl-lead{font-size:19px;line-height:1.7}
+.nl-visual-wrap{position:relative;isolation:isolate;padding:10px;border:1px solid #e2a9ff55;border-radius:26px;background:linear-gradient(145deg,#e5b5ff38,#ffffff05 40%,#ee9fdc25);box-shadow:0 30px 90px #0008,0 0 55px #c47be52b}
+.nl-image-glow{position:absolute;z-index:-1;inset:12% -8%;border-radius:50%;background:#bb70e7;filter:blur(65px);opacity:.24}
+.nl-hero-image{display:block;height:430px;border:0;border-radius:18px;box-shadow:none;object-position:center 38%}
+.nl-image-caption{position:absolute;left:25px;right:25px;bottom:24px;display:flex;align-items:center;gap:11px;padding:13px 16px;border:1px solid #ffffff38;border-radius:13px;background:#100e19c9;backdrop-filter:blur(15px);box-shadow:0 8px 28px #0005}
+.nl-caption-dot{width:9px;height:9px;flex:0 0 9px;border-radius:50%;background:#b7f1cb;box-shadow:0 0 12px #b7f1cb}
+.nl-image-caption strong,.nl-image-caption small{display:block}
+.nl-image-caption strong{font-size:13px;color:#fff}
+.nl-image-caption small{font-size:11px;color:#c9bed0;margin-top:2px}
+.nl-caption-heart{margin-left:auto;color:#edb1df;font-size:23px}
+.nl-primary{min-height:56px;padding:0 25px;border-radius:12px;background:linear-gradient(110deg,#e7b9ff,#efb4d9 55%,#d8b2ff);box-shadow:0 9px 30px #d9a4ff40;color:#24162d;font-size:15px}
+.nl-primary span{margin-left:15px;font-size:19px}
+.nl-reassure{gap:12px 20px}
+.nl-benefit-section{position:relative;background:linear-gradient(180deg,#171321,#100e19)}
+.nl-section-head{margin-bottom:38px}
+.nl-benefits{gap:18px}
+.nl-benefit{position:relative;overflow:hidden;min-height:185px;padding:27px 24px;background:linear-gradient(145deg,#292239,#1b1726);border:1px solid #e2b4ff22;border-radius:17px;transition:transform .22s ease,border-color .22s ease,box-shadow .22s ease}
+.nl-benefit:after{content:"";position:absolute;width:120px;height:120px;right:-60px;top:-65px;border-radius:50%;background:#dba4ff20;filter:blur(8px)}
+.nl-benefit:hover{transform:translateY(-5px);border-color:#dca7ff77;box-shadow:0 18px 40px #0004}
+.nl-benefit .number{display:inline-block;padding:6px 9px;border-radius:99px;background:#d9a2ff12}
+.nl-benefit h3{font-size:25px}
+.nl-trust{position:relative;overflow:hidden;background:linear-gradient(120deg,#29203a,#191523);border-color:#d6a6ff55;box-shadow:0 15px 45px #0003}
+.nl-trust:before{content:"♡";position:absolute;right:24px;top:5px;font-size:75px;color:#dba4ff12}
+.nl-trust h3{font-size:25px}
+.nl-form-section{position:relative;overflow:hidden;background:radial-gradient(ellipse at 50% 50%,#39234b66,transparent 62%),#171321;padding-top:76px;padding-bottom:76px}
+.nl-form-card{position:relative;overflow:hidden;padding:44px;border-radius:22px;background:linear-gradient(145deg,#fffaff,#f1e8f8);border:1px solid #ffffff;box-shadow:0 24px 80px #0006,0 0 45px #d5a0ff18}
+.nl-form-card:before{content:"";position:absolute;top:0;left:0;right:0;height:5px;background:linear-gradient(90deg,#b98be7,#e9a9d2,#b98be7)}
+.nl-form-card .nl-kicker{border:0;background:#8055a512}
+.nl-form-card h2{font-size:clamp(33px,4vw,45px);letter-spacing:-.7px}
+.nl-submit{border-radius:11px;background:linear-gradient(110deg,#8b5ab2,#a66bc0);box-shadow:0 10px 24px #8055a544;transition:transform .2s,box-shadow .2s}
+.nl-submit:hover{transform:translateY(-2px);background:linear-gradient(110deg,#75469b,#9555b0);box-shadow:0 14px 28px #8055a566}
+.nl-footer{background:#0d0b14}
+@media(max-width:760px){.nl-hero{min-height:0;padding-top:43px}.nl-hero-image{height:300px}.nl-visual-wrap{padding:7px;border-radius:20px}.nl-image-caption{left:17px;right:17px;bottom:17px}.nl-form-section{padding-top:48px;padding-bottom:48px}.nl-form-card{padding:32px 21px}}
+@media(hover:none){.nl-benefit:hover{transform:none}}
+
 </style>
 </head>
 <body>
 <header class="nl-header"><div class="nl-header-inner"><div class="nl-logo" aria-label="Mila">mila<span>♡</span></div></div></header>
 <main>
 <section class="nl-hero">
-<div>
+<div class="nl-hero-copy">
 <span class="nl-kicker">MILA DIGITAL-UPDATE</span>
 <h1>Digitales Wissen. <em>Einfach erklärt.</em></h1>
 <p class="nl-lead">Du möchtest KI, SEO und digitales Marketing besser verstehen, ohne dich durch komplizierte Fachbegriffe zu kämpfen?</p>
 <p class="nl-sub">Mit dem kostenlosen Mila Digital-Update bekommst du neue Beiträge aus dem digitalen Blog direkt in dein Postfach – verständlich, praktisch und zum Ausprobieren.</p>
-<a class="nl-primary" href="#anmelden">Jetzt kostenlos anmelden <span aria-hidden="true">&nbsp;♡</span></a>
+<a class="nl-primary" href="#anmelden">Jetzt kostenlos anmelden <span aria-hidden="true">↗</span></a>
 <div class="nl-reassure"><span>Kostenlos</span><span>Kein Spam</span><span>Jederzeit abbestellbar</span></div>
 </div>
-<img class="nl-hero-image" src="https://xspibbzwfwhmgvfowiye.supabase.co/storage/v1/object/public/portfolio-media/galerie/1795683444371-997a9149-0cea-4842-9bb8-edbc73c585cf-Rothaarige-Streamerin-am-Tech-Arbeitsplatz.png" alt="Mila in ihrem digitalen Arbeitsumfeld" width="600" height="390" fetchpriority="high">
+<div class="nl-visual-wrap"><div class="nl-image-glow"></div><img class="nl-hero-image" src="https://xspibbzwfwhmgvfowiye.supabase.co/storage/v1/object/public/portfolio-media/galerie/1795683444371-997a9149-0cea-4842-9bb8-edbc73c585cf-Rothaarige-Streamerin-am-Tech-Arbeitsplatz.png" alt="Mila in ihrem digitalen Arbeitsumfeld" width="600" height="390" fetchpriority="high"><div class="nl-image-caption"><span class="nl-caption-dot"></span><span><strong>Mila Digital</strong><small>Wissen, das dich weiterbringt</small></span><span class="nl-caption-heart">♡</span></div></div>
 </section>
-<section class="nl-section" aria-labelledby="benefits-title">
+<section class="nl-section nl-benefit-section" aria-labelledby="benefits-title">
 <div class="nl-section-inner">
 <div class="nl-section-head"><span class="nl-kicker">DAS BRINGT DIR DER NEWSLETTER</span><h2 id="benefits-title">Mehr verstehen. <em>Selbst ausprobieren.</em></h2><p>Du bekommst Inhalte, die dir helfen, digitale Themen Schritt für Schritt in deinen Alltag oder dein Projekt zu übertragen.</p></div>
 <div class="nl-benefits">
