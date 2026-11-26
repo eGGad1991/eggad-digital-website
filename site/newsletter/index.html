@@ -2,94 +2,122 @@
 <html lang="de">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="theme-color" content="#100e19">
-<title>Mila Digital-Update | Newsletter für digitales Wissen</title>
-<meta name="description" content="Erhalte neue Beiträge aus Milas digitalem Blog direkt per E-Mail: verständliche Tipps zu KI, SEO, Websites und digitalem Marketing. Kostenlos anmelden.">
+<title>Mila Digital-Update – Neue Blogbeiträge direkt per E-Mail</title>
+<meta name="description" content="Verständliche Beiträge zu KI, SEO, Websites und digitalem Marketing. Hol dir das kostenlose Mila Digital-Update direkt in dein Postfach.">
 <meta name="robots" content="index,follow,max-image-preview:large">
 <link rel="canonical" href="https://mila-einfach.pages.dev/newsletter/">
 <meta property="og:type" content="website">
 <meta property="og:locale" content="de_DE">
 <meta property="og:site_name" content="Mila">
-<meta property="og:title" content="Mila Digital-Update | Newsletter für digitales Wissen">
-<meta property="og:description" content="Neue Beiträge, verständliche Tipps und praktische Ideen zu KI, SEO, Websites und digitalem Marketing direkt in dein Postfach.">
+<meta property="og:title" content="Mila Digital-Update – Neue Blogbeiträge direkt per E-Mail">
+<meta property="og:description" content="KI, SEO, Websites und digitales Marketing einfach erklärt. Kostenlos anmelden.">
 <meta property="og:url" content="https://mila-einfach.pages.dev/newsletter/">
 <meta property="og:image" content="https://mila-einfach.pages.dev/assets/mila-digitales-marketing.webp">
-<link href="/styles.css" rel="stylesheet">
+<link rel="stylesheet" href="/styles.css">
 <style>
-.newsletter-hero{min-height:520px;display:grid;grid-template-columns:1.05fr .95fr;gap:52px;align-items:center;padding-top:62px;padding-bottom:62px}
-.newsletter-hero h1{font-size:clamp(42px,5.5vw,68px);line-height:1.08;letter-spacing:-1.5px;margin:16px 0}
-.newsletter-hero h1 em{font:italic 500 1em 'Playfair Display',serif;color:var(--pink)}
-.newsletter-hero .lead{max-width:620px;font-size:18px;line-height:1.65}
-.newsletter-hero img{width:100%;height:390px;object-fit:cover;object-position:center;border-radius:18px;border:1px solid #d7a4ff55}
-.newsletter-cta{display:inline-flex;align-items:center;justify-content:center;margin-top:18px;padding:14px 22px;border:0;border-radius:9px;background:linear-gradient(120deg,#d6a6ff,#edadd5);color:#24162d;font-weight:700;font-size:14px}
-.newsletter-cta:hover{filter:brightness(1.06);transform:translateY(-1px)}
-.newsletter-benefits{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
-.newsletter-benefit{padding:24px;background:var(--panel);border:1px solid #ffffff18;border-radius:13px}
-.newsletter-benefit h3{margin:0 0 8px;font:22px 'Playfair Display',serif}
-.newsletter-benefit p{margin:0;font-size:14px}
-.newsletter-signup{max-width:760px;margin:0 auto;padding:38px;background:#f7f2fb;border:1px solid #eadcf5;border-radius:18px;color:#30283a;text-align:center}
-.newsletter-signup .eyebrow{color:#8055a5}
-.newsletter-signup h2{color:#8055a5;margin:10px 0 12px}
-.newsletter-signup>p{max-width:560px;margin:0 auto 24px;color:#5e5367}
-.newsletter-form{max-width:470px;margin:0 auto;text-align:left}
-.newsletter-form label{display:block;font-size:14px;font-weight:600;margin-bottom:7px;color:#33283b}
-.newsletter-form input[type=email]{box-sizing:border-box;width:100%;padding:14px;border:1px solid #d7c9e2;border-radius:9px;font:inherit;background:#fff;color:#30283a;margin-bottom:15px}
-.newsletter-consent{display:flex;gap:10px;align-items:flex-start;margin:0 0 18px;font-size:13px;line-height:1.55;color:#33283b}
-.newsletter-consent input{margin:3px 0 0;flex:0 0 17px;width:17px;height:17px;accent-color:#8055a5}
-.newsletter-consent a{color:#70449a;text-decoration:underline}
-.newsletter-submit{display:inline-block;border:0;border-radius:9px;padding:14px 24px;background:#8055a5;color:#fff;font:700 14px 'DM Sans',Arial,sans-serif;cursor:pointer}
-.newsletter-submit:hover{background:#68418d}
-.newsletter-note{margin:17px 0 0!important;font-size:12px!important;color:#766b7d!important}
-@media(max-width:760px){.newsletter-hero{grid-template-columns:1fr;gap:28px;padding-top:38px}.newsletter-hero img{height:290px}.newsletter-benefits{grid-template-columns:1fr}.newsletter-signup{padding:28px 20px}}
+:root{--nl-card:#211c30;--nl-border:#ffffff20}
+body{background:#100e19}
+.nl-header{border-bottom:1px solid var(--nl-border);background:#100e19}
+.nl-header-inner{max-width:1120px;margin:auto;padding:17px 24px;display:flex;align-items:center;justify-content:center}
+.nl-logo{font:italic 700 31px 'Playfair Display',Georgia,serif;letter-spacing:-1px}
+.nl-logo span{color:var(--pink)}
+.nl-hero{max-width:1120px;margin:auto;padding:58px 24px 70px;display:grid;grid-template-columns:1.08fr .92fr;gap:54px;align-items:center}
+.nl-kicker{display:inline-flex;align-items:center;gap:9px;color:var(--pink);font-size:11px;letter-spacing:2.2px;font-weight:700}
+.nl-kicker:before{content:"";width:25px;height:1px;background:var(--pink)}
+.nl-hero h1{font-size:clamp(42px,5.3vw,68px);line-height:1.04;letter-spacing:-1.8px;margin:17px 0 20px;max-width:650px}
+.nl-hero h1 em,.nl-section h2 em{font:italic 500 1em 'Playfair Display',Georgia,serif;color:var(--pink)}
+.nl-lead{font-size:18px;line-height:1.65;max-width:600px;margin:0 0 12px}
+.nl-sub{font-size:14px;line-height:1.6;color:#c7bdce;max-width:560px}
+.nl-hero-image{width:100%;height:390px;object-fit:cover;object-position:center;border-radius:18px;border:1px solid #d7a4ff55;box-shadow:0 22px 70px #0005}
+.nl-primary{display:inline-flex;align-items:center;justify-content:center;min-height:52px;margin-top:17px;padding:0 25px;border-radius:9px;background:linear-gradient(115deg,#d6a6ff,#edadd5);color:#24162d;font-weight:800;font-size:15px;box-shadow:0 8px 28px #d6a6ff30;transition:transform .18s,filter .18s}
+.nl-primary:hover{transform:translateY(-2px);filter:brightness(1.06)}
+.nl-reassure{display:flex;flex-wrap:wrap;gap:10px 18px;margin-top:17px;color:#c8bfd0;font-size:12px}
+.nl-reassure span:before{content:"✓";color:var(--pink);font-weight:800;margin-right:7px}
+.nl-section{padding:66px 24px}
+.nl-section-inner{max-width:1020px;margin:auto}
+.nl-section-head{text-align:center;max-width:720px;margin:0 auto 30px}
+.nl-section h2{font-size:clamp(31px,4vw,46px);line-height:1.12;margin:12px 0}
+.nl-section-head p{margin:0;color:#bcb4c6}
+.nl-benefits{display:grid;grid-template-columns:repeat(3,1fr);gap:15px}
+.nl-benefit{padding:23px;background:var(--nl-card);border:1px solid var(--nl-border);border-radius:13px}
+.nl-benefit .number{font-size:11px;letter-spacing:1.5px;color:var(--pink);font-weight:700}
+.nl-benefit h3{font:23px 'Playfair Display',Georgia,serif;margin:9px 0 7px}
+.nl-benefit p{font-size:14px;line-height:1.65;margin:0;color:#c5bdcd}
+.nl-trust{max-width:790px;margin:0 auto;padding:26px 28px;border:1px solid #d6a6ff45;border-radius:14px;background:linear-gradient(120deg,#211c30,#191523)}
+.nl-trust h3{margin:0 0 8px;font:23px 'Playfair Display',Georgia,serif}
+.nl-trust p{margin:0;color:#c7bdce;font-size:14px;line-height:1.7}
+.nl-form-section{background:#171321;border-block:1px solid var(--nl-border)}
+.nl-form-card{max-width:650px;margin:auto;padding:38px;background:#f7f2fb;border:1px solid #eadcf5;border-radius:18px;color:#30283a;box-shadow:0 20px 60px #0003}
+.nl-form-card .nl-kicker{color:#8055a5}
+.nl-form-card h2{font-size:clamp(30px,4vw,42px);color:#34283d;margin:12px 0}
+.nl-form-card>p{color:#5e5367;line-height:1.65;margin:0 0 22px}
+.nl-form{max-width:480px;margin:auto;text-align:left}
+.nl-form label.field-label{display:block;font-size:14px;font-weight:700;margin-bottom:8px;color:#33283b}
+.nl-form input[type=email]{box-sizing:border-box;width:100%;height:52px;padding:0 14px;border:1px solid #cfc0da;border-radius:8px;font:16px 'DM Sans',Arial,sans-serif;background:#fff;color:#30283a;margin-bottom:16px}
+.nl-form input[type=email]:focus{outline:3px solid #bd8bff55;border-color:#8055a5}
+.nl-consent{display:flex;gap:10px;align-items:flex-start;margin:0 0 17px;font-size:12px;line-height:1.55;color:#4c4154}
+.nl-consent input{margin:3px 0 0;flex:0 0 17px;width:17px;height:17px;accent-color:#8055a5}
+.nl-consent a{color:#70449a;text-decoration:underline;text-underline-offset:2px}
+.nl-submit{width:100%;min-height:52px;border:0;border-radius:8px;padding:13px 18px;background:#8055a5;color:white;font:800 15px 'DM Sans',Arial,sans-serif;cursor:pointer;box-shadow:0 7px 18px #8055a533}
+.nl-submit:hover{background:#68418d}
+.nl-privacy{margin:13px 0 0!important;text-align:center;font-size:12px;color:#766b7d!important}
+.nl-footer{padding:24px;text-align:center;border-top:1px solid var(--nl-border)}
+.nl-footer-links{display:flex;justify-content:center;gap:22px;flex-wrap:wrap;font-size:12px;color:#bcb4c6}
+.nl-footer-links a:hover{color:var(--pink)}
+.nl-footer small{display:block;color:#81788a;font-size:10px;margin-top:12px}
+@media(max-width:760px){.nl-hero{grid-template-columns:1fr;gap:27px;padding-top:39px;padding-bottom:48px}.nl-hero-image{height:270px;grid-row:1}.nl-hero h1{font-size:clamp(40px,11vw,54px)}.nl-lead{font-size:17px}.nl-benefits{grid-template-columns:1fr}.nl-section{padding:49px 20px}.nl-form-card{padding:28px 20px}.nl-header-inner{padding:14px 20px}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.nl-primary{transition:none}}
 </style>
 </head>
 <body>
-<header><div class="bar">
-<a class="logo" href="/" aria-label="Zur Mila-Startseite">mila<span>♡</span></a>
-<button aria-label="Menü öffnen" class="mobile-toggle" onclick="document.querySelector('nav').classList.toggle('open')">☰</button>
-<nav><a href="/">Startseite</a><a href="/ueber-mila/">Über Mila</a><a href="/gaming/">Gaming</a><a class="active" href="/blog/">Blog</a><a href="/dark-romance/">Dark Romance</a><a href="/fan-fiction/">Fan-Fiction</a><a href="/galerie/">Galerie</a><a href="/kontakt/">Kontakt</a><a class="admin-nav-link" href="/login/">Admin Login</a></nav>
-</div></header>
+<header class="nl-header"><div class="nl-header-inner"><div class="nl-logo" aria-label="Mila">mila<span>♡</span></div></div></header>
 <main>
-<section class="wrap newsletter-hero">
+<section class="nl-hero">
 <div>
-<span class="eyebrow">MILA DIGITAL · DER NEWSLETTER</span>
-<h1>Digitale Ideen, die <em>weiterhelfen.</em></h1>
-<p class="lead">Du möchtest bei KI, SEO und digitalem Marketing den Überblick behalten? Mit dem Mila Digital-Update bekommst du neue Beiträge und verständliche Tipps aus meinem digitalen Blog direkt in dein Postfach.</p>
-<a class="newsletter-cta" href="#anmelden">Jetzt kostenlos anmelden <span aria-hidden="true">　♡</span></a>
-<p class="disclosure">Kostenlos. Kein Fachchinesisch. Jederzeit abbestellbar.</p>
+<span class="nl-kicker">MILA DIGITAL-UPDATE</span>
+<h1>Digitales Wissen. <em>Einfach erklärt.</em></h1>
+<p class="nl-lead">Du möchtest KI, SEO und digitales Marketing besser verstehen, ohne dich durch komplizierte Fachbegriffe zu kämpfen?</p>
+<p class="nl-sub">Mit dem kostenlosen Mila Digital-Update bekommst du neue Beiträge aus dem digitalen Blog direkt in dein Postfach – verständlich, praktisch und zum Ausprobieren.</p>
+<a class="nl-primary" href="#anmelden">Jetzt kostenlos anmelden <span aria-hidden="true">&nbsp;♡</span></a>
+<div class="nl-reassure"><span>Kostenlos</span><span>Kein Spam</span><span>Jederzeit abbestellbar</span></div>
 </div>
-<img src="/assets/mila-digitales-marketing.webp?v=2" alt="Mila an ihrem Arbeitsplatz mit digitalen Marketing- und Analyseansichten" width="600" height="338" fetchpriority="high">
+<img class="nl-hero-image" src="/assets/mila-digitales-marketing.webp" alt="Mila in ihrem digitalen Arbeitsumfeld" width="600" height="390" fetchpriority="high">
 </section>
-<section class="dark">
-<div class="wrap section">
-<div class="section-head"><span class="eyebrow">WAS DICH ERWARTET</span><h2>Wissen für deinen <em>digitalen Alltag.</em></h2><p>Praktische Inhalte, verständlich erklärt und ohne unnötig komplizierte Fachbegriffe.</p></div>
-<div class="newsletter-benefits">
-<article class="newsletter-benefit"><h3>KI &amp; digitale Tools</h3><p>Neue Werkzeuge, einfache Erklärungen und Ideen, wie du KI sinnvoll einsetzen kannst.</p></article>
-<article class="newsletter-benefit"><h3>SEO &amp; Websites</h3><p>Verständliche Grundlagen und konkrete Hinweise, damit Websites besser gefunden und genutzt werden.</p></article>
-<article class="newsletter-benefit"><h3>Digitales Marketing</h3><p>Neue Blogbeiträge und praktische Impulse rund um Online-Marketing und digitale Projekte.</p></article>
+<section class="nl-section" aria-labelledby="benefits-title">
+<div class="nl-section-inner">
+<div class="nl-section-head"><span class="nl-kicker">DAS BRINGT DIR DER NEWSLETTER</span><h2 id="benefits-title">Mehr verstehen. <em>Selbst ausprobieren.</em></h2><p>Du bekommst Inhalte, die dir helfen, digitale Themen Schritt für Schritt in deinen Alltag oder dein Projekt zu übertragen.</p></div>
+<div class="nl-benefits">
+<article class="nl-benefit"><span class="number">01 / KI &amp; TOOLS</span><h3>KI verständlich nutzen</h3><p>Lerne hilfreiche KI-Tools kennen und entdecke, wofür du sie privat oder beruflich einsetzen kannst.</p></article>
+<article class="nl-benefit"><span class="number">02 / SEO &amp; WEBSITES</span><h3>Online besser sichtbar werden</h3><p>Verstehe die Grundlagen von Websites und SEO und worauf es bei einer guten Online-Präsenz ankommt.</p></article>
+<article class="nl-benefit"><span class="number">03 / DIGITALES MARKETING</span><h3>Ideen in die Praxis bringen</h3><p>Erhalte verständliche Erklärungen und praktische Impulse rund um Content und digitales Marketing.</p></article>
 </div>
 </div>
 </section>
-<section class="wrap section" id="anmelden">
-<div class="newsletter-signup">
-<span class="eyebrow">POST VON MILA</span>
-<h2>Hol dir das Mila Digital-Update 💜</h2>
-<p>Trag deine E-Mail-Adresse ein. Du erhältst eine Bestätigungsmail. Erst wenn du den Link darin anklickst, ist deine Anmeldung abgeschlossen.</p>
-<form class="newsletter-form" id="mila-newsletter-form" method="post" action="https://script.google.com/macros/s/AKfycbyrNaA7YIQdaPNIU5jlIAqhzkMnR8HDMhmCs43EMEG8MyqRAGHYQjeDON_fVfiTMkBHyw/exec" target="_top">
-<label for="mila-newsletter-email">Deine E-Mail-Adresse</label>
+<section class="nl-section" style="padding-top:0">
+<div class="nl-trust">
+<h3>Was du erwarten kannst</h3>
+<p>Der Newsletter begleitet die Beiträge aus Milas digitalem Blog. Du bekommst keine leeren Erfolgsversprechen, sondern verständliche Einblicke in die Themen und Werkzeuge, mit denen wir uns dort beschäftigen. Mila ist eine virtuelle Persönlichkeit; die Inhalte werden redaktionell für den Blog erstellt.</p>
+</div>
+</section>
+<section class="nl-section nl-form-section" id="anmelden" aria-labelledby="signup-title">
+<div class="nl-form-card">
+<span class="nl-kicker">DEIN NÄCHSTER SCHRITT</span>
+<h2 id="signup-title">Hol dir dein Mila Digital-Update.</h2>
+<p>Trag deine E-Mail-Adresse ein. Wir senden dir einen Bestätigungslink. Erst nach deiner Bestätigung ist die Anmeldung abgeschlossen.</p>
+<form class="nl-form" id="mila-newsletter-form" method="post" action="https://script.google.com/macros/s/AKfycbyrNaA7YIQdaPNIU5jlIAqhzkMnR8HDMhmCs43EMEG8MyqRAGHYQjeDON_fVfiTMkBHyw/exec" target="_top">
+<label class="field-label" for="mila-newsletter-email">Deine E-Mail-Adresse</label>
 <input id="mila-newsletter-email" name="email" type="email" autocomplete="email" required placeholder="name@beispiel.de">
 <input type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-5000px;width:1px;height:1px;">
-<label class="newsletter-consent"><input type="checkbox" name="consent" value="true" required><span>Ich möchte den Mila Digital-Newsletter per E-Mail erhalten. Ich kann meine Einwilligung jederzeit widerrufen. Weitere Informationen stehen in der <a href="/datenschutz/" target="_blank" rel="noopener">Datenschutzerklärung</a>.</span></label>
-<button class="newsletter-submit" type="submit">Kostenlos anmelden ♡</button>
+<label class="nl-consent"><input type="checkbox" name="consent" value="true" required><span>Ich möchte das Mila Digital-Update per E-Mail erhalten. Ich kann meine Einwilligung jederzeit widerrufen. Weitere Informationen finde ich in der <a href="/datenschutz/" target="_blank" rel="noopener">Datenschutzerklärung</a>.</span></label>
+<button class="nl-submit" type="submit">Jetzt kostenlos anmelden ♡</button>
 </form>
-<p class="newsletter-note">Du erhältst nur dann den Newsletter, wenn du deine Anmeldung über den Bestätigungslink in der E-Mail bestätigst.</p>
+<p class="nl-privacy">Kostenlos. Kein Spam. Abmeldung jederzeit möglich.</p>
 </div>
 </section>
-<section class="wrap" style="padding-bottom:54px;text-align:center">
-<p>Du möchtest erst einmal stöbern? <a href="/digitales-marketing/" style="color:var(--pink);text-decoration:underline;text-underline-offset:4px">Entdecke den digitalen Blog ↗</a></p>
-</section>
 </main>
-<footer><a class="logo" href="/" aria-label="Zur Mila-Startseite">mila<span>♡</span></a><div class="footerlinks"><a href="/impressum/">Impressum</a><a href="/datenschutz/">Datenschutz</a><a href="/kontakt/">Kontakt</a></div><p>Schön, dass du da bist. ♡</p><small>© 2026 Mila · Alle Rechte vorbehalten.</small><small class="disclosure">Mila ist eine virtuelle Persönlichkeit. Inhalte und Bilder werden mit KI gestaltet.</small></footer>
+<footer class="nl-footer"><div class="nl-footer-links"><a href="/impressum/">Impressum</a><a href="/datenschutz/">Datenschutz</a></div><small>© 2026 Mila · Mila ist eine virtuelle Persönlichkeit.</small></footer>
 <script defer src="/cookie-consent.js"></script>
-</body></html>
+</body>
+</html>
