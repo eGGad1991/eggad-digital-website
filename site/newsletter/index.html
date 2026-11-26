@@ -148,6 +148,32 @@ body{background:radial-gradient(ellipse at 12% 28%,#7d45632b 0,transparent 28%),
 @media(max-width:760px){.nl-hero:after{right:5%;top:15px;font-size:95px}.nl-visual-wrap:before{right:12px}.nl-form-card:after{right:12px;top:10px;font-size:30px}}
 @media(prefers-reduced-motion:reduce){.nl-benefit{transition:none}}
 
+
+/* Soft botanical background atmosphere across the full landing page */
+body{background-color:#100e19;background-image:
+radial-gradient(ellipse 48rem 34rem at 4% 10%,rgba(190,111,157,.16),transparent 72%),
+radial-gradient(ellipse 42rem 38rem at 96% 29%,rgba(147,105,190,.15),transparent 72%),
+radial-gradient(ellipse 55rem 32rem at 48% 63%,rgba(111,65,111,.13),transparent 74%),
+radial-gradient(ellipse 40rem 35rem at 8% 92%,rgba(190,125,163,.12),transparent 72%),
+radial-gradient(ellipse 44rem 32rem at 100% 98%,rgba(144,103,185,.13),transparent 72%)}
+.nl-hero,.nl-benefit-section,.nl-form-section{position:relative;isolation:isolate}
+.nl-hero:before{content:"";position:absolute;z-index:-1;left:-65px;top:80px;width:240px;height:360px;opacity:.15;pointer-events:none;background:
+radial-gradient(ellipse at 50% 10%,#eab8d6 0 4%,transparent 5%),
+radial-gradient(ellipse at 25% 24%,#eab8d6 0 8%,transparent 9%),
+radial-gradient(ellipse at 75% 38%,#d5b5ed 0 7%,transparent 8%),
+radial-gradient(ellipse at 30% 55%,#d5b5ed 0 8%,transparent 9%);
+filter:blur(.3px);transform:rotate(-18deg)}
+.nl-benefit-section:before,.nl-benefit-section:after{content:"❀";position:absolute;z-index:-1;pointer-events:none;color:#eab8d6;opacity:.07;font-size:210px;line-height:1}
+.nl-benefit-section:before{left:-62px;top:15px;transform:rotate(-22deg)}
+.nl-benefit-section:after{right:-55px;bottom:-45px;color:#d7b8ef;transform:rotate(18deg)}
+.nl-form-section:before{content:"✿";position:absolute;z-index:0;pointer-events:none;left:calc(50% - 490px);top:35px;font-size:160px;color:#edbad7;opacity:.08;transform:rotate(-17deg)}
+.nl-form-section:after{content:"❀";position:absolute;z-index:0;pointer-events:none;right:calc(50% - 490px);bottom:15px;font-size:190px;color:#d6b6ee;opacity:.08;transform:rotate(20deg)}
+.nl-form-card{z-index:1}
+.nl-footer{position:relative;overflow:hidden}
+.nl-footer:before{content:"✿  ❀  ✾";display:block;margin:0 auto 14px;letter-spacing:24px;font-size:17px;color:#e9b5d4;opacity:.45}
+@media(max-width:760px){.nl-hero:before{left:-115px;top:25px;opacity:.1}.nl-benefit-section:before{left:-80px;font-size:130px}.nl-benefit-section:after{right:-70px;font-size:135px}.nl-form-section:before{left:-28px;top:10px;font-size:90px}.nl-form-section:after{right:-30px;bottom:10px;font-size:100px}}
+@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto}}
+
 </style>
 </head>
 <body>
