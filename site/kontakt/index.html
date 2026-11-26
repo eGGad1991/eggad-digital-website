@@ -86,7 +86,8 @@
     {name:'email',value:email},
     {name:'message',value:'Betreff: '+subject+'\n\n'+message}
    ],
-   context:{pageUri:window.location.href,pageName:'Kontakt zu Mila'}
+   context:{pageUri:window.location.href,pageName:'Kontakt zu Mila'},
+   legalConsentOptions:{consent:{consentToProcess:true,text:'Ich habe die Datenschutzhinweise gelesen und stimme zu, dass meine Angaben zur Bearbeitung meiner Anfrage verarbeitet und an HubSpot übermittelt werden.'}}
   };
   try{
    const response=await fetch(endpoint,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});
