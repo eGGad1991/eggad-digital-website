@@ -23,7 +23,7 @@ function plainText(value = "") {
 }
 
 function metaDescription(post) {
-  const text = plainText(post.excerpt || post.body || post.title);
+  const text = plainText(post.meta_description || post.excerpt || post.body || post.title);
   if (text.length <= 155) return text;
   return text.slice(0, 152).replace(/\s+\S*$/, "") + "…";
 }
@@ -300,7 +300,7 @@ function relatedPostsHtml(posts) {
 
 function articleHtml(post, images, relatedPosts, origin) {
   const canonical = `${origin}/blog/${encodeURIComponent(post.slug)}/`;
-  const title = `${post.title} | Blog | Mila`;
+  const title = plainText(post.seo_title || `${post.title} | Mila`);
   const description = metaDescription(post);
   const fallbackImage = `${origin}/assets/ki.webp`;
   const image = post.cover_image || fallbackImage;
@@ -413,7 +413,7 @@ export async function onRequest(context) {
   }
   try {
     const rows = await fetchRows("blog_posts", {
-      select: "id,title,slug,excerpt,body,category,cover_image,status,published_at,created_at,updated_at,tags",
+      select: "id,title,slug,excerpt,body,category,cover_image,status,published_at,created_at,updated_at,tags,seo_title,meta_description",
       slug: `eq.${slug}`, status: "eq.published", limit: "1"
     });
     const post = rows?.[0];
