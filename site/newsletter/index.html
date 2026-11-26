@@ -226,21 +226,16 @@ filter:blur(.3px);transform:rotate(-18deg)}
 <script defer src="/cookie-consent.js"></script>
 
 <style>
-/* Bunte Blüten, die sichtbar und langsam zum nächsten CTA schweben */
-.nl-cursor-flower{
- position:fixed;left:0;top:0;z-index:999;pointer-events:none;
- font-family:"Apple Color Emoji","Segoe UI Emoji","Noto Color Emoji",sans-serif;
- font-size:21px;line-height:1;will-change:transform,opacity;
- filter:drop-shadow(0 2px 7px #d99bff99);
- animation:nl-flower-flight var(--flower-duration,3.1s) cubic-bezier(.22,.7,.18,1) forwards
-}
-@keyframes nl-flower-flight{
- 0%{opacity:0;transform:translate3d(0,0,0) rotate(-18deg) scale(.55)}
- 12%{opacity:1}
- 55%{opacity:1;transform:translate3d(var(--mid-x),var(--mid-y),0) rotate(95deg) scale(1.08)}
- 88%{opacity:.95}
- 100%{opacity:0;transform:translate3d(var(--end-x),var(--end-y),0) rotate(220deg) scale(.35)}
-}
+/* Handgebaute, mehrfarbige Blüten mit langsamer Flugbahn zum Newsletter-Absende-Button */
+.nl-cursor-flower{position:fixed;left:0;top:0;width:30px;height:30px;z-index:9999;pointer-events:none;will-change:transform,opacity;filter:drop-shadow(0 2px 5px #d99bff88)}
+.nl-cursor-flower .petal{position:absolute;left:10px;top:2px;width:10px;height:14px;border-radius:60% 60% 45% 45%;transform-origin:5px 13px}
+.nl-cursor-flower .petal:nth-child(1){background:#ff5ca8;transform:rotate(0deg)}
+.nl-cursor-flower .petal:nth-child(2){background:#ffb347;transform:rotate(60deg)}
+.nl-cursor-flower .petal:nth-child(3){background:#ffe45e;transform:rotate(120deg)}
+.nl-cursor-flower .petal:nth-child(4){background:#62d6a7;transform:rotate(180deg)}
+.nl-cursor-flower .petal:nth-child(5){background:#65b9ff;transform:rotate(240deg)}
+.nl-cursor-flower .petal:nth-child(6){background:#c58aff;transform:rotate(300deg)}
+.nl-cursor-flower .flower-center{position:absolute;left:11px;top:11px;width:8px;height:8px;border-radius:50%;background:#fff2a6;border:1px solid #fff8}
 @media(hover:none),(pointer:coarse){.nl-cursor-flower{display:none}}
 @media(prefers-reduced-motion:reduce){.nl-cursor-flower{display:none}}
 </style>
@@ -249,37 +244,38 @@ filter:blur(.3px);transform:rotate(-18deg)}
  const finePointer=window.matchMedia('(hover:hover) and (pointer:fine)').matches;
  const reduceMotion=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
  if(!finePointer||reduceMotion)return;
- const flowers=['🌸','🌼','🌺','💮','🪷'];
- const targets=()=>Array.from(document.querySelectorAll('.nl-primary,.nl-submit')).filter(el=>el.getClientRects().length);
  let last=0,active=0;
+ const signupButton=document.querySelector('.nl-submit');
+ if(!signupButton)return;
  document.addEventListener('pointermove',event=>{
   const now=performance.now();
-  if(now-last<175||active>=14)return;
+  if(now-last<420||active>=12)return;
   last=now;
-  const buttons=targets();
-  if(!buttons.length)return;
-  const target=buttons.reduce((best,el)=>{
-   const r=el.getBoundingClientRect(),x=r.left+r.width/2,y=r.top+r.height/2;
-   const d=(x-event.clientX)**2+(y-event.clientY)**2;
-   return !best||d<best.d?{x,y,d}:best;
-  },null);
+  const rect=signupButton.getBoundingClientRect();
+  const sx=event.clientX,sy=event.clientY;
+  const tx=rect.left+rect.width/2,ty=rect.top+rect.height/2;
+  const dx=tx-sx,dy=ty-sy;
   const flower=document.createElement('span');
   flower.className='nl-cursor-flower';
-  flower.textContent=flowers[Math.floor(Math.random()*flowers.length)];
-  const sx=event.clientX+(Math.random()*20-10),sy=event.clientY+(Math.random()*20-10);
-  const dx=target.x-sx,dy=target.y-sy;
+  flower.setAttribute('aria-hidden','true');
+  flower.innerHTML='<i class="petal"></i><i class="petal"></i><i class="petal"></i><i class="petal"></i><i class="petal"></i><i class="petal"></i><i class="flower-center"></i>';
   flower.style.left=sx+'px';
   flower.style.top=sy+'px';
-  flower.style.setProperty('--end-x',dx+'px');
-  flower.style.setProperty('--end-y',dy+'px');
-  flower.style.setProperty('--mid-x',(dx*.48+(Math.random()*70-35))+'px');
-  flower.style.setProperty('--mid-y',(dy*.48-48+(Math.random()*36-18))+'px');
-  flower.style.setProperty('--flower-duration',(2.8+Math.random()*.9)+'s');
   document.body.appendChild(flower);
   active++;
-  flower.addEventListener('animationend',()=>{
-   flower.remove();active=Math.max(0,active-1);
-  },{once:true});
+  const curveX=dx*.5+(Math.random()*130-65);
+  const curveY=dy*.5-100+(Math.random()*70-35);
+  const duration=8500+Math.random()*2500;
+  const motion=flower.animate([
+   {transform:'translate3d(0,0,0) rotate(0deg) scale(.65)',opacity:0},
+   {transform:'translate3d('+curveX+'px,'+curveY+'px,0) rotate(150deg) scale(1.12)',opacity:1,offset:.55},
+   {transform:'translate3d('+dx+'px,'+dy+'px,0) rotate(300deg) scale(.8)',opacity:1,offset:.91},
+   {transform:'translate3d('+dx+'px,'+dy+'px,0) rotate(330deg) scale(.25)',opacity:0}
+  ],{duration,easing:'cubic-bezier(.35,.02,.2,1)',fill:'forwards'});
+  motion.onfinish=()=>{
+   flower.remove();
+   active=Math.max(0,active-1);
+  };
  },{passive:true});
 })();
 </script>
