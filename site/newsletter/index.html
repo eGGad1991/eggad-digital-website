@@ -115,6 +115,39 @@ body{overflow-x:hidden;background:radial-gradient(ellipse at 78% 12%,#39244b55 0
 @media(max-width:760px){.nl-hero{min-height:0;padding-top:43px}.nl-hero-image{height:300px}.nl-visual-wrap{padding:7px;border-radius:20px}.nl-image-caption{left:17px;right:17px;bottom:17px}.nl-form-section{padding-top:48px;padding-bottom:48px}.nl-form-card{padding:32px 21px}}
 @media(hover:none){.nl-benefit:hover{transform:none}}
 
+
+/* Botanical accents: feminine floral details, still clean and conversion-focused */
+:root{--nl-rose:#efb2d2;--nl-lilac:#c9a4ef;--nl-blush:#f4c7d9}
+body{background:radial-gradient(ellipse at 12% 28%,#7d45632b 0,transparent 28%),radial-gradient(ellipse at 88% 70%,#78529a24 0,transparent 32%),#100e19}
+.nl-hero{overflow:visible}
+.nl-hero:after{content:"✿";position:absolute;z-index:-1;right:43%;top:35px;font-size:clamp(90px,13vw,170px);line-height:1;color:#efb2d2;opacity:.075;transform:rotate(-18deg);pointer-events:none}
+.nl-kicker{border-color:#efb2d24d;background:linear-gradient(100deg,#efb2d210,#c9a4ef12)}
+.nl-kicker:before{background:var(--nl-rose);box-shadow:0 0 12px #efb2d2}
+.nl-hero h1 em,.nl-section h2 em{background:linear-gradient(110deg,#f5c4d9,#d2adf2 60%,#f0b4d0);background-clip:text;-webkit-background-clip:text;color:transparent}
+.nl-visual-wrap{border-color:#efb2d277;background:linear-gradient(145deg,#f4c7d936,#ffffff05 42%,#c9a4ef2b);box-shadow:0 30px 90px #0008,0 0 55px #d58bb52b}
+.nl-visual-wrap:before,.nl-visual-wrap:after{position:absolute;z-index:2;pointer-events:none;color:#f5c4d9;opacity:.88;text-shadow:0 3px 18px #d98cb988}
+.nl-visual-wrap:before{content:"✿";font-size:44px;top:-22px;right:24px;transform:rotate(15deg)}
+.nl-visual-wrap:after{content:"❀";font-size:35px;bottom:62px;left:-19px;transform:rotate(-18deg);color:#d7b4f1}
+.nl-image-caption{border-color:#f5c4d955;background:#17101dcc}
+.nl-caption-heart{color:#f3b8d2}
+.nl-benefit{background:linear-gradient(145deg,#2a2034,#1b1726);border-color:#efb2d229}
+.nl-benefit .number{color:#f0b8d2;background:#efb2d211}
+.nl-benefit:nth-child(1):before,.nl-benefit:nth-child(2):before,.nl-benefit:nth-child(3):before{position:absolute;right:17px;top:12px;font-size:27px;opacity:.48;color:#e9b9db}
+.nl-benefit:nth-child(1):before{content:"✿"}
+.nl-benefit:nth-child(2):before{content:"❀";color:#d6b7f0}
+.nl-benefit:nth-child(3):before{content:"✾"}
+.nl-trust{border-color:#e8b5d94d;background:linear-gradient(120deg,#2b2035,#191523)}
+.nl-trust:before{content:"❀";color:#efb2d21b}
+.nl-primary{background:linear-gradient(110deg,#f0c0d8,#d8b5f1 58%,#efbfd4);box-shadow:0 9px 30px #e7a9cf38}
+.nl-primary:hover{box-shadow:0 12px 36px #e7a9cf55}
+.nl-form-section{background:radial-gradient(ellipse at 50% 45%,#6c3d6944,transparent 64%),#171321}
+.nl-form-card:after{content:"✿";position:absolute;right:20px;top:15px;font-size:42px;color:#d8b5f144;pointer-events:none}
+.nl-submit{background:linear-gradient(110deg,#a66a9c,#8560ae)}
+.nl-submit:hover{background:linear-gradient(110deg,#935888,#76509e)}
+.nl-footer{background:radial-gradient(ellipse at 50% 0,#6b3e5824,transparent 65%),#0d0b14}
+@media(max-width:760px){.nl-hero:after{right:5%;top:15px;font-size:95px}.nl-visual-wrap:before{right:12px}.nl-form-card:after{right:12px;top:10px;font-size:30px}}
+@media(prefers-reduced-motion:reduce){.nl-benefit{transition:none}}
+
 </style>
 </head>
 <body>
