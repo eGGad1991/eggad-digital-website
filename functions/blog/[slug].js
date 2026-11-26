@@ -3,6 +3,14 @@ const SUPABASE_PUBLISHABLE_KEY = "sb_publishable__BZ2_Uk1XlUGd1RLPOs7Cw_AyIuZj98
 const BLOG_BUCKET = "mila-blog-media";
 const SITE_NAME = "Mila";
 
+const SECURITY_HEADERS = {
+  "X-Content-Type-Options": "nosniff",
+  "Referrer-Policy": "strict-origin-when-cross-origin",
+  "X-Frame-Options": "DENY",
+  "Strict-Transport-Security": "max-age=31536000",
+  "Content-Security-Policy": "default-src 'self'; base-uri 'self'; object-src 'none'; frame-ancestors 'none'; form-action 'self' https://script.google.com https://script.googleusercontent.com https://*.hsforms.com https://*.hubspot.com; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://*.hsforms.net https://js-eu1.hsforms.net https://js.hsforms.net https://www.googletagmanager.com https://www.google.com https://www.gstatic.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https://xspibbzwfwhmgvfowiye.supabase.co https://*.hsforms.com https://*.hsforms.net https://*.hubspot.com https://www.google-analytics.com https://www.google.com https://www.gstatic.com; font-src 'self' data:; connect-src 'self' https://xspibbzwfwhmgvfowiye.supabase.co https://*.hsforms.net https://www.google-analytics.com https://region1.google-analytics.com https://analytics.google.com https://*.hsforms.com https://*.hubspot.com https://*.hubapi.com; frame-src https://*.hsforms.com https://*.hsforms.net https://*.hubspot.com https://www.google.com https://www.gstatic.com https://recaptcha.net; manifest-src 'self'; upgrade-insecure-requests"
+};
+
 const esc = (value = "") => String(value).replace(/[&<>"']/g, (c) => ({
   "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;"
 }[c]));
@@ -411,7 +419,7 @@ export async function onRequest(context) {
     const post = rows?.[0];
     if (!post) {
       return new Response(`<!doctype html><html lang="de"><head><meta charset="utf-8"><meta name="robots" content="noindex,follow"><title>Beitrag nicht gefunden | Mila</title><link rel="stylesheet" href="/styles.css"></head><body><main class="wrap section"><h1>Dieser Beitrag ist gerade nicht verfügbar.</h1><p>Vielleicht wurde er verschoben oder noch nicht veröffentlicht.</p><a class="btn" href="/blog/">Zur Blogübersicht</a></main></body></html>`, {
-        status: 404, headers: { "Content-Type": "text/html; charset=utf-8", "Cache-Control": "no-store", "X-Robots-Tag": "noindex,follow" }
+        status: 404, headers: { ...SECURITY_HEADERS, "Content-Type": "text/html; charset=utf-8", "Cache-Control": "no-store", "X-Robots-Tag": "noindex,follow" }
       });
     }
     let images = [];
@@ -435,17 +443,16 @@ export async function onRequest(context) {
     const body = articleHtml(post, images, relatedPosts, url.origin);
     return new Response(body, {
       headers: {
+        ...SECURITY_HEADERS,
         "Content-Type": "text/html; charset=utf-8",
-        "Cache-Control": "public, max-age=0, s-maxage=300, stale-while-revalidate=1800",
-        "X-Content-Type-Options": "nosniff",
-        "Referrer-Policy": "strict-origin-when-cross-origin"
+        "Cache-Control": "public, max-age=0, s-maxage=300, stale-while-revalidate=1800"
       }
     });
   } catch (error) {
     console.error("Blogartikel konnte nicht gerendert werden", error);
     return new Response("Der Blogbeitrag ist vorübergehend nicht verfügbar.", {
       status: 503,
-      headers: { "Content-Type": "text/plain; charset=utf-8", "Cache-Control": "no-store", "Retry-After": "60", "X-Robots-Tag": "noindex,follow" }
+      headers: { ...SECURITY_HEADERS, "Content-Type": "text/plain; charset=utf-8", "Cache-Control": "no-store", "Retry-After": "60", "X-Robots-Tag": "noindex,follow" }
     });
   }
 }
