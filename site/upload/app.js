@@ -304,6 +304,22 @@
     "home-galerie": {
       path: "site-assets/home-galerie.webp",
       alt: "Mila in einem gemütlichen Café."
+    },
+    "blog-hub-hero": {
+      path: "site-assets/blog-hub-hero.webp",
+      alt: "Mila plant Blogbeiträge an ihrem Laptop im Homeoffice."
+    },
+    "blog-hub-marketing": {
+      path: "site-assets/blog-hub-marketing.webp",
+      alt: "Mila an ihrem Arbeitsplatz mit digitalen Marketing- und Analyseansichten."
+    },
+    "blog-hub-alltag": {
+      path: "site-assets/blog-hub-alltag.webp",
+      alt: "Mila entspannt mit einer Tasse auf dem Sofa."
+    },
+    "blog-hub-dark-romance": {
+      path: "site-assets/blog-hub-dark-romance.webp",
+      alt: "Mila schreibt in einem dunklen, kerzenbeleuchteten Arbeitszimmer an einer Dark-Romance-Geschichte."
     }
   };
 
