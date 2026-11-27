@@ -48,6 +48,19 @@
       .select("title,alt_text,public_url,sort_order")
       .eq("day_number",2).order("sort_order",{ascending:true});
     if(imageError) console.warn("Tag-2-Bilder konnten nicht geladen werden",imageError);
+    const {data:audioRow,error:audioError}=await db.from("dark_romance_audio")
+      .select("title,public_url,duration_seconds").eq("day_number",2).maybeSingle();
+    if(audioError) console.warn("Dark-Romance-Audio konnte nicht geladen werden",audioError);
+    if(audioRow?.public_url){
+      const audioSection=document.getElementById("dark-romance-audio");
+      const audioPlayer=document.getElementById("dark-romance-audio-player");
+      if(audioSection&&audioPlayer){
+        audioPlayer.src=audioRow.public_url;
+        document.getElementById("dark-romance-audio-title").textContent=audioRow.title||"Tag 2 anhören";
+        document.getElementById("dark-romance-audio-note").textContent="Originalaufnahme"+(audioRow.duration_seconds?" · "+Math.round(audioRow.duration_seconds/60)+" Minuten":"");
+        audioSection.hidden=false;
+      }
+    }
     const blocks=renderMarkdown(day.content);
     const list=images||[];
     addImage(blocks,list[0],/Änni stand ein paar Schritte entfernt|Vor dem Hotel blieb sie stehen/i);

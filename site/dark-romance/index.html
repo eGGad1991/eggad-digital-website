@@ -182,6 +182,16 @@
     const cfg = window.MILA_SUPABASE_CONFIG || {};
     if (!window.supabase || !cfg.url || !cfg.anonKey) return;
     const client = window.supabase.createClient(cfg.url, cfg.anonKey);
+    const { data: audioRow } = await client.from("dark_romance_audio").select("title,public_url,duration_seconds").eq("day_number", 1).maybeSingle();
+    const tagOneAudio = document.getElementById("tag1-audio");
+    const tagOneAudioTitle = document.querySelector(".story-audio-title");
+    const tagOneAudioNote = document.getElementById("tag1-audio-status");
+    if (audioRow?.public_url && tagOneAudio) {
+      tagOneAudio.src = audioRow.public_url;
+      tagOneAudio.load();
+      if (tagOneAudioTitle) tagOneAudioTitle.textContent = audioRow.title || "Tag 1 anhören";
+      if (tagOneAudioNote) tagOneAudioNote.textContent = "Originalaufnahme · " + (audioRow.duration_seconds ? Math.round(audioRow.duration_seconds / 60) + " Minuten" : "Audioaufnahme");
+    }
     const { data, error } = await client.from("dark_romance_images")
       .select("scene_key,title,public_url,alt_text,sort_order")
       .eq("day_number", 1)
