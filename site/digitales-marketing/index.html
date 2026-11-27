@@ -19,7 +19,7 @@
 <main>
 <section class="wrap section feature blog-intro blog-pillar-hero">
 <div><span class="eyebrow">MILA ERKLÄRT · DIGITALES WISSEN</span><h1>Digitales Marketing, <em>einfach erklärt.</em></h1>
-<p>Hier sammle ich verständliche Beiträge rund um Websites, Suchmaschinen, digitale Werkzeuge und Online-Marketing. Ich erkläre, was ich lerne, und zeige die Themen Schritt für Schritt.</p>
+<p>Hier findest du meine vorhandenen Beiträge zu SEO, digitalem Marketing und Datenschutz. Wähle einen Themenbereich aus oder lass dir alle Beiträge anzeigen.</p>
 <a class="btn" href="/newsletter/">Kostenloses Digital-Update abonnieren ♡</a>
 <a class="blog-intro-link" href="#digitale-beitraege">Zu den Beiträgen <span aria-hidden="true">↓</span></a></div>
 <img src="/assets/mila-digitales-marketing.webp?v=2" alt="Mila sitzt an ihrem Arbeitsplatz vor Monitoren mit digitalen Marketing- und Analyseansichten." width="600" height="338" fetchpriority="high" decoding="async">
@@ -38,7 +38,19 @@
 </div>
 </section>
 <section class="wrap section blog-feed-section" id="digitale-beitraege">
-<div class="blog-feed-heading"><div><span class="eyebrow">ALLE VERÖFFENTLICHUNGEN</span><h2>Beiträge zu digitalem Marketing</h2><p>Neue Artikel erscheinen hier automatisch, sobald sie im Blog veröffentlicht werden.</p></div><span class="blog-count" id="digital-post-count" aria-live="polite"></span></div>
+<div class="blog-feed-heading"><div><span class="eyebrow">BESTEHENDE BEITRÄGE</span><h2>Nach Themen sortiert</h2><p>Die Auswahl filtert die veröffentlichten Beiträge nach ihrer bestehenden Kategorie.</p></div><span class="blog-count" id="digital-post-count" aria-live="polite"></span></div>
+<div class="blog-topic-filters" role="group" aria-label="Beiträge nach Kategorie filtern">
+<button type="button" class="blog-topic-filter is-active" data-digital-filter="all" aria-pressed="true">Alle Themen</button>
+<button type="button" class="blog-topic-filter" data-digital-filter="digitales marketing" aria-pressed="false">Digitales Marketing</button>
+<button type="button" class="blog-topic-filter" data-digital-filter="seo" aria-pressed="false">SEO</button>
+<button type="button" class="blog-topic-filter" data-digital-filter="datenschutz" aria-pressed="false">Datenschutz</button>
+</div>
+<style>
+.blog-topic-filters{display:flex;flex-wrap:wrap;gap:10px;margin:0 0 24px}
+.blog-topic-filter{border:1px solid #bd8bff66;background:#211c30;color:#eadff0;border-radius:999px;padding:9px 16px;font:inherit;font-size:14px;cursor:pointer;transition:background .2s,border-color .2s,color .2s}
+.blog-topic-filter:hover,.blog-topic-filter:focus-visible{border-color:#efb5df;color:#fff;outline-offset:3px}
+.blog-topic-filter.is-active{background:#8055a5;border-color:#8055a5;color:#fff}
+</style>
 <p class="blog-status" id="digital-loading" role="status">Die Beiträge werden geladen …</p><div class="blog-grid" id="digital-post-grid" aria-live="polite"></div>
 <p class="blog-status">Direkt zu einem Beitrag:</p>
 <ul id="digital-post-fallback" class="blog-crawl-fallback">
