@@ -284,6 +284,26 @@
     "digitales-marketing-hero": {
       path: "site-assets/digitales-marketing-hero.webp",
       alt: "Mila sitzt an ihrem Arbeitsplatz vor Monitoren mit digitalen Marketing- und Analyseansichten."
+    },
+    "home-gaming": {
+      path: "site-assets/home-gaming.webp",
+      alt: "Mila in ihrem gemütlichen Gaming-Zimmer."
+    },
+    "home-blog": {
+      path: "site-assets/home-blog.webp",
+      alt: "Mila arbeitet am Laptop an digitalen Themen."
+    },
+    "home-alltag": {
+      path: "site-assets/home-alltag.webp",
+      alt: "Mila entspannt mit einer Tasse auf dem Sofa."
+    },
+    "home-fan-fiction": {
+      path: "site-assets/home-fan-fiction.webp",
+      alt: "Ein stimmungsvolles Bild für Milas Fan-Fiction-Geschichten."
+    },
+    "home-galerie": {
+      path: "site-assets/home-galerie.webp",
+      alt: "Mila in einem gemütlichen Café."
     }
   };
 
