@@ -48,38 +48,34 @@
       .select("title,alt_text,public_url,sort_order")
       .eq("day_number",2).order("sort_order",{ascending:true});
     if(imageError) console.warn("Tag-2-Bilder konnten nicht geladen werden",imageError);
-    const {data:audioRow,error:audioError}=await db.from("dark_romance_audio")
-      .select("title,public_url,duration_seconds").eq("day_number",2).maybeSingle();
-    if(audioError) console.warn("Dark-Romance-Audio konnte nicht geladen werden",audioError);
-    if(audioRow?.public_url){
-      const audioSection=document.getElementById("dark-romance-audio");
-      const audioPlayer=document.getElementById("dark-romance-audio-player");
-      const audioNote=document.getElementById("dark-romance-audio-note");
-      if(audioSection&&audioPlayer){
-        audioPlayer.preload="metadata";
-        audioPlayer.src=audioRow.public_url;
-        document.getElementById("dark-romance-audio-title").textContent=audioRow.title||"Tag 2 anhören";
-        audioNote.textContent="Originalaufnahme wird geladen …";
-        audioPlayer.addEventListener("loadedmetadata",()=>{
-          const duration=Number.isFinite(audioPlayer.duration)?Math.round(audioPlayer.duration):null;
-          audioNote.textContent="Originalaufnahme"+(duration?" · "+Math.floor(duration/60)+":"+String(duration%60).padStart(2,"0")+" Minuten":"");
-        },{once:true});
-        audioPlayer.addEventListener("canplay",()=>{
-          audioNote.textContent="Die Aufnahme ist abspielbereit.";
-        },{once:true});
-        audioPlayer.addEventListener("error",()=>{
-          const code=audioPlayer.error?.code||0;
-          const reasons={
-            1:"Der Ladevorgang wurde abgebrochen.",
-            2:"Die Audiodatei konnte vom Speicher nicht vollständig geladen werden.",
-            3:"Der Browser kann die Audiodatei nicht decodieren (Format/Codec).",
-            4:"Der Browser erkennt das Audioformat nicht."
-          };
-          audioNote.textContent=(reasons[code]||"Die Audiodatei konnte nicht abgespielt werden")+" Fehlercode: "+code+".";
-        },{once:true});
-        audioSection.hidden=false;
-        audioPlayer.load();
-      }
+    const audioSection=document.getElementById("dark-romance-audio");
+    const audioPlayer=document.getElementById("dark-romance-audio-player");
+    const audioNote=document.getElementById("dark-romance-audio-note");
+    if(audioSection&&audioPlayer){
+      const audioUrl="/assets/audio/Mila%20Tag%202_mix.mp3";
+      audioPlayer.preload="metadata";
+      audioPlayer.src=audioUrl;
+      document.getElementById("dark-romance-audio-title").textContent="Die Geschichte anhören · Tag 2";
+      audioNote.textContent="Originalaufnahme wird geladen …";
+      audioPlayer.addEventListener("loadedmetadata",()=>{
+        const duration=Number.isFinite(audioPlayer.duration)?Math.round(audioPlayer.duration):null;
+        audioNote.textContent="Originalaufnahme"+(duration?" · "+Math.floor(duration/60)+":"+String(duration%60).padStart(2,"0")+" Minuten":"");
+      },{once:true});
+      audioPlayer.addEventListener("canplay",()=>{
+        audioNote.textContent="Die Aufnahme ist abspielbereit.";
+      },{once:true});
+      audioPlayer.addEventListener("error",()=>{
+        const code=audioPlayer.error?.code||0;
+        const reasons={
+          1:"Der Ladevorgang wurde abgebrochen.",
+          2:"Die Audiodatei konnte vom Website-Server nicht geladen werden.",
+          3:"Der Browser kann die Audiodatei nicht decodieren (Format/Codec).",
+          4:"Der Browser erkennt das Audioformat nicht."
+        };
+        audioNote.textContent=(reasons[code]||"Die Audiodatei konnte nicht abgespielt werden")+" Fehlercode: "+code+".";
+      },{once:true});
+      audioSection.hidden=false;
+      audioPlayer.load();
     }
     const blocks=renderMarkdown(day.content);
     const list=images||[];
