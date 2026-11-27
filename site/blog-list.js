@@ -14,6 +14,8 @@
   const everydayError = document.getElementById('everyday-error');
   const digitalCount = document.getElementById('digital-post-count');
   const everydayCount = document.getElementById('everyday-post-count');
+  const digitalFilters = Array.from(document.querySelectorAll('[data-digital-filter]'));
+  let activeDigitalFilter = 'all';
 
   const escapeHtml = (value = '') => String(value).replace(/[&<>"']/g, (char) => ({
     '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
@@ -110,7 +112,10 @@
     document.getElementById('digital-post-fallback')?.remove();
     document.getElementById('everyday-post-fallback')?.remove();
     targets.forEach((target) => {
-      const filtered = posts.filter(target.predicate);
+      const filtered = posts.filter((post) => target.predicate(post) && (
+        target.grid !== digitalGrid || activeDigitalFilter === 'all' ||
+        String(post.category || '').trim().toLocaleLowerCase('de-DE') === activeDigitalFilter
+      ));
       if (target.count) {
         target.count.textContent = filtered.length
           ? `${filtered.length} ${filtered.length === 1 ? 'Beitrag' : 'Beiträge'}`
@@ -119,7 +124,27 @@
       if (target.empty) target.empty.hidden = filtered.length > 0;
       const fragment = document.createDocumentFragment();
       filtered.forEach((post) => fragment.appendChild(makeCard(post)));
-      target.grid.appendChild(fragment);
+      target.grid.replaceChildren(fragment);
+    });
+    digitalFilters.forEach((button) => {
+      button.addEventListener('click', () => {
+        activeDigitalFilter = button.dataset.digitalFilter || 'all';
+        digitalFilters.forEach((item) => {
+          const selected = item === button;
+          item.setAttribute('aria-pressed', String(selected));
+          item.classList.toggle('is-active', selected);
+        });
+        const target = targets.find((item) => item.grid === digitalGrid);
+        if (!target) return;
+        const filtered = posts.filter((post) => target.predicate(post) && (
+          activeDigitalFilter === 'all' || String(post.category || '').trim().toLocaleLowerCase('de-DE') === activeDigitalFilter
+        ));
+        if (digitalCount) digitalCount.textContent = filtered.length ? `${filtered.length} ${filtered.length === 1 ? 'Beitrag' : 'Beiträge'}` : '';
+        if (digitalEmpty) digitalEmpty.hidden = filtered.length > 0;
+        const fragment = document.createDocumentFragment();
+        filtered.forEach((post) => fragment.appendChild(makeCard(post)));
+        digitalGrid.replaceChildren(fragment);
+      });
     });
   }
 
