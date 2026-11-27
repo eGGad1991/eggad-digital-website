@@ -476,7 +476,36 @@
     }
     selectedFiles.forEach(file => {
       if (isAudioTarget) {
-        const audio = document.createElement("audio"); audio.controls = true; audio.src = URL.createObjectURL(file); selectedPreviewUrls.push(audio.src); preview.appendChild(audio); return;
+        const audio = document.createElement("audio");
+        audio.controls = true;
+        audio.preload = "metadata";
+        audio.src = URL.createObjectURL(file);
+        selectedPreviewUrls.push(audio.src);
+        const status = document.createElement("p");
+        status.className = "audio-preview-status";
+        status.textContent = "Prüfe Audiodatei …";
+        audio.addEventListener("loadedmetadata", () => {
+          const duration = Number.isFinite(audio.duration) ? Math.round(audio.duration) : null;
+          status.textContent = duration
+            ? "Datei lesbar · " + Math.floor(duration / 60) + ":" + String(duration % 60).padStart(2, "0") + " Minuten"
+            : "Datei erkannt, Spieldauer konnte nicht ermittelt werden.";
+        }, { once: true });
+        audio.addEventListener("canplay", () => {
+          status.textContent = "Audiodatei ist abspielbereit.";
+        }, { once: true });
+        audio.addEventListener("error", () => {
+          const code = audio.error?.code || 0;
+          const reasons = {
+            1: "Ladevorgang abgebrochen",
+            2: "Datei konnte nicht gelesen werden",
+            3: "Audioformat oder Codec wird nicht unterstützt",
+            4: "Dateiformat wird vom Browser nicht erkannt"
+          };
+          status.textContent = "Audio-Prüfung fehlgeschlagen: " + (reasons[code] || "Unbekannter Audiofehler") + " (Code " + code + "). Bitte die Datei als MP3 (MPEG Layer III) neu exportieren.";
+        }, { once: true });
+        preview.append(audio, status);
+        audio.load();
+        return;
       }
       const img = document.createElement("img");
       img.alt = "Ausgewähltes Bild";
@@ -760,7 +789,30 @@
       const publicUrl = publicData?.publicUrl;
       if (!publicUrl) { await client.storage.from(bucket).remove([storagePath]); message(uploadMessage, "Die öffentliche Audio-Adresse konnte nicht erstellt werden.", "error"); uploadButton.disabled = false; return; }
       let durationSeconds = null;
-      try { durationSeconds = await new Promise(resolve => { const probe = new Audio(); probe.preload = "metadata"; probe.onloadedmetadata = () => { const d = Number.isFinite(probe.duration) ? Math.round(probe.duration) : null; URL.revokeObjectURL(probe.src); resolve(d); }; probe.onerror = () => resolve(null); probe.src = URL.createObjectURL(file); }); } catch (_) {}
+      try {
+        durationSeconds = await new Promise(resolve => {
+          const probe = new Audio();
+          const objectUrl = URL.createObjectURL(file);
+          let settled = false;
+          const finish = value => {
+            if (settled) return;
+            settled = true;
+            clearTimeout(timeout);
+            probe.removeAttribute("src");
+            probe.load();
+            URL.revokeObjectURL(objectUrl);
+            resolve(value);
+          };
+          const timeout = setTimeout(() => finish(null), 10000);
+          probe.preload = "metadata";
+          probe.addEventListener("loadedmetadata", () => {
+            finish(Number.isFinite(probe.duration) && probe.duration > 0 ? Math.round(probe.duration) : null);
+          }, { once: true });
+          probe.addEventListener("error", () => finish(null), { once: true });
+          probe.src = objectUrl;
+          probe.load();
+        });
+      } catch (_) {}
       const { data: oldRow } = await client.from("dark_romance_audio").select("storage_path").eq("day_id", day.id).maybeSingle();
       const { error: rowError } = await client.from("dark_romance_audio").upsert({
         day_id: day.id, day_number: day.day_number, title, storage_path: storagePath,
