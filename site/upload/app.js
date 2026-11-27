@@ -21,6 +21,9 @@
   const destinationNote = document.getElementById("destination-note");
   const blogOptions = document.getElementById("blog-options");
   const darkRomanceOptions = document.getElementById("dark-romance-options");
+  const siteImagesOptions = document.getElementById("site-images-options");
+  const siteImageSlot = document.getElementById("site-image-slot");
+  const siteImageCurrentPreview = document.getElementById("site-image-current-preview");
   const darkRomanceDay = document.getElementById("dark-romance-day");
   const darkRomancePosition = document.getElementById("dark-romance-position");
   const darkRomanceTitle = document.getElementById("dark-romance-title");
@@ -178,8 +181,10 @@
     const target = destination.value;
     const isBlog = target === "blog";
     const isDarkRomance = target === "dark-romance";
+    const isSiteImages = target === "site-images";
     blogOptions.hidden = !isBlog;
     darkRomanceOptions.hidden = !isDarkRomance;
+    siteImagesOptions.hidden = !isSiteImages;
     fileInput.multiple = true;
     fileSelectionHint.textContent = isBlog
       ? "Bolognese: bis zu 4 Bilder auf einmal · andere Beiträge: 1 Bild · Alt-Text automatisch"
@@ -204,6 +209,12 @@
       uploadButton.textContent = "Bild für Dark Romance hochladen";
       fileInput.multiple = false;
       if (selectedFiles.length > 1) clearSelection();
+    } else if (isSiteImages) {
+      destinationNote.textContent = "Website-Bilder: Wähle einen festen Bildplatz. Der Upload ersetzt die bisherige Datei, die auf der Website eingebunden ist.";
+      uploadButton.textContent = "Website-Bild ersetzen";
+      fileInput.multiple = false;
+      if (selectedFiles.length > 1) clearSelection();
+      updateSiteImagePreview();
     } else if (target === "private") {
       destinationNote.textContent = "Privates Archiv: Upload in den geschützten Supabase-Speicher „mila-private-vault“. Die Bilder sind nur nach Admin-Anmeldung unter /mila-k7/ sichtbar.";
       uploadButton.textContent = "Bilder privat speichern";
@@ -267,6 +278,22 @@
       ? "Blogbilder werden im Bucket „mila-blog-media“ gespeichert. Alt-Texte werden bei der Bildauswahl automatisch übernommen. Für Bolognese bleibt der vorbereitete Mehrfachupload aktiv."
       : "Es gibt noch keine gespeicherten Blogbeiträge. Lege zuerst in der Blogverwaltung einen Entwurf an.";
     await updateSuggestedBlogAltText();
+  }
+
+  const siteImageSlots = {
+    "digitales-marketing-hero": {
+      path: "site-assets/digitales-marketing-hero.webp",
+      alt: "Mila sitzt an ihrem Arbeitsplatz vor Monitoren mit digitalen Marketing- und Analyseansichten."
+    }
+  };
+
+  function updateSiteImagePreview() {
+    const slot = siteImageSlots[siteImageSlot?.value];
+    if (!slot || !siteImageCurrentPreview) return;
+    const bucket = cfg.blogBucket || "mila-blog-media";
+    const { data } = client.storage.from(bucket).getPublicUrl(slot.path);
+    siteImageCurrentPreview.src = data?.publicUrl ? data.publicUrl + "?preview=" + Date.now() : "";
+    siteImageCurrentPreview.hidden = !data?.publicUrl;
   }
 
   function slugifyFilename(value) {
@@ -373,6 +400,7 @@
   darkRomanceDay.addEventListener("change", () => {
     if (darkRomancePosition.value === "cover") darkRomanceTitle.value = "Titelbild – Tag " + darkRomanceDay.value;
   });
+  siteImageSlot?.addEventListener("change", updateSiteImagePreview);
   blogPostSelect.addEventListener("change", () => {
     updateSuggestedBlogAltText().catch((error) => console.warn("Alt-Text konnte nicht vorgeschlagen werden:", error));
   });
@@ -418,7 +446,7 @@
     if (!selectedFiles.length || uploadButton.disabled) return;
     uploadButton.disabled = true;
     const target = destination.value;
-    if (!["public", "private", "blog", "dark-romance"].includes(target)) {
+    if (!["public", "private", "blog", "dark-romance", "site-images"].includes(target)) {
       message(uploadMessage, "Bitte zuerst einen gültigen Speicherort auswählen.", "error");
       uploadButton.disabled = false;
       return;
@@ -620,6 +648,35 @@
       message(uploadMessage, kind === "cover"
         ? `Titelbild wurde „${post.title}“ zugeordnet und gespeichert.`
         : `Bild wurde „${post.title}“ als Beitragsbild zugeordnet. Es erscheint im Bereich „Weitere Bilder“ des Artikels.`, "success");
+      return;
+    }
+
+    if (target === "site-images") {
+      if (selectedFiles.length !== 1) {
+        message(uploadMessage, "Bitte genau ein Bild für den ausgewählten Website-Platz auswählen.", "error");
+        uploadButton.disabled = false;
+        return;
+      }
+      const slot = siteImageSlots[siteImageSlot.value];
+      if (!slot) {
+        message(uploadMessage, "Bitte einen gültigen Website-Bildplatz auswählen.", "error");
+        uploadButton.disabled = false;
+        return;
+      }
+      const file = await optimizeBlogImage(selectedFiles[0]);
+      const bucket = cfg.blogBucket || "mila-blog-media";
+      message(uploadMessage, "Ersetze das Website-Bild …");
+      const { error } = await client.storage.from(bucket).upload(slot.path, file, {
+        contentType: file.type, upsert: true, cacheControl: "60"
+      });
+      if (error) {
+        message(uploadMessage, "Website-Bild konnte nicht ersetzt werden: " + error.message, "error");
+        uploadButton.disabled = false;
+        return;
+      }
+      clearSelection();
+      updateSiteImagePreview();
+      message(uploadMessage, "Website-Bild erfolgreich ersetzt. Die feste Bildadresse bleibt erhalten. Bitte die Website nach kurzer Cache-Aktualisierung neu laden.", "success");
       return;
     }
 
