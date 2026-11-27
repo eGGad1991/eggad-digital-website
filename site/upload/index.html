@@ -37,6 +37,10 @@
       <input type="radio" name="upload-destination" value="dark-romance">
       <span class="choice-content"><strong>Dark Romance</strong><small>Bilder für Milas fortlaufende Geschichte speichern</small></span>
     </label>
+    <label class="destination-choice">
+      <input type="radio" name="upload-destination" value="site-images">
+      <span class="choice-content"><strong>Website-Bilder</strong><small>Vorhandene Bilder auf festen Website-Plätzen austauschen</small></span>
+    </label>
   </div>
   <p class="gallery-note" id="destination-note">Öffentliche Galerie: Die Bilder können nach dem Upload von allen Besuchern der Website angesehen werden.</p>
 </section>
@@ -86,6 +90,17 @@
 <label for="dark-romance-alt">Alt-Text für SEO und Barrierefreiheit</label>
 <input id="dark-romance-alt" maxlength="300" placeholder="Wird beim Auswählen des Bildes vorgeschlagen" type="text">
 <p class="gallery-note" id="dark-romance-note">Wähle Tag und Bildposition. Nach dem Upload wird das Bild mit diesen Angaben gespeichert und kann auf der Dark-Romance-Seite angezeigt werden.</p>
+</div>
+<div class="blog-options" id="site-images-options" hidden>
+<label for="site-image-slot">Bild auf der Website auswählen</label>
+<select id="site-image-slot">
+<option value="digitales-marketing-hero">Digitales Marketing · Titelbild</option>
+</select>
+<div class="site-image-current" id="site-image-current">
+<img alt="Aktuell verwendetes Website-Bild" id="site-image-current-preview" src="" hidden>
+<p class="gallery-note">Der Upload ersetzt genau dieses Bild. Die Bildadresse bleibt gleich, deshalb musst du später keine Website-Dateien mehr ändern.</p>
+</div>
+<p class="gallery-note">Website-Bilder werden im öffentlichen Bucket „mila-blog-media“ unter einem festen Dateinamen gespeichert. Nur freigeschaltete Administratoren können sie ersetzen.</p>
 </div>
 <label class="drop" for="files"><span class="step-label">Bilder auswählen</span><span class="upload-icon">＋</span><strong>Bilder auswählen</strong><span id="file-selection-hint">Mehrere Bilder möglich · JPG, PNG, WebP, GIF · max. 50 MB pro Bild</span><input accept="image/jpeg,image/png,image/webp,image/gif" id="files" multiple="" type="file"/></label>
 <div class="preview" id="preview"></div>
