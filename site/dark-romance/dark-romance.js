@@ -54,11 +54,31 @@
     if(audioRow?.public_url){
       const audioSection=document.getElementById("dark-romance-audio");
       const audioPlayer=document.getElementById("dark-romance-audio-player");
+      const audioNote=document.getElementById("dark-romance-audio-note");
       if(audioSection&&audioPlayer){
+        audioPlayer.preload="metadata";
         audioPlayer.src=audioRow.public_url;
         document.getElementById("dark-romance-audio-title").textContent=audioRow.title||"Tag 2 anhören";
-        document.getElementById("dark-romance-audio-note").textContent="Originalaufnahme"+(audioRow.duration_seconds?" · "+Math.round(audioRow.duration_seconds/60)+" Minuten":"");
+        audioNote.textContent="Originalaufnahme wird geladen …";
+        audioPlayer.addEventListener("loadedmetadata",()=>{
+          const duration=Number.isFinite(audioPlayer.duration)?Math.round(audioPlayer.duration):null;
+          audioNote.textContent="Originalaufnahme"+(duration?" · "+Math.floor(duration/60)+":"+String(duration%60).padStart(2,"0")+" Minuten":"");
+        },{once:true});
+        audioPlayer.addEventListener("canplay",()=>{
+          audioNote.textContent="Die Aufnahme ist abspielbereit.";
+        },{once:true});
+        audioPlayer.addEventListener("error",()=>{
+          const code=audioPlayer.error?.code||0;
+          const reasons={
+            1:"Der Ladevorgang wurde abgebrochen.",
+            2:"Die Audiodatei konnte vom Speicher nicht vollständig geladen werden.",
+            3:"Der Browser kann die Audiodatei nicht decodieren (Format/Codec).",
+            4:"Der Browser erkennt das Audioformat nicht."
+          };
+          audioNote.textContent=(reasons[code]||"Die Audiodatei konnte nicht abgespielt werden")+" Fehlercode: "+code+".";
+        },{once:true});
         audioSection.hidden=false;
+        audioPlayer.load();
       }
     }
     const blocks=renderMarkdown(day.content);
