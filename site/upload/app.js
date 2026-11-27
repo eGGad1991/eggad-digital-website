@@ -22,6 +22,9 @@
   const blogOptions = document.getElementById("blog-options");
   const darkRomanceOptions = document.getElementById("dark-romance-options");
   const siteImagesOptions = document.getElementById("site-images-options");
+  const darkRomanceAudioOptions = document.getElementById("dark-romance-audio-options");
+  const darkRomanceAudioDay = document.getElementById("dark-romance-audio-day");
+  const darkRomanceAudioTitle = document.getElementById("dark-romance-audio-title");
   const siteImageSlot = document.getElementById("site-image-slot");
   const siteImageCurrentPreview = document.getElementById("site-image-current-preview");
   const darkRomanceDay = document.getElementById("dark-romance-day");
@@ -145,6 +148,7 @@
 
   const maxFileSize = 50 * 1024 * 1024;
   const allowedTypes = new Set(["image/jpeg", "image/png", "image/webp", "image/gif"]);
+  const allowedAudioTypes = new Set(["audio/mpeg", "audio/mp4", "audio/wav", "audio/x-wav", "audio/ogg", "audio/aac"]);
   let selectedFiles = [];
   let selectedPreviewUrls = [];
   let client;
@@ -182,13 +186,18 @@
     const isBlog = target === "blog";
     const isDarkRomance = target === "dark-romance";
     const isSiteImages = target === "site-images";
+    const isDarkRomanceAudio = target === "dark-romance-audio";
     blogOptions.hidden = !isBlog;
     darkRomanceOptions.hidden = !isDarkRomance;
     siteImagesOptions.hidden = !isSiteImages;
+    darkRomanceAudioOptions.hidden = !isDarkRomanceAudio;
     fileInput.multiple = true;
-    fileSelectionHint.textContent = isBlog
-      ? "Bolognese: bis zu 4 Bilder auf einmal · andere Beiträge: 1 Bild · Alt-Text automatisch"
-      : "Mehrere Bilder möglich · JPG, PNG, WebP, GIF · max. 50 MB pro Bild";
+    fileInput.accept = isDarkRomanceAudio ? "audio/mpeg,audio/mp4,audio/wav,audio/x-wav,audio/ogg,audio/aac,.mp3,.m4a,.wav,.ogg,.aac" : "image/jpeg,image/png,image/webp,image/gif";
+    fileSelectionHint.textContent = isDarkRomanceAudio
+      ? "Eine Audiodatei · MP3, M4A, WAV oder OGG · max. 150 MB"
+      : isBlog
+        ? "Bolognese: bis zu 4 Bilder auf einmal · andere Beiträge: 1 Bild · Alt-Text automatisch"
+        : "Mehrere Bilder möglich · JPG, PNG, WebP, GIF · max. 50 MB pro Bild";
 
     if (isBlog) {
       destinationNote.textContent = "Blog: Wähle einen Beitrag und ein Bild. Der Alt-Text wird automatisch aus der Bildbeschreibung im Dateinamen übernommen und mitgespeichert. Du kannst ihn vor dem Upload noch bearbeiten.";
@@ -209,6 +218,12 @@
       uploadButton.textContent = "Bild für Dark Romance hochladen";
       fileInput.multiple = false;
       if (selectedFiles.length > 1) clearSelection();
+    } else if (isDarkRomanceAudio) {
+      destinationNote.textContent = "Dark Romance · Hörgeschichten: Lade die fertige Sprachaufnahme hoch und ordne sie einem Tag zu. Sie erscheint danach mit Player auf der öffentlichen Geschichtenseite.";
+      uploadButton.textContent = "Hörgeschichte hochladen";
+      fileInput.multiple = false;
+      if (selectedFiles.length > 1) clearSelection();
+      if (!darkRomanceDaysLoaded) loadDarkRomanceDays().catch(error => message(uploadMessage, "Tage konnten nicht geladen werden: " + error.message, "error"));
     } else if (isSiteImages) {
       destinationNote.textContent = "Website-Bilder: Wähle einen festen Bildplatz. Der Upload ersetzt die bisherige Datei, die auf der Website eingebunden ist.";
       uploadButton.textContent = "Website-Bild ersetzen";
@@ -239,8 +254,10 @@
     darkRomanceDays.forEach(day => {
       const state = day.status === "published" ? "veröffentlicht" : "Entwurf";
       darkRomanceDay.add(new Option("Tag " + day.day_number + " – " + day.title + " · " + state, day.id));
+      darkRomanceAudioDay?.add(new Option("Tag " + day.day_number + " – " + day.title + " · " + state, day.id));
     });
     darkRomanceDay.disabled = darkRomanceDays.length === 0;
+    if (darkRomanceAudioDay) darkRomanceAudioDay.disabled = darkRomanceDays.length === 0;
     darkRomanceDaysLoaded = true;
     const firstDraft = darkRomanceDays.find(day => day.status === "draft");
     if (firstDraft) darkRomanceDay.value = firstDraft.id;
@@ -428,6 +445,7 @@
 
   destinationChoices.forEach((choice) => choice.addEventListener("change", updateDestinationNote));
   darkRomanceDay.addEventListener("change", updateDarkRomanceTitle);
+  darkRomanceAudioDay?.addEventListener("change", () => { const day = darkRomanceDays.find(item => item.id === darkRomanceAudioDay.value); if (day) darkRomanceAudioTitle.value = "Die Geschichte anhören · Tag " + day.day_number; });
   darkRomancePosition.addEventListener("change", () => {
     const selected = darkRomancePosition.options[darkRomancePosition.selectedIndex];
     darkRomanceTitle.value = selected.text.replace(/^Szene \\d+ – /, "").replace(/^Titelbild für den Tag$/, "Titelbild – Tag " + darkRomanceDay.value);
@@ -449,13 +467,17 @@
     const incomingFiles = Array.from(fileInput.files || []);
     clearSelection();
     selectedFiles = incomingFiles;
-    const invalid = selectedFiles.find(file => !allowedTypes.has(file.type) || file.size > maxFileSize);
+    const isAudioTarget = destination.value === "dark-romance-audio";
+    const invalid = selectedFiles.find(file => !(isAudioTarget ? allowedAudioTypes.has(file.type) : allowedTypes.has(file.type)) || file.size > (isAudioTarget ? 150 * 1024 * 1024 : maxFileSize));
     if (invalid) {
       clearSelection();
-      message(uploadMessage, "Bitte nur JPG, PNG, WebP oder GIF bis 50 MB je Bild auswählen.", "error");
+      message(uploadMessage, isAudioTarget ? "Bitte eine MP3-, M4A-, WAV- oder OGG-Datei bis 150 MB auswählen." : "Bitte nur JPG, PNG, WebP oder GIF bis 50 MB je Bild auswählen.", "error");
       return;
     }
     selectedFiles.forEach(file => {
+      if (isAudioTarget) {
+        const audio = document.createElement("audio"); audio.controls = true; audio.src = URL.createObjectURL(file); selectedPreviewUrls.push(audio.src); preview.appendChild(audio); return;
+      }
       const img = document.createElement("img");
       img.alt = "Ausgewähltes Bild";
       const url = URL.createObjectURL(file);
@@ -464,6 +486,10 @@
       preview.appendChild(img);
     });
     uploadButton.disabled = selectedFiles.length === 0;
+    if (destination.value === "dark-romance-audio" && selectedFiles.length === 1) {
+      const day = darkRomanceDays.find(item => item.id === darkRomanceAudioDay.value);
+      if (day) darkRomanceAudioTitle.value = "Die Geschichte anhören · Tag " + day.day_number;
+    }
     if (destination.value === "dark-romance" && selectedFiles.length === 1) {
       const base = selectedFiles[0].name.replace(/\\.[^.]+$/, "").replace(/[-_]+/g, " ").trim();
       if (!darkRomanceAlt.value) darkRomanceAlt.value = base ? "Szene aus Dark Romance: " + base + "." : "Szene aus Milas Dark-Romance-Geschichte.";
@@ -482,7 +508,7 @@
     if (!selectedFiles.length || uploadButton.disabled) return;
     uploadButton.disabled = true;
     const target = destination.value;
-    if (!["public", "private", "blog", "dark-romance", "site-images"].includes(target)) {
+    if (!["public", "private", "blog", "dark-romance", "dark-romance-audio", "site-images"].includes(target)) {
       message(uploadMessage, "Bitte zuerst einen gültigen Speicherort auswählen.", "error");
       uploadButton.disabled = false;
       return;
@@ -713,6 +739,38 @@
       clearSelection();
       updateSiteImagePreview();
       message(uploadMessage, "Website-Bild erfolgreich ersetzt. Die feste Bildadresse bleibt erhalten. Bitte die Website nach kurzer Cache-Aktualisierung neu laden.", "success");
+      return;
+    }
+
+    if (target === "dark-romance-audio") {
+      if (selectedFiles.length !== 1) { message(uploadMessage, "Bitte genau eine Audiodatei auswählen.", "error"); uploadButton.disabled = false; return; }
+      const day = darkRomanceDays.find(item => item.id === darkRomanceAudioDay.value);
+      const file = selectedFiles[0];
+      const title = darkRomanceAudioTitle.value.trim() || "Die Geschichte anhören";
+      if (!day || !allowedAudioTypes.has(file.type) || file.size > 150 * 1024 * 1024) {
+        message(uploadMessage, "Bitte Tag und eine gültige Audiodatei bis 150 MB auswählen.", "error"); uploadButton.disabled = false; return;
+      }
+      const bucket = cfg.blogBucket || "mila-blog-media";
+      const ext = (file.name.split(".").pop() || "mp3").toLowerCase().replace(/[^a-z0-9]/g, "") || "mp3";
+      const storagePath = "dark-romance/audio/tag-" + day.day_number + "/" + Date.now() + "-" + crypto.randomUUID() + "." + ext;
+      message(uploadMessage, "Lade Hörgeschichte für Tag " + day.day_number + " hoch …");
+      const { error: uploadError } = await client.storage.from(bucket).upload(storagePath, file, { contentType: file.type, upsert: false, cacheControl: "31536000" });
+      if (uploadError) { message(uploadMessage, "Audio-Upload fehlgeschlagen: " + uploadError.message, "error"); uploadButton.disabled = false; return; }
+      const { data: publicData } = client.storage.from(bucket).getPublicUrl(storagePath);
+      const publicUrl = publicData?.publicUrl;
+      if (!publicUrl) { await client.storage.from(bucket).remove([storagePath]); message(uploadMessage, "Die öffentliche Audio-Adresse konnte nicht erstellt werden.", "error"); uploadButton.disabled = false; return; }
+      let durationSeconds = null;
+      try { durationSeconds = await new Promise(resolve => { const probe = new Audio(); probe.preload = "metadata"; probe.onloadedmetadata = () => { const d = Number.isFinite(probe.duration) ? Math.round(probe.duration) : null; URL.revokeObjectURL(probe.src); resolve(d); }; probe.onerror = () => resolve(null); probe.src = URL.createObjectURL(file); }); } catch (_) {}
+      const { data: oldRow } = await client.from("dark_romance_audio").select("storage_path").eq("day_id", day.id).maybeSingle();
+      const { error: rowError } = await client.from("dark_romance_audio").upsert({
+        day_id: day.id, day_number: day.day_number, title, storage_path: storagePath,
+        public_url: publicUrl, content_type: file.type, file_size: file.size, duration_seconds: durationSeconds,
+        updated_at: new Date().toISOString()
+      }, { onConflict: "day_id" });
+      if (rowError) { await client.storage.from(bucket).remove([storagePath]); message(uploadMessage, "Audio wurde hochgeladen, aber Tag " + day.day_number + " konnte nicht zugeordnet werden: " + rowError.message, "error"); uploadButton.disabled = false; return; }
+      if (oldRow?.storage_path && oldRow.storage_path !== storagePath) await client.storage.from(bucket).remove([oldRow.storage_path]);
+      clearSelection();
+      message(uploadMessage, "Hörgeschichte für Tag " + day.day_number + " wurde gespeichert. Sie erscheint auf der öffentlichen Geschichtenseite.", "success");
       return;
     }
 
